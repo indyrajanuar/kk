@@ -49,6 +49,7 @@ if selected == 'Home':
         st.dataframe(df)
 
 elif selected == 'PreProcessing Data':
+    st.markdown('<h2 style="text-align: center;"> PreProcessing Data </h1>', unsafe_allow_html=True)
     st.markdown('<h3 style="text-align: left;"> Data Asli </h1>', unsafe_allow_html=True)
     st.write("Berikut merupakan data asli yang didapat dari Balai Desa Bandung Kecamatan Konang Kabupaten Bangkalan.")
     
@@ -63,6 +64,7 @@ elif selected == 'PreProcessing Data':
         # Label encoding
         if st.button("Label Encoding"):
             st.session_state.label_encoder = label_encode_data(df, categorical_features)
+            st.write("Pada bagian ini dilakukan transformasi data yaitu mengubah data kategorikal menjadi numerik.")
             st.write("Label encoding completed.")
             st.dataframe(st.session_state.label_encoder)
 
@@ -72,6 +74,7 @@ elif selected == 'PreProcessing Data':
             if st.button("Min-Max Scaling"):
                 scaler = MinMaxScaler()
                 normalized_data = pd.DataFrame(scaler.fit_transform(st.session_state.label_encoder), columns=st.session_state.label_encoder.columns)
+                st.write("Normalisasi digunakan untuk mengubah nilai kolom nummerik dalam himpunan data untuk menggunakan skala umum, tanpa mendistorsi perbedaan dalam rentang nilai dan kehilangan informasi.")
                 st.write("Min-Max scaling completed.")
                 st.dataframe(normalized_data)
             else:
@@ -81,7 +84,7 @@ elif selected == 'PreProcessing Data':
 
                     
 elif selected == 'Modelling':
-    st.write("You are at Klasifikasi Datamining")
+    st.markdown('<h2 style="text-align: center;"> Hasil Modelling </h1>', unsafe_allow_html=True)
     # Load data for modeling
     if upload_file is not None:
         data_for_modeling = pd.read_csv(upload_file)
