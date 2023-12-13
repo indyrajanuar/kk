@@ -52,6 +52,11 @@ elif selected == 'PreProcessing Data':
             st.dataframe(encoded_data)
         st.markdown('<h3 style="text-align: left;"> Melakukan Normalisasi Data </h1>', unsafe_allow_html=True)
         # Min-Max scaling for all features
+        if st.button("Min-Max Scaling"):
+            scaler = MinMaxScaler()
+            normalized_data = pd.DataFrame(scaler.fit_transform(encoded_data), columns=encoded_data.columns)
+            st.write("Min-Max scaling completed.")
+            st.dataframe(normalized_data)
                     
 elif selected == 'Modelling':
     st.write("You are at Klasifikasi Datamining")
