@@ -9,7 +9,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import metrics
-from sklearn.externals import joblib
+from sklearn import joblib
 
 def label_encode_data(data, categorical_features):
     label_encoder = LabelEncoder()
