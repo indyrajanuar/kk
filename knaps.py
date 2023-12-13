@@ -86,11 +86,14 @@ elif selected == 'Modelling':
     if upload_file is not None:
         data_for_modeling = pd.read_csv(upload_file)
 
+        # Specify the categorical features for label encoding
+        categorical_features = ['jenis kelamin', 'penerima jps', 'belum menerima jps', 'target']
+
         # Perform label encoding
         data_for_modeling_encoded = label_encode_data(data_for_modeling, categorical_features)
 
         # Split data into features (X) and labels (y)
-        X = data_for_modeling_encoded.drop('target', axis=1)
+        x = data_for_modeling_encoded.drop('target', axis=1)
         y = data_for_modeling_encoded['target']
 
         # Split data into training and testing sets
