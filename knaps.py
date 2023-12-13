@@ -47,7 +47,7 @@ elif selected == 'PreProcessing Data':
         categorical_features = ['jenis kelamin', 'penerima jps', 'belum menerima jps', 'target']
         # One-hot encoding
         if st.button("Label Encoding"):
-            encoded_data = label_encode_data(st.session_state.cleaned_data, categorical_features)
+            encoded_data = label_encode_data(df, categorical_features)
             st.write("Label encoding completed.")
             st.dataframe(encoded_data)
         st.markdown('<h3 style="text-align: left;"> Melakukan Normalisasi Data </h1>', unsafe_allow_html=True)
