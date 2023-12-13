@@ -5,20 +5,6 @@ import re
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 
-def clean_numeric_data(data, features_to_clean):
-    for feature in features_to_clean:
-        if feature in data.columns:
-            data[feature] = data[feature].apply(remove_non_numeric)
-    return data
-
-def remove_non_numeric(value):
-    # Remove non-numeric characters using regular expression
-    return re.sub(r'[^0-9.]', '', str(value))
-    
-def preprocess_data(df, features_to_clean, categorical_features):
-    cleaned_data = clean_numeric_data(df, features_to_clean)
-    return cleaned_data
-
 def label_encode_data(data, categorical_features):
     label_encoder = LabelEncoder()
     for feature in categorical_features:
@@ -29,8 +15,8 @@ def label_encode_data(data, categorical_features):
 with st.sidebar:
     selected = option_menu(
         "Main Menu",
-        ["Home", "PreProcessing Data", "Klasifikasi ERNN", "Korelasi Data", "Uji Coba"],
-        icons=['house', 'table', 'boxes', 'boxes', 'check2-circle'],
+        ["Home", "PreProcessing Data", "Modelling", "Klasifikasi"],
+        icons=['house', 'table', 'boxes','check2-circle'],
         menu_icon="cast",
         default_index=1,
         orientation='vertical')
@@ -60,23 +46,15 @@ elif selected == 'PreProcessing Data':
         # Specify the categorical features for one-hot encoding
         categorical_features = ['jenis kelamin', 'penerima jps', 'belum menerima jps', 'target']
         # One-hot encoding
-        if not st.session_state.cleaned_data.empty:
-            if st.button("Label Encoding"):
-                encoded_data = label_encode_data(st.session_state.cleaned_data, categorical_features)
-                st.write("Label encoding completed.")
-                st.dataframe(encoded_data)
-                st.write(encoded_data.shape)
-                st.write(encoded_data.dtypes)
-                st.write(encoded_data.isnull().sum())
-
-            st.markdown('<h3 style="text-align: left;"> Melakukan Normalisasi Data </h1>', unsafe_allow_html=True)
-            # Min-Max scaling for all features
+        if st.button("Label Encoding"):
+            encoded_data = label_encode_data(st.session_state.cleaned_data, categorical_features)
+            st.write("Label encoding completed.")
+            st.dataframe(encoded_data)
+        st.markdown('<h3 style="text-align: left;"> Melakukan Normalisasi Data </h1>', unsafe_allow_html=True)
+        # Min-Max scaling for all features
                     
-elif selected == 'Klasifikasi ERNN':
-    st.write("You are at Klasifikasi ERNN")
+elif selected == 'Modelling':
+    st.write("You are at Klasifikasi Datamining")
 
-elif selected == 'Korelasi Data':
-    st.write("You are at Korelasi Data")
-
-elif selected == 'Uji Coba':
+elif selected == 'Evaluasi':
     st.write("You are at Uji Coba")
