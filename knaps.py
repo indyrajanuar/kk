@@ -10,7 +10,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import metrics
 import joblib
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 import seaborn as sns
 
 def label_encode_data(data, categorical_features):
