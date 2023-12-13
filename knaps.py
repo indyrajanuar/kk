@@ -39,36 +39,26 @@ with st.sidebar:
     upload_file = st.sidebar.file_uploader("Masukkan file csv disini", key=1)
 
 if selected == 'Home':
-    st.markdown('<h1 style="text-align: center;"> Website Klasifikasi Hipertensi </h1>', unsafe_allow_html=True)
-    st.markdown('<h3 style="text-align: left;"> Hipertensi </h1>', unsafe_allow_html=True)
+    st.markdown('<h1 style="text-align: center;"> Website Klasifikasi Kelayakan Keluarga Penerima Bantuan Langsung Tunai Dana Desa </h1>', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: left;"> Bantuan Langsung Tunai Dana Desa (BLT-DD) </h1>', unsafe_allow_html=True)
     st.markdown('<h3 style="text-align: left;"> View Data </h1>', unsafe_allow_html=True)
     if upload_file is not None:
         df = pd.read_csv(upload_file)
-        st.write("Data yang digunakan yaitu data Penyakit Hipertensi dari UPT Puskesmas Modopuro Mojokerto.")
+        st.write("Dataset yang digunakan untuk seleksi kelayakan penerima BLT-DD adalah data yang didapatkan dari Balai Desa Bandung Kecamatan Konang Kabupaten Bangkalan pada bulan April Tahun 2020 dan berjumlah sebanyak 623 data. Dataset tersebut memiliki 2 kelas yaitu memenuhi syarat sebagai penerima BLT-DD dan belum memenuhi syarat sebagai penerima BLT-DD dengan beberapa kriteria yang digunakan.")
         st.dataframe(df)
 
 elif selected == 'PreProcessing Data':
     st.markdown('<h3 style="text-align: left;"> Data Asli </h1>', unsafe_allow_html=True)
-    st.write("Berikut merupakan data asli yang didapat dari UPT Puskesmas Modopuro Mojokerto.")
+    st.write("Berikut merupakan data asli yang didapat dari Balai Desa Bandung Kecamatan Konang Kabupaten Bangkalan.")
     
     encoded_data = pd.DataFrame()  # Define encoded_data outside the 'One-Hot Encoding' block
     
     if upload_file is not None:
         df = pd.read_csv(upload_file)
         st.dataframe(df)
-        st.markdown('<h3 style="text-align: left;"> Melakukan Cleaning Data </h1>', unsafe_allow_html=True)
-        
-        # Specify the features to clean
-        features_to_clean = ['Umur Tahun', 'Sistole', 'Diastole', 'Nafas', 'Detak Nadi']
-        # Button to clean the data
-        if st.button("Clean Data"):
-            st.session_state.cleaned_data = clean_numeric_data(df, features_to_clean)
-            st.write("Pada bagian ini dilakukan pembersihan dataset yang tidak memiliki relevansi terhadap faktor risiko pada penyakit hipertensi, seperti menghapus satuan yang tidak diperlukan dan menghapus noise.")
-            st.dataframe(st.session_state.cleaned_data)
-
         st.markdown('<h3 style="text-align: left;"> Melakukan Transformation Data </h1>', unsafe_allow_html=True)
         # Specify the categorical features for one-hot encoding
-        categorical_features = ['Jenis Kelamin', 'Diagnosa']
+        categorical_features = ['jenis kelamin', 'penerima jps', 'belum menerima jps', 'target']
         # One-hot encoding
         if not st.session_state.cleaned_data.empty:
             if st.button("Label Encoding"):
