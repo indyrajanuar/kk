@@ -10,7 +10,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import metrics
 import joblib
-import seaborn as sns
 
 def label_encode_data(data, categorical_features):
     label_encoder = LabelEncoder()
