@@ -18,6 +18,10 @@ def label_encode_data(data, categorical_features):
             data[feature] = label_encoder.fit_transform(data[feature])
     return data
 
+# Define session state
+if 'label_encoder' not in st.session_state:
+    st.session_state.label_encoder = pd.DataFrame()
+
 # Load the pre-trained model files
 nb_model = joblib.load('naive_bayes_model.joblib')  # Replace 'naive_bayes_model.joblib' with the actual filename
 knn_model = joblib.load('knn_model.joblib')  # Replace 'knn_model.joblib' with the actual filename
@@ -56,7 +60,6 @@ elif selected == 'PreProcessing Data':
         st.markdown('<h3 style="text-align: left;"> Melakukan Transformation Data </h1>', unsafe_allow_html=True)
         # Specify the categorical features for one-hot encoding
         categorical_features = ['jenis kelamin', 'penerima jps', 'belum menerima jps', 'target']
-        # One-hot encoding
         # Label encoding
         if st.button("Label Encoding"):
             st.session_state.label_encoder = label_encode_data(df, categorical_features)
@@ -75,6 +78,7 @@ elif selected == 'PreProcessing Data':
                 st.warning("No numeric columns found for Min-Max Scaling.")
         else:
             st.warning("Encoded data is empty. Please perform label encoding first.")
+
                     
 elif selected == 'Modelling':
     st.write("You are at Klasifikasi Datamining")
