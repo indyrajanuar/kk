@@ -17,10 +17,6 @@ def label_encode_data(data, categorical_features):
         if feature in data.columns:
             data[feature] = label_encoder.fit_transform(data[feature])
     return data
-    
-# Define session state
-if 'cleaned_data' not in st.session_state:
-    st.session_state.cleaned_data = pd.DataFrame()
 
 # Load the pre-trained model files
 nb_model = joblib.load('naive_bayes_model.joblib')  # Replace 'naive_bayes_model.joblib' with the actual filename
@@ -63,16 +59,16 @@ elif selected == 'PreProcessing Data':
         # One-hot encoding
         # Label encoding
         if st.button("Label Encoding"):
-            st.session_state.cleaned_data = label_encode_data(df, categorical_features)
+            st.session_state.label_encoder = label_encode_data(df, categorical_features)
             st.write("Label encoding completed.")
-            st.dataframe(st.session_state.cleaned_data)
+            st.dataframe(st.session_state.label_encoder)
 
         st.markdown('<h3 style="text-align: left;"> Melakukan Normalisasi Data </h1>', unsafe_allow_html=True)
         # Min-Max scaling for all features
-        if not st.session_state.cleaned_data.empty:
+        if not st.session_state.label_encoder.empty:
             if st.button("Min-Max Scaling"):
                 scaler = MinMaxScaler()
-                normalized_data = pd.DataFrame(scaler.fit_transform(st.session_state.cleaned_data), columns=st.session_state.cleaned_data.columns)
+                normalized_data = pd.DataFrame(scaler.fit_transform(st.session_state.label_encoder), columns=st.session_state.label_encoder.columns)
                 st.write("Min-Max scaling completed.")
                 st.dataframe(normalized_data)
             else:
