@@ -30,8 +30,8 @@ c45_model = joblib.load('c45_model.joblib')  # Replace 'c45_model.joblib' with t
 with st.sidebar:
     selected = option_menu(
         "Main Menu",
-        ["Home", "PreProcessing Data", "Modelling", "Klasifikasi"],
-        icons=['house', 'table', 'boxes','check2-circle'],
+        ["Home", "PreProcessing Data", "Modelling"],
+        icons=['house', 'table', 'boxes'],
         menu_icon="cast",
         default_index=1,
         orientation='vertical')
@@ -105,32 +105,17 @@ elif selected == 'Modelling':
         nb_accuracy = metrics.accuracy_score(y_test, nb_pred)
         st.write("Naive Bayes Model Accuracy:", nb_accuracy)
 
-        # Display confusion matrix for Naive Bayes
-        nb_cm = metrics.confusion_matrix(y_test, nb_pred)
-        st.pyplot(plot_confusion_matrix(nb_cm, title="Confusion Matrix for Naive Bayes"))
-
         # k-Nearest Neighbors (KNN) model
         knn_model.fit(x_train, y_train)
         knn_pred = knn_model.predict(x_test)
         knn_accuracy = metrics.accuracy_score(y_test, knn_pred)
         st.write("KNN Model Accuracy:", knn_accuracy)
 
-        # Display confusion matrix for KNN
-        knn_cm = metrics.confusion_matrix(y_test, knn_pred)
-        st.pyplot(plot_confusion_matrix(knn_cm, title="Confusion Matrix for KNN"))
-
         # C4.5 decision tree model
         c45_model.fit(x_train, y_train)
         c45_pred = c45_model.predict(x_test)
         c45_accuracy = metrics.accuracy_score(y_test, c45_pred)
         st.write("C4.5 Decision Tree Model Accuracy:", c45_accuracy)
-        
-        # Display confusion matrix for C4.5 Decision Tree
-        c45_cm = metrics.confusion_matrix(y_test, c45_pred)
-        st.pyplot(plot_confusion_matrix(c45_cm, title="Confusion Matrix for C4.5 Decision Tree"))
 
     else:
         st.warning("Please upload a CSV file for modeling.")
-
-elif selected == 'Evaluasi':
-    st.write("You are at Uji Coba")
