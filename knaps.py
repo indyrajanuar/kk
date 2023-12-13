@@ -4,6 +4,12 @@ import pandas as pd
 import re
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import metrics
+from sklearn.externals import joblib
 
 def label_encode_data(data, categorical_features):
     label_encoder = LabelEncoder()
@@ -11,6 +17,15 @@ def label_encode_data(data, categorical_features):
         if feature in data.columns:
             data[feature] = label_encoder.fit_transform(data[feature])
     return data
+    
+# Define session state
+if 'cleaned_data' not in st.session_state:
+    st.session_state.cleaned_data = pd.DataFrame()
+
+# Load the pre-trained model files
+nb_model = joblib.load('naive_bayes_model.joblib')  # Replace 'naive_bayes_model.joblib' with the actual filename
+knn_model = joblib.load('knn_model.joblib')  # Replace 'knn_model.joblib' with the actual filename
+c45_model = joblib.load('c45_model.joblib')  # Replace 'c45_model.joblib' with the actual filename
 
 with st.sidebar:
     selected = option_menu(
@@ -67,6 +82,40 @@ elif selected == 'PreProcessing Data':
                     
 elif selected == 'Modelling':
     st.write("You are at Klasifikasi Datamining")
+    # Load data for modeling
+    if upload_file is not None:
+        data_for_modeling = pd.read_csv(upload_file)
+
+        # Perform label encoding
+        data_for_modeling_encoded = label_encode_data(data_for_modeling, categorical_features)
+
+        # Split data into features (X) and labels (y)
+        X = data_for_modeling_encoded.drop('target', axis=1)
+        y = data_for_modeling_encoded['target']
+
+        # Split data into training and testing sets
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+
+        # Naive Bayes model
+        nb_model.fit(x_train, y_train)
+        nb_pred = nb_model.predict(x_test)
+        nb_accuracy = metrics.accuracy_score(y_test, nb_pred)
+        st.write("Naive Bayes Model Accuracy:", nb_accuracy)
+
+        # k-Nearest Neighbors (KNN) model
+        knn_model.fit(x_train, y_train)
+        knn_pred = knn_model.predict(x_test)
+        knn_accuracy = metrics.accuracy_score(y_test, knn_pred)
+        st.write("KNN Model Accuracy:", knn_accuracy)
+
+        # C4.5 decision tree model
+        c45_model.fit(x_train, y_train)
+        c45_pred = c45_model.predict(x_test)
+        c45_accuracy = metrics.accuracy_score(y_test, c45_pred)
+        st.write("C4.5 Decision Tree Model Accuracy:", c45_accuracy)
+
+    else:
+        st.warning("Please upload a CSV file for modeling.")
 
 elif selected == 'Evaluasi':
     st.write("You are at Uji Coba")
