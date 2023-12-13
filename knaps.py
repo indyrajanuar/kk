@@ -46,20 +46,22 @@ elif selected == 'PreProcessing Data':
         # Specify the categorical features for one-hot encoding
         categorical_features = ['jenis kelamin', 'penerima jps', 'belum menerima jps', 'target']
         # One-hot encoding
+        # Label encoding
         if st.button("Label Encoding"):
-            encoded_data = label_encode_data(df, categorical_features)
+            st.session_state.cleaned_data = label_encode_data(df, categorical_features)
             st.write("Label encoding completed.")
-            st.dataframe(encoded_data)
+            st.dataframe(st.session_state.cleaned_data)
+
         st.markdown('<h3 style="text-align: left;"> Melakukan Normalisasi Data </h1>', unsafe_allow_html=True)
         # Min-Max scaling for all features
-        if not encoded_data.empty:
+        if not st.session_state.cleaned_data.empty:
             if st.button("Min-Max Scaling"):
                 scaler = MinMaxScaler()
-                normalized_data = pd.DataFrame(scaler.fit_transform(encoded_data), columns=encoded_data.columns)
+                normalized_data = pd.DataFrame(scaler.fit_transform(st.session_state.cleaned_data), columns=st.session_state.cleaned_data.columns)
                 st.write("Min-Max scaling completed.")
                 st.dataframe(normalized_data)
             else:
-                st.warning("Encoded data is empty. Please perform label encoding first.")
+                st.warning("No numeric columns found for Min-Max Scaling.")
         else:
             st.warning("Encoded data is empty. Please perform label encoding first.")
                     
