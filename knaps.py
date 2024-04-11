@@ -136,7 +136,7 @@ def main():
                 accuracy = float(lines[5].split()[1]) * 100
                 precision = float(lines[2].split()[1]) * 100
                 recall = float(lines[3].split()[1]) * 100
-                f1 = float(lines[1].split()[1]) * 100 # F1-score
+                f1 = float(lines[4].split()[1]) * 100 # F1-score
         
                 # Display the metrics
                 html_code = f"""
