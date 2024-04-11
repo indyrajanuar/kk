@@ -179,22 +179,22 @@ def main():
                 accuracies_all_iterations = []
     
                 for iteration in bagging_iterations:
-                    accuracies = []
-    
-                    print("######## ITERATION - {} ########".format(iteration))
-    
-                    # Retrieve models for the current iteration
-                    iteration_models = load_bagging_model(iteration)
-    
-                    for model in iteration_models:
-                        y_pred_prob = model.predict(normalized_test_data)
-                        y_pred = (y_pred_prob > 0.5).astype(int)
-                        accuracy = np.mean(y_pred == y_test)
-                        accuracies.append(accuracy)
-    
-                    average_accuracy = np.mean(accuracies)
-                    accuracies_all_iterations.append(average_accuracy)
-                    print("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
+                accuracies = []
+            
+                print("######## ITERATION - {} ########".format(iteration))
+            
+                # Retrieve models for the current iteration
+                iteration_models = load_bagging_model(iteration)
+            
+                for model in iteration_models:
+                    y_pred_prob = model.predict(normalized_test_data.values.reshape(-1, normalized_test_data.shape[1]))
+                    y_pred = (y_pred_prob > 0.5).astype(int)
+                    accuracy = np.mean(y_pred == y_test)
+                    accuracies.append(accuracy)
+            
+                average_accuracy = np.mean(accuracies)
+                accuracies_all_iterations.append(average_accuracy)
+                print("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
     
                 # Plotting the accuracy
                 plt.figure(figsize=(8, 6))
