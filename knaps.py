@@ -51,17 +51,12 @@ def load_model():
     
     return model
 
-def ernn(data):
+def ernn(data, model):
     # Apply Threshold
-    y_pred = model.predict(x_test)
+    y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
 
-    # Calculate loss if applicable
-    loss = None  # Placeholder for loss value
-    if 'val_loss' in history.history:
-        loss = history.history['val_loss'][-1]
-
-    return y_test, y_pred, loss
+    return y_pred
     
 def main():
     with st.sidebar:
@@ -110,11 +105,12 @@ def main():
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
-                normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
-                y_true, y_pred, loss = ernn(normalized_data)
+                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
+                model = load_model()
+                y_pred = ernn(x_test, model)
 
                 # Generate confusion matrix
-                cm = confusion_matrix(y_true, y_pred)
+                cm = confusion_matrix(y_test, y_pred)
         
                 # Plot confusion matrix
                 plt.figure(figsize=(8, 6))
@@ -122,42 +118,17 @@ def main():
                 plt.xlabel('Predicted')
                 plt.ylabel('True')
                 plt.title('Confusion Matrix')
-                #st.pyplot()
                 st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()
         
                 # Clear the current plot to avoid displaying it multiple times
                 plt.clf()
         
                 # Generate classification report
-                with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
-                    report = classification_report(y_true, y_pred, zero_division=0)
+                report = classification_report(y_test, y_pred, zero_division=0)
         
-                # Extract metrics from the classification report
-                lines = report.split('\n')
-                accuracy = float(lines[5].split()[1]) * 100
-                precision = float(lines[2].split()[1]) * 100
-                recall = float(lines[3].split()[1]) * 100
-        
-                # Display the metrics
-                html_code = f"""
-                <table style="margin: auto;">
-                    <tr>
-                        <td style="text-align: center;"><h5>Loss</h5></td>
-                        <td style="text-align: center;"><h5>Accuracy</h5></td>
-                        <td style="text-align: center;"><h5>Precision</h5></td>
-                        <td style="text-align: center;"><h5>Recall</h5></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">{loss:.4f}</td>
-                        <td style="text-align: center;">{accuracy:.2f}%</td>
-                        <td style="text-align: center;">{precision:.2f}%</td>
-                        <td style="text-align: center;">{recall:.2f}%</td>
-                    </tr>
-                </table>
-                """
+                # Display the classification report
+                st.text(report)
                 
-                st.markdown(html_code, unsafe_allow_html=True)
-    
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
         
