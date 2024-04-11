@@ -55,39 +55,6 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def load_bagging_model(iteration):
-    # Load Bagging models based on the specified iteration
-    bagging_models = []
-    if iteration == 2:
-        for i in range(1, 3):
-            model_path = f'model_2_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    elif iteration == 3:
-        for i in range(1, 4):
-            model_path = f'model_3_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    else:
-        raise ValueError("Invalid iteration specified")
-    return bagging_models
-
-def ernn_bagging(data, bagging_model):
-    if data is None:
-        return None, None, "Data is not available"
-    
-    # Apply threshold for each model and take the average prediction
-    y_pred_prob_sum = np.zeros(len(data))
-    for model in bagging_models:
-        y_pred_prob = model.predict(data)
-        y_pred_prob_sum += y_pred_prob
-    
-    # Average the predictions
-    y_pred_prob_avg = y_pred_prob_sum / len(bagging_models)
-    y_pred = (y_pred_prob_avg > 0.5).astype(int)
-    
-    return y_pred
-
 def main():
     with st.sidebar:
         selected = option_menu(
@@ -184,34 +151,6 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        if upload_file is not None:
-            df = pd.read_csv(upload_file)
-            if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
-                normalized_test_data = normalize_data(x_test)
-
-                bagging_iterations = [2, 3]  # Define bagging iterations
-                accuracies_all_iterations = []
-
-                # Use selected instead of iteration
-                bagging_models = load_bagging_model(selected)
-                y_pred = ernn_bagging(normalized_test_data, bagging_models)
-
-                # Plotting the accuracy
-                plt.figure(figsize=(8, 6))
-                bars = plt.bar(bagging_iterations, accuracies_all_iterations)
-                plt.title('Average Accuracy vs Bagging Iterations')
-                plt.xlabel('Number of Bagging Iterations')
-                plt.ylabel('Average Accuracy')
-                plt.xticks(bagging_iterations)
-                plt.grid(axis='y')
-
-                # Add text labels above each bar
-                for bar, acc in zip(bars, accuracies_all_iterations):
-                    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
-                             ha='center', va='bottom')
-
-                st.pyplot(plt.gcf())  # Display the plot in Streamlit
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
