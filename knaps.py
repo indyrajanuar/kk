@@ -210,7 +210,7 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        iif 'preprocessed_data' in st.session_state:
+        if 'preprocessed_data' in st.session_state:
             normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
             bagging_models = model_bagging()  # Retrieve bagging models
             y_test, y_pred, fig, bagging_iterations, accuracies_all_iterations = ernn_bagging(normalized_data, bagging_models)  # Pass bagging models as argument
