@@ -190,24 +190,27 @@ def main():
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_test_data = normalize_data(x_test)
-                iteration = [2, 3]  # Update with the desired iteration
+
+                bagging_iterations = [2, 3]  # Define bagging iterations
+                accuracies_all_iterations = []
+
                 bagging_models = load_bagging_model(iteration)
                 y_pred = ernn_bagging(normalized_test_data, bagging_models)
 
                 # Plotting the accuracy
                 plt.figure(figsize=(8, 6))
-                bars = plt.bar(range(1, iteration + 1), accuracies_all_iterations)
+                bars = plt.bar(bagging_iterations, accuracies_all_iterations)
                 plt.title('Average Accuracy vs Bagging Iterations')
                 plt.xlabel('Number of Bagging Iterations')
                 plt.ylabel('Average Accuracy')
-                plt.xticks(range(1, iteration + 1))
+                plt.xticks(bagging_iterations)
                 plt.grid(axis='y')
-    
+
                 # Add text labels above each bar
                 for bar, acc in zip(bars, accuracies_all_iterations):
                     plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
                              ha='center', va='bottom')
-    
+
                 st.pyplot(plt.gcf())  # Display the plot in Streamlit
         
     elif selected == 'Uji Coba':
