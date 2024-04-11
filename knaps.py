@@ -35,31 +35,39 @@ def split_data(data):
     # split data fitur, target
     x = data.drop('Diagnosa', axis=1)
     y = data['Diagnosa']
-
     # Check if the dataset has sufficient samples for splitting
     if len(data) < 2:
-        return None, None, "Insufficient data for classification"
-    
+        return None, None, "Insufficient data for classification" 
     # Split data into training and testing sets
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-    
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)    
     return x_train, x_test, y_train, y_test, None
 
 def load_model():
     # Load pre-trained ERNN model
     model = keras.models.load_model('model_fold_1.h5')
-  
     return model
 
 def ernn(data, model):
     if data is None:
         return None, None, "Data is not available"
-    
     # Apply Threshold
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
-
     return y_pred
+
+def load_bagging_model():
+    # Load Bagging model based on the specified iteration
+    if iteration == 1:
+        bagging_model = keras.models.load_model('bagging_model_iter1.h5')
+    elif iteration == 2:
+        bagging_model = keras.models.load_model('bagging_model_iter2.h5')
+    elif iteration == 3:
+        bagging_model = keras.models.load_model('bagging_model_iter3.h5')
+    elif iteration == 4:
+        bagging_model = keras.models.load_model('bagging_model_iter4.h5')
+    else:
+        raise ValueError("Invalid iteration specified")
+    return bagging_model
 
 def main():
     with st.sidebar:
@@ -157,6 +165,32 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
+        if upload_file is not None:
+            df = pd.read_csv(upload_file)
+            if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
+                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
+                normalized_test_data = normalize_data(x_test)
+                accuracies = []
+                for i in range(1, 5):
+                    bagging_model = load_bagging_model(i)
+                    y_pred = ernn(normalized_test_data, bagging_model)
+                    accuracy = np.mean(y_pred == y_test)
+                    accuracies.append(accuracy)
+                    st.write(f"Accuracy for Bagging iteration {i}: {accuracy}")
+                plot_bagging(range(1, 5), accuracies)
+                # Display the plot and accuracies
+                plt.figure(figsize=(8, 6))
+                bars = plt.bar(range(1, 5), accuracies)
+                plt.title('Average Accuracy vs Bagging Iterations')
+                plt.xlabel('Number of Bagging Iterations')
+                plt.ylabel('Average Accuracy')
+                plt.xticks(range(1, 5))
+                plt.grid(axis='y')
+                # Add text labels above each bar
+                for bar, acc in zip(bars, accuracies):
+                    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
+                            ha='center', va='bottom')
+                st.pyplot(plt.gcf())
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
