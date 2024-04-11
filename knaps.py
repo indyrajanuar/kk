@@ -55,19 +55,23 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def load_bagging_model():
-    # Load Bagging model based on the specified iteration
-    if iteration == 1:
-        bagging_model = keras.models.load_model('bagging_model_iter1.h5')
-    elif iteration == 2:
-        bagging_model = keras.models.load_model('bagging_model_iter2.h5')
+def load_bagging_model(iteration):
+    # Load Bagging models based on the specified iteration
+    if iteration == 2:
+        bagging_models = []
+        for i in range(1, 3):
+            model_path = f'model_2_{i}.h5'
+            bagging_model = keras.models.load_model(model_path)
+            bagging_models.append(bagging_model)
     elif iteration == 3:
-        bagging_model = keras.models.load_model('bagging_model_iter3.h5')
-    elif iteration == 4:
-        bagging_model = keras.models.load_model('bagging_model_iter4.h5')
+        bagging_models = []
+        for i in range(1, 4):
+            model_path = f'model_3_{i}.h5'
+            bagging_model = keras.models.load_model(model_path)
+            bagging_models.append(bagging_model)
     else:
         raise ValueError("Invalid iteration specified")
-    return bagging_model
+    return bagging_models
 
 def main():
     with st.sidebar:
@@ -165,32 +169,48 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
+        st.write("You are at Klasifikasi ERNN + Bagging")
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_test_data = normalize_data(x_test)
-                accuracies = []
-                for i in range(1, 5):
-                    bagging_model = load_bagging_model(i)
-                    y_pred = ernn(normalized_test_data, bagging_model)
-                    accuracy = np.mean(y_pred == y_test)
-                    accuracies.append(accuracy)
-                    st.write(f"Accuracy for Bagging iteration {i}: {accuracy}")
-                plot_bagging(range(1, 5), accuracies)
-                # Display the plot and accuracies
+                bagging_iterations = [2, 3]  # Define bagging iterations
+                accuracies_all_iterations = []
+    
+                for iteration in bagging_iterations:
+                    accuracies = []
+    
+                    print("######## ITERATION - {} ########".format(iteration))
+    
+                    # Retrieve models for the current iteration
+                    iteration_models = load_bagging_model(iteration)
+    
+                    for model in iteration_models:
+                        y_pred_prob = model.predict(normalized_test_data)
+                        y_pred = (y_pred_prob > 0.5).astype(int)
+                        accuracy = np.mean(y_pred == y_test)
+                        accuracies.append(accuracy)
+    
+                    average_accuracy = np.mean(accuracies)
+                    accuracies_all_iterations.append(average_accuracy)
+                    print("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
+    
+                # Plotting the accuracy
                 plt.figure(figsize=(8, 6))
-                bars = plt.bar(range(1, 5), accuracies)
+                bars = plt.bar(bagging_iterations, accuracies_all_iterations)
                 plt.title('Average Accuracy vs Bagging Iterations')
                 plt.xlabel('Number of Bagging Iterations')
                 plt.ylabel('Average Accuracy')
-                plt.xticks(range(1, 5))
+                plt.xticks(bagging_iterations)
                 plt.grid(axis='y')
+    
                 # Add text labels above each bar
-                for bar, acc in zip(bars, accuracies):
+                for bar, acc in zip(bars, accuracies_all_iterations):
                     plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
-                            ha='center', va='bottom')
-                st.pyplot(plt.gcf())
+                             ha='center', va='bottom')
+    
+                st.pyplot(plt.gcf())  # Display the plot in Streamlit
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
