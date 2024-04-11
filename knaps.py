@@ -151,7 +151,7 @@ def main():
                         <td style="text-align: center;">{accuracy:.2f}%</td>
                         <td style="text-align: center;">{precision:.2f}%</td>
                         <td style="text-align: center;">{recall:.2f}%</td>
-                        <td style="text-align: center;">{f1_score:.2f}%</td>
+                        <td style="text-align: center;">{f1:.2f}%</td>
                     </tr>
                 </table>
                 """
