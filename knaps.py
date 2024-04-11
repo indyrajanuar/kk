@@ -105,11 +105,29 @@ def main():
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
-                normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
+                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 model = load_model()
-                y_pred = ernn(normalized_data, model)
+                y_pred = ernn(x_test, model)
 
-                st.write("Predictions:", y_pred)
+                # Generate confusion matrix
+                cm = confusion_matrix(y_test, y_pred)
+        
+                # Plot confusion matrix
+                plt.figure(figsize=(8, 6))
+                sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+                plt.xlabel('Predicted')
+                plt.ylabel('True')
+                plt.title('Confusion Matrix')
+                st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()
+        
+                # Clear the current plot to avoid displaying it multiple times
+                plt.clf()
+        
+                # Generate classification report
+                report = classification_report(y_test, y_pred, zero_division=0)
+        
+                # Display the classification report
+                st.text(report)
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
