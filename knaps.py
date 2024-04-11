@@ -58,6 +58,7 @@ def ernn(data, model):
 def model_bagging():
     # Load pre-trained ERNN+Bagging model
     bagging_models = []
+    global iteration  # Access the global iteration variable
     if iteration == 2:
         for i in range(1, 3):
             model_path = f'model_2_{i}.h5'
@@ -75,8 +76,6 @@ def model_bagging():
 def ernn_bagging(data, bagging_models):
     bagging_iterations = [2, 3]
 
-    # Assuming x_test and y_test are defined somewhere
-    
     # Initialize lists to store accuracies
     accuracies_per_iteration = []
     accuracies_all_iterations = []
