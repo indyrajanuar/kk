@@ -72,7 +72,7 @@ def model_bagging():
         raise ValueError("Invalid iteration specified")
     return bagging_models
 
-def ernn_bagging(data, bagging):
+def ernn_bagging(data, bagging_models):
     bagging_iterations = [2, 3]
 
     # Assuming x_test and y_test are defined somewhere
@@ -213,7 +213,7 @@ def main():
         if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
                 # Perform ERNN + Bagging classification
-                y_test, y_pred, fig, bagging_iterations, accuracies_all_iterations = run_ernn_bagging(normalized_data)
+                y_test, y_pred, fig, bagging_iterations, accuracies_all_iterations = ernn_bagging(normalized_data)
                 
                 # Display the plot and accuracies
                 st.pyplot(fig)  # Pass the figure object to st.pyplot()
