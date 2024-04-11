@@ -136,15 +136,21 @@ def main():
                 
                 # Initialize metrics
                 accuracy = precision = recall = f1 = None
+                
                 # Check if the report has the expected number of lines
                 if len(lines) >= 6:
-                    accuracy = float(lines[5].split()[1]) * 100                
+                    accuracy = float(lines[5].split()[1]) * 100
+                
                 if len(lines) >= 3:
-                    precision = float(lines[2].split()[1]) * 100                
+                    precision = float(lines[2].split()[1]) * 100
+                
                 if len(lines) >= 4:
-                    recall = float(lines[3].split()[1]) * 100                
+                    recall = float(lines[3].split()[1]) * 100
+                
                 if len(lines) >= 5:
-                    f1 = float(lines[4].split()[1]) * 100
+                    f1_tokens = lines[4].split()
+                    if len(f1_tokens) >= 2:
+                        f1 = float(f1_tokens[1]) * 100
         
                 # Display the metrics
                 html_code = f"""
