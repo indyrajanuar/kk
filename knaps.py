@@ -128,10 +128,34 @@ def main():
                 plt.clf()
         
                 # Generate classification report
-                report = classification_report(y_test, y_pred, zero_division=0)
+                with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
+                    report = classification_report(y_true, y_pred, zero_division=0)
         
-                # Display the classification report
-                st.text(report)
+                # Extract metrics from the classification report
+                lines = report.split('\n')
+                accuracy = float(lines[5].split()[1]) * 100
+                precision = float(lines[2].split()[1]) * 100
+                recall = float(lines[3].split()[1]) * 100
+        
+                # Display the metrics
+                html_code = f"""
+                <table style="margin: auto;">
+                    <tr>
+                        <td style="text-align: center;"><h5>Loss</h5></td>
+                        <td style="text-align: center;"><h5>Accuracy</h5></td>
+                        <td style="text-align: center;"><h5>Precision</h5></td>
+                        <td style="text-align: center;"><h5>Recall</h5></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">{loss:.4f}</td>
+                        <td style="text-align: center;">{accuracy:.2f}%</td>
+                        <td style="text-align: center;">{precision:.2f}%</td>
+                        <td style="text-align: center;">{recall:.2f}%</td>
+                    </tr>
+                </table>
+                """
+                
+                st.markdown(html_code, unsafe_allow_html=True)
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
