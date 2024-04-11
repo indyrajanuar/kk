@@ -57,14 +57,13 @@ def ernn(data, model):
 
 def load_bagging_model(iteration):
     # Load Bagging models based on the specified iteration
+    bagging_models = []
     if iteration == 2:
-        bagging_models = []
         for i in range(1, 3):
             model_path = f'model_2_{i}.h5'
             bagging_model = keras.models.load_model(model_path)
             bagging_models.append(bagging_model)
     elif iteration == 3:
-        bagging_models = []
         for i in range(1, 4):
             model_path = f'model_3_{i}.h5'
             bagging_model = keras.models.load_model(model_path)
@@ -194,7 +193,8 @@ def main():
                 bagging_iterations = [2, 3]  # Define bagging iterations
                 accuracies_all_iterations = []
 
-                bagging_models = load_bagging_model(iteration)
+                # Use selected instead of iteration
+                bagging_models = load_bagging_model(selected)
                 y_pred = ernn_bagging(normalized_test_data, bagging_models)
 
                 # Plotting the accuracy
