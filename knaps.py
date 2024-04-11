@@ -129,29 +129,14 @@ def main():
         
                 # Generate classification report
                 with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
-                    report = classification_report(y_test, y_pred, zero_division=0)
-                
+                    report = classification_report(y_true, y_pred, zero_division=0)
+        
                 # Extract metrics from the classification report
                 lines = report.split('\n')
-                
-                # Initialize metrics
-                accuracy = precision = recall = f1 = None
-                
-                # Check if the report has the expected number of lines
-                if len(lines) >= 6:
-                    accuracy = float(lines[5].split()[1]) * 100
-                
-                if len(lines) >= 3:
-                    precision = float(lines[2].split()[1]) * 100
-                
-                if len(lines) >= 4:
-                    recall = float(lines[3].split()[1]) * 100
-                
-                if len(lines) >= 5:
-                    f1_tokens = lines[4].split()
-                    if len(f1_tokens) >= 2:
-                        f1 = float(f1_tokens[1]) * 100
-                
+                accuracy = float(lines[5].split()[1]) * 100
+                precision = float(lines[2].split()[1]) * 100
+                recall = float(lines[3].split()[1]) * 100
+        
                 # Display the metrics
                 html_code = f"""
                 <table style="margin: auto;">
@@ -159,20 +144,16 @@ def main():
                         <td style="text-align: center;"><h5>Accuracy</h5></td>
                         <td style="text-align: center;"><h5>Precision</h5></td>
                         <td style="text-align: center;"><h5>Recall</h5></td>
-                        <td style="text-align: center;"><h5>F1-Score</h5></td>
                     </tr>
                     <tr>
                         <td style="text-align: center;">{accuracy:.2f}%</td>
                         <td style="text-align: center;">{precision:.2f}%</td>
                         <td style="text-align: center;">{recall:.2f}%</td>
-                        <td style="text-align: center;">{f1:.2f}%</td>
                     </tr>
                 </table>
                 """
                 
-                # Display the HTML table
                 st.markdown(html_code, unsafe_allow_html=True)
-
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
