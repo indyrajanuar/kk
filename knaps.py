@@ -59,7 +59,12 @@ def ernn(data, model):
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
 
-    return y_pred
+    # Calculate loss if applicable
+    loss = None  # Placeholder for loss value
+    if 'val_loss' in history.history:
+        loss = history.history['val_loss'][-1]
+
+    return y_pred, loss
 
 def main():
     with st.sidebar:
@@ -111,7 +116,7 @@ def main():
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_test_data = normalize_data(x_test)
                 model = load_model()
-                y_pred = ernn(normalized_test_data, model)
+                y_pred, loss = ernn(normalized_test_data, model)
     
                 # Generate confusion matrix
                 cm = confusion_matrix(y_test, y_pred)
