@@ -3,6 +3,6 @@ pandas
 scikit_learn
 streamlit
 streamlit-option-menu
-joblib
-matplotlib
+tensorflow
 seaborn
+matplotlib
