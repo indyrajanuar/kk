@@ -73,6 +73,22 @@ def load_bagging_model(iteration):
         raise ValueError("Invalid iteration specified")
     return bagging_models
 
+def ernn_bagging(data, bagging_model):
+    if data is None:
+        return None, None, "Data is not available"
+    
+    # Apply threshold for each model and take the average prediction
+    y_pred_prob_sum = np.zeros(len(data))
+    for model in bagging_models:
+        y_pred_prob = model.predict(data)
+        y_pred_prob_sum += y_pred_prob
+    
+    # Average the predictions
+    y_pred_prob_avg = y_pred_prob_sum / len(bagging_models)
+    y_pred = (y_pred_prob_avg > 0.5).astype(int)
+    
+    return y_pred
+
 def main():
     with st.sidebar:
         selected = option_menu(
@@ -169,33 +185,14 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        st.write("You are at Klasifikasi ERNN + Bagging")
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_test_data = normalize_data(x_test)
-                bagging_iterations = [2, 3]  # Define bagging iterations
-                accuracies_all_iterations = []
-    
-                for iteration in bagging_iterations:
-                    accuracies = []
-                
-                    print("######## ITERATION - {} ########".format(iteration))
-                
-                    # Retrieve models for the current iteration
-                    iteration_models = load_bagging_model(iteration)
-                
-                    for model in iteration_models:
-                        y_pred_prob = model.predict(normalized_test_data.values.reshape(-1, normalized_test_data.shape[1]))
-                        y_pred = (y_pred_prob > 0.5).astype(int)
-                        accuracy = np.mean(y_pred == y_test)
-                        accuracies.append(accuracy)
-                
-                    average_accuracy = np.mean(accuracies)
-                    accuracies_all_iterations.append(average_accuracy)
-                    print("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
-    
+                bagging_model = load_model()
+                y_pred = ernn(normalized_test_data, bagging_model)
+
                 # Plotting the accuracy
                 plt.figure(figsize=(8, 6))
                 bars = plt.bar(bagging_iterations, accuracies_all_iterations)
