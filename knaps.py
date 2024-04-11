@@ -52,12 +52,15 @@ def load_model():
     return model
 
 def ernn(data, model):
+    if data is None:
+        return None, None, "Data is not available"
+    
     # Apply Threshold
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
 
     return y_pred
-    
+
 def main():
     with st.sidebar:
         selected = option_menu(
@@ -106,9 +109,10 @@ def main():
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
+                normalized_test_data = normalize_data(x_test)
                 model = load_model()
-                y_pred = ernn(x_test, model)
-
+                y_pred = ernn(normalized_test_data, model)
+    
                 # Generate confusion matrix
                 cm = confusion_matrix(y_test, y_pred)
         
