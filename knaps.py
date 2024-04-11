@@ -130,7 +130,7 @@ def main():
                 # Generate classification report
                 with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
                     report = classification_report(y_test, y_pred, zero_division=0)
-        
+                
                 # Extract metrics from the classification report
                 lines = report.split('\n')
                 
@@ -151,7 +151,7 @@ def main():
                     f1_tokens = lines[4].split()
                     if len(f1_tokens) >= 2:
                         f1 = float(f1_tokens[1]) * 100
-        
+                
                 # Display the metrics
                 html_code = f"""
                 <table style="margin: auto;">
@@ -170,7 +170,9 @@ def main():
                 </table>
                 """
                 
+                # Display the HTML table
                 st.markdown(html_code, unsafe_allow_html=True)
+
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
