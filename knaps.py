@@ -136,6 +136,7 @@ def main():
                 accuracy = float(lines[5].split()[1]) * 100
                 precision = float(lines[2].split()[1]) * 100
                 recall = float(lines[3].split()[1]) * 100
+                f1 = float(lines[4].split()[1]) * 100  # F1-score
         
                 # Display the metrics
                 html_code = f"""
@@ -144,11 +145,13 @@ def main():
                         <td style="text-align: center;"><h5>Accuracy</h5></td>
                         <td style="text-align: center;"><h5>Precision</h5></td>
                         <td style="text-align: center;"><h5>Recall</h5></td>
+                        <td style="text-align: center;"><h5>F1-Score</h5></td>
                     </tr>
                     <tr>
                         <td style="text-align: center;">{accuracy:.2f}%</td>
                         <td style="text-align: center;">{precision:.2f}%</td>
                         <td style="text-align: center;">{recall:.2f}%</td>
+                        <td style="text-align: center;">{f1:.2f}%</td>
                     </tr>
                 </table>
                 """
