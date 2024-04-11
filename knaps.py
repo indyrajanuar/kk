@@ -47,7 +47,7 @@ def split_data(data):
 
 def load_model():
     # Load pre-trained ERNN model
-    model = keras.models.load_model('model-final.h5')
+    model = keras.models.load_model('model_fold_1.h5')
   
     return model
 
@@ -136,7 +136,7 @@ def main():
                 accuracy = float(lines[5].split()[1]) * 100
                 precision = float(lines[2].split()[1]) * 100
                 recall = float(lines[3].split()[1]) * 100
-                f1 = float(lines[4].split()[1]) * 100  # F1-score
+                f1 = float(lines[1].split()[1]) * 100 # F1-score
         
                 # Display the metrics
                 html_code = f"""
