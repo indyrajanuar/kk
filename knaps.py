@@ -129,7 +129,7 @@ def main():
         
                 # Generate classification report
                 with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
-                    report = classification_report(y_true, y_pred, zero_division=0)
+                    report = classification_report(y_test, y_pred, zero_division=0)
         
                 # Extract metrics from the classification report
                 lines = report.split('\n')
