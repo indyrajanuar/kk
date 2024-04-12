@@ -58,22 +58,31 @@ def ernn(data, model):
 def load_bagging_model(iteration):
     # Load Bagging models based on the specified iteration
     bagging_models = []
-    if iteration == 2:
-        for i in range(1, 3):
-            model_path = f'model_2_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    elif iteration == 3:
+    if iteration == 3:
         for i in range(1, 4):
             model_path = f'model_3_{i}.h5'
+            bagging_model = keras.models.load_model(model_path)
+            bagging_models.append(bagging_model)
+    elif iteration == 5:
+        for i in range(1, 6):
+            model_path = f'model_5_{i}.h5'
+            bagging_model = keras.models.load_model(model_path)
+            bagging_models.append(bagging_model)
+    elif iteration == 7:
+        for i in range(1, 8):
+            model_path = f'model_7_{i}.h5'
+            bagging_model = keras.models.load_model(model_path)
+            bagging_models.append(bagging_model)
+    elif iteration == 9:
+        for i in range(1, 10):
+            model_path = f'model_9_{i}.h5'
             bagging_model = keras.models.load_model(model_path)
             bagging_models.append(bagging_model)
     else:
         raise ValueError(f"Invalid iteration specified: {iteration}. Please choose from [3, 5, 7, 9].")
     
     if not bagging_models:
-        raise ValueError(f"No models were loaded for iteration {iteration}.")
-    
+        raise ValueError(f"No models were loaded for iteration {iteration}.")    
     return bagging_models
 
 def apply_threshold(predictions, threshold):
@@ -93,8 +102,7 @@ def classification_process(x_train, y_train, bagging_iterations):
             accuracies.append(accuracy)
 
         average_accuracy = np.mean(accuracies)
-        accuracies_all_iterations.append(average_accuracy)
-        
+        accuracies_all_iterations.append(average_accuracy)        
     return accuracies_all_iterations
     
 def main():
@@ -193,7 +201,7 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        bagging_iterations = [2, 3]  # Define your bagging iterations
+        bagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
