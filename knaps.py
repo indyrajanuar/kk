@@ -51,62 +51,64 @@ def ernn(data, model):
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
-    
-def load_bagging_model(iteration, optimizer):
+
+def load_bagging_model(iteration):
     bagging_models = []
 
-    if iteration == 3:
-        for i in range(1, 4):
-            model_path = f'model_3_{i}.h5'
+    if iteration in [3, 5, 7, 9]:
+        for i in range(1, iteration + 1):
+            model_path = f'model_{iteration}_{i}.h5'  # Ubah pola penamaan sesuai kebutuhan Anda
             bagging_model = keras.models.load_model(model_path)
-            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
-            bagging_models.append(bagging_model)
-    elif iteration == 5:
-        for i in range(1, 6):
-            model_path = f'model_5_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
-            bagging_models.append(bagging_model)
-    elif iteration == 7:
-        for i in range(1, 8):
-            model_path = f'model_7_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
-            bagging_models.append(bagging_model)
-    elif iteration == 9:
-        for i in range(1, 10):
-            model_path = f'model_9_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
             bagging_models.append(bagging_model)
     else:
-        raise ValueError(f"Invalid iteration specified: {iteration}. Please choose from [3, 5, 7, 9].")
-
-    if not bagging_models:
-        raise ValueError(f"No models were loaded for iteration {iteration}.")
+        raise ValueError("Invalid iteration specified. Please choose from [3, 5, 7, 9].")
 
     return bagging_models
 
-def classification_process(x_test, y_test, models, iteration):
-    accuracies = []
-    st.write(f"######## ITERATION - {iteration} ########")
+def run_ernn_bagging(data):
+    x = data.drop('Diagnosa', axis=1)
+    y = data['Diagnosa']
+    
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+    
+    y_train = np.array(y_train).reshape(-1,)
+    y_test = np.array(y_test).reshape(-1,)
+    
+    bagging_iterations = load_bagging_model(iteration=3)  # Ubah iterasi sesuai kebutuhan
+    
+    models = []
 
+    accuracies_all_iterations = []  
+    for iteration_models in bagging_iterations:
+        accuracies_per_iteration = []  
+
+        for model in iteration_models:
+            indices = np.random.choice(len(x_train), len(x_train), replace=True)
+            x_bag = x_train.iloc[indices]
+            y_bag = y_train[indices]
+
+            model.compile(loss='mean_squared_error',
+                          optimizer=keras.optimizers.Adam(learning_rate=0.1),
+                          metrics=[keras.metrics.BinaryAccuracy()])
+
+            history = model.fit(x_bag, y_bag, batch_size=32, epochs=200, verbose=0)
+            models.append(model)
+
+            accuracy = model.evaluate(x_test, y_test, verbose=0)[1]  
+            accuracies_per_iteration.append(accuracy)
+            
+        avg_accuracy = np.mean(accuracies_per_iteration)
+        accuracies_all_iterations.append(avg_accuracy)
+
+    y_preds = []
     for model in models:
-        y_pred_prob = model.predict(x_test)
-        y_pred = (y_pred_prob > 0.5).astype(int)  # Apply threshold if needed
-        accuracy = np.mean(y_pred == y_test)
-        accuracies.append(accuracy)
+        y_pred = model.predict(x_test)
+        y_pred = (y_pred > 0.5).astype(int)
+        y_preds.append(y_pred)
+    
+    y_pred_avg = np.mean(y_preds, axis=0)  
 
-    average_accuracy = np.mean(accuracies)
-    st.write("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
-    return average_accuracy
-
-def generate_bag_data(X, Y):
-    num_samples = len(X)
-    indices = np.random.choice(num_samples, num_samples, replace=True)
-    x_bag = X.iloc[indices]  # Gunakan iloc untuk memilih baris berdasarkan indeks
-    y_bag = Y.iloc[indices]  # Gunakan iloc untuk memilih baris berdasarkan indeks
-    return x_bag, y_bag
+    return y_test, y_pred_avg
     
 def main():
     with st.sidebar:
@@ -204,36 +206,16 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        bagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
-        
         if upload_file is not None:
             df = pd.read_csv(upload_file)
-            if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
-                normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
-    
-                accuracies_all_iterations = []
-    
-                for iteration in bagging_iterations:
-                    st.write(f"######## ITERATION - {iteration} ########")
-                    optimizer = keras.optimizers.Adam()  # Create a new optimizer instance for each iteration
-                    bagging_models = load_bagging_model(iteration, optimizer)  # Pass the optimizer as an argument to load_bagging_model()
-                
-                    # Generate bagging data
-                    x_bag, y_bag = generate_bag_data(x_train, y_train)
-                    
-                    # Train each model in the bagging ensemble
-                    for model in bagging_models:
-                        model.fit(x_bag, y_bag)
-                    
-                    # Evaluate the ensemble
-                    accuracy = classification_process(normalized_data, y_test, bagging_models, iteration)
-                    accuracies_all_iterations.append(accuracy)
-
-
-                st.write("Average accuracies for each bagging iteration:")
-                for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
-                    st.write(f"Iteration {iteration}: {accuracy:.2f}%")
+            # Misalnya, Anda memiliki fungsi normalize_data untuk normalisasi data
+            normalized_data = normalize_data(st.session_state.preprocessed_data.copy())  
+            y_test, y_pred, fig, bagging_iterations, accuracies_all_iterations = run_ernn_bagging(normalized_data)
+            
+            # Tampilkan plot dan akurasi
+            print("Average accuracies for each bagging iteration:")
+            for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
+                print(f"Iteration {iteration}: {accuracy:.2f}%")
 
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
