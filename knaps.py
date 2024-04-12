@@ -24,6 +24,10 @@ def preprocess_data(data):
     data = data.drop('Jenis Kelamin', axis=1)    
     # Concatenate encoded 'Jenis Kelamin' and transformed 'Diagnosa' with original data
     data = pd.concat([data, encoded_gender], axis=1)
+
+    # Print dimensi data sebelum dan sesudah pra-pemrosesan
+    print("Dimensi data sebelum pra-pemrosesan:", data.shape)
+    
     return data
 
 def normalize_data(data):
@@ -36,7 +40,11 @@ def split_data(data):
     x = data.drop('Diagnosa', axis=1)
     y = data['Diagnosa']
     # Split data into training and testing sets
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)    
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0) 
+
+    # Print dimensi x_train sebelum pemisahan data
+    print("Dimensi x_train sebelum pemisahan data:", x_train.shape)
+    
     return x_train, x_test, y_train, y_test, None
 
 def load_model():
@@ -139,18 +147,6 @@ def main():
                     normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
                     st.write("Normalization completed.")
                     st.dataframe(normalized_data)
-
-        # Sebelum pra-pemrosesan
-        print("Dimensi x_train sebelum pra-pemrosesan:", x_train.shape)
-        
-        # Pra-pemrosesan
-        preprocessed_data = preprocess_data(df)
-        x_train, x_test, y_train, y_test, _ = split_data(preprocessed_data)
-        normalized_data = normalize_data(x_train)
-        
-        # Setelah pra-pemrosesan
-        print("Dimensi x_train setelah pra-pemrosesan:", x_train.shape)
-
     
     elif selected == 'Klasifikasi ERNN':
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN)")
