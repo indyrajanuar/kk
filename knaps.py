@@ -206,12 +206,17 @@ def main():
                 
                 # Plotting the accuracy
                 plt.figure(figsize=(8, 6))
-                plt.plot(bagging_iterations, accuracies_all_iterations, marker='o')
+                bars = plt.bar(bagging_iterations, accuracies_all_iterations)
                 plt.title('Average Accuracy vs Bagging Iterations')
                 plt.xlabel('Number of Bagging Iterations')
                 plt.ylabel('Average Accuracy')
-                plt.grid(True)
-                st.pyplot(plt.gcf())  # Display the plot in Streamlit
+                plt.xticks(bagging_iterations)
+                plt.grid(axis='y')
+                # Add text labels above each bar
+                for bar, acc in zip(bars, accuracies_all_iterations):
+                    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
+                             ha='center', va='bottom')
+                plt.show()
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
