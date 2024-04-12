@@ -205,6 +205,7 @@ def main():
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
+                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
         
                 # Perform ERNN + Bagging classification for each iteration
