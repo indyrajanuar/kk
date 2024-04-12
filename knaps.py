@@ -35,9 +35,14 @@ def split_data(data):
     # split data fitur, target
     x = data.drop('Diagnosa', axis=1)
     y = data['Diagnosa']
+    
+    # Pastikan hanya 8 fitur yang dipilih
+    x = x.iloc[:, :8]
+    
     # Check if the dataset has sufficient samples for splitting
     if len(data) < 2:
-        return None, None, "Insufficient data for classification" 
+        return None, None, None, None, "Insufficient data for classification" 
+    
     # Split data into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)    
     return x_train, x_test, y_train, y_test, None
