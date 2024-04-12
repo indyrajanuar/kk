@@ -71,6 +71,12 @@ def load_bagging_model(iteration):
     else:
         raise ValueError("Invalid iteration specified")
     return bagging_models
+
+# Define your threshold here
+threshold = 0.5
+# Apply Threshold
+def apply_threshold(predictions, threshold):
+    return (predictions > threshold).astype(int)
     
 def main():
     with st.sidebar:
