@@ -216,21 +216,20 @@ def main():
     
                 for iteration in bagging_iterations:
                     st.write(f"######## ITERATION - {iteration} ########")
-                    bagging_models = load_bagging_model(iteration, keras.optimizers.Adam())  # Recreate optimizer for each iteration
+                    optimizer = keras.optimizers.Adam()  # or any other optimizer you want to use
+                    bagging_models = load_bagging_model(iteration, optimizer)  # Pass the optimizer as argument
                 
                     # Generate bagging data
                     x_bag, y_bag = generate_bag_data(x_train, y_train)
                     
                     # Train each model in the bagging ensemble
                     for model in bagging_models:
-                        model.compile(optimizer=keras.optimizers.Adam(), loss='binary_crossentropy', metrics=['accuracy'])  # Recompile model with new optimizer
                         model.fit(x_bag, y_bag)
                     
                     # Evaluate the ensemble
                     accuracy = classification_process(normalized_data, y_test, bagging_models, iteration)
                     accuracies_all_iterations.append(accuracy)
 
-    
                 st.write("Average accuracies for each bagging iteration:")
                 for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
                     st.write(f"Iteration {iteration}: {accuracy:.2f}%")
