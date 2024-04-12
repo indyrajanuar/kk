@@ -151,6 +151,33 @@ def main():
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
+        st.write("Masukkan nilai untuk pengujian:")
+    
+        # Input fields
+        age = st.number_input("Umur", min_value=0, max_value=150, step=1, value=30)
+        bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1, value=25.0)
+        systole = st.number_input("Sistole", min_value=0, max_value=300, step=1, value=120)
+        diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1, value=80)
+        breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
+        heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
+        gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+    
+        # Convert gender to binary
+        gender_binary = 1 if gender == "Perempuan" else 0
+        
+        # Button for testing
+        if st.button("Hasil Uji Coba"):
+            # Prepare input data for testing
+            input_data = pd.DataFrame({
+                "Umur": [age],
+                "IMT": [bmi],
+                "Sistole": [systole],
+                "Diastole": [diastole],
+                "Nafas": [breaths],
+                "Detak Nadi": [heart_rate],
+                "Jenis Kelamin": [gender_binary],
+                "Diagnosa": [0]  # Placeholder value
+            })
 
 if __name__ == "__main__":
     main()
