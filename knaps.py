@@ -201,7 +201,7 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        bbagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
+        bagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
