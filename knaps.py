@@ -82,28 +82,24 @@ def load_bagging_model(iteration):
         raise ValueError(f"Invalid iteration specified: {iteration}. Please choose from [3, 5, 7, 9].")
     
     if not bagging_models:
-        raise ValueError(f"No models were loaded for iteration {iteration}.")    
+        raise ValueError(f"No models were loaded for iteration {iteration}.")
+    
     return bagging_models
 
-def apply_threshold(predictions, threshold):
-    return (predictions > threshold).astype(int)
+def classification_process(x_test, y_test, models, iteration):
+    accuracies = []
+    st.write(f"######## ITERATION - {iteration} ########")
 
-def classification_process(x_train, y_train, bagging_iterations):
-    models = load_bagging_model(bagging_iterations)
-    accuracies_all_iterations = []
-    
-    for iteration in bagging_iterations:
-        accuracies = []
+    for model in models:
+        y_pred_prob = model.predict(x_test)
+        y_pred = (y_pred_prob > 0.5).astype(int)  # Apply threshold if needed
+        accuracy = np.mean(y_pred == y_test)
+        accuracies.append(accuracy)
 
-        for model in models:
-            y_pred_prob = model.predict(x_test)
-            y_pred = (y_pred_prob > 0.5).astype(int)  # Apply threshold if needed
-            accuracy = np.mean(y_pred == y_test)
-            accuracies.append(accuracy)
+    average_accuracy = np.mean(accuracies)
+    st.write("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
 
-        average_accuracy = np.mean(accuracies)
-        accuracies_all_iterations.append(average_accuracy)        
-    return accuracies_all_iterations
+    return average_accuracy
     
 def main():
     with st.sidebar:
@@ -202,16 +198,21 @@ def main():
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
         bagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
+        
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
-                normalized_data = normalize_data(x_train)
-                # Perform ERNN + Bagging classification for each iteration
+                normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
                 accuracies_all_iterations = []
+                
                 for iteration in bagging_iterations:
-                    models = load_bagging_model(iteration)
-                    accuracies_all_iterations.append(classification_process(x_train, y_train, iteration))
+                    st.write(f"######## ITERATION - {iteration} ########")
+                    bagging_models = load_bagging_model(iteration)
+                    accuracies_all_iterations.append(classification_process(normalized_data, y_test, bagging_models, iteration))
+                
+                st.write("Average accuracies for each bagging iteration:")
+                for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
+                    st.write(f"Iteration {iteration}: {accuracy:.2f}%")
 
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
