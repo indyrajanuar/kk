@@ -216,7 +216,8 @@ def main():
     
                 for iteration in bagging_iterations:
                     st.write(f"######## ITERATION - {iteration} ########")
-                    bagging_models = load_bagging_model(iteration)
+                    optimizer = keras.optimizers.Adam()  # or any other optimizer you want to use
+                    bagging_models = load_bagging_model(iteration, optimizer)  # Pass the optimizer as argument
                     
                     # Generate bagging data
                     x_bag, y_bag = generate_bag_data(x_train, y_train)
