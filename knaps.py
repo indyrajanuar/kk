@@ -9,6 +9,7 @@ import keras
 from sklearn.model_selection import KFold
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
 
 def preprocess_data(data): 
     # Replace commas with dots and convert numerical columns to floats
