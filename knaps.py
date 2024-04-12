@@ -216,14 +216,15 @@ def main():
     
                 for iteration in bagging_iterations:
                     st.write(f"######## ITERATION - {iteration} ########")
-                    optimizer = keras.optimizers.Adam()  # or any other optimizer you want to use
-                    bagging_models = load_bagging_model(iteration, optimizer)  # Pass the optimizer as argument
+                    bagging_models = load_bagging_model(iteration)  # Load bagging models for the iteration
                 
                     # Generate bagging data
                     x_bag, y_bag = generate_bag_data(x_train, y_train)
                     
                     # Train each model in the bagging ensemble
                     for model in bagging_models:
+                        optimizer = keras.optimizers.Adam()  # Create a new optimizer instance for each model
+                        model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
                         model.fit(x_bag, y_bag)
                     
                     # Evaluate the ensemble
