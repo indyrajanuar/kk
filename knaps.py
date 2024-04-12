@@ -51,6 +51,35 @@ def ernn(data, model):
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
+
+def preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate, gender):
+    # Convert gender to binary
+    gender_binary = 1 if gender == "Perempuan" else 0
+    
+    # Prepare input data for testing
+    input_data = pd.DataFrame({
+        "Umur": [age],
+        "IMT": [bmi],
+        "Sistole": [systole],
+        "Diastole": [diastole],
+        "Nafas": [breaths],
+        "Detak Nadi": [heart_rate],
+        "Jenis Kelamin": [gender_binary],
+        "Diagnosa": [0]  # Placeholder value
+    })
+    
+    return input_data
+
+def ernn_classification(input_data, model):
+    # Normalize input data
+    scaler = MinMaxScaler()
+    normalized_input_data = pd.DataFrame(scaler.fit_transform(input_data), columns=input_data.columns)
+    
+    # Make prediction
+    y_pred = model.predict(normalized_input_data)
+    y_pred_label = "Hipertensi" if y_pred[0] > 0.5 else "Normal"
+    
+    return y_pred_label
     
 def main():
     with st.sidebar:
@@ -161,23 +190,23 @@ def main():
         breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
         heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
         gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-    
+        
         # Convert gender to binary
         gender_binary = 1 if gender == "Perempuan" else 0
         
         # Button for testing
         if st.button("Hasil Uji Coba"):
-            # Prepare input data for testing
-            input_data = pd.DataFrame({
-                "Umur": [age],
-                "IMT": [bmi],
-                "Sistole": [systole],
-                "Diastole": [diastole],
-                "Nafas": [breaths],
-                "Detak Nadi": [heart_rate],
-                "Jenis Kelamin": [gender_binary],
-                "Diagnosa": [0]  # Placeholder value
-            })
+            # Load the pre-trained model
+            model = load_model()
+            
+            # Preprocess input data
+            input_data = preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate, gender)
+            
+            # Perform classification
+            prediction = ernn_classification(input_data, model)
+            
+            # Display the prediction result
+            st.write(f"Hasil klasifikasi: {prediction}")
 
 if __name__ == "__main__":
     main()
