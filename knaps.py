@@ -55,63 +55,23 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def model_bagging():
-    # Load pre-trained ERNN+Bagging model
-    bagging_models = []
-    global iteration  # Access the global iteration variable
-    if iteration == 2:
-        for i in range(1, 3):
-            model_path = f'model_2_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    elif iteration == 3:
-        for i in range(1, 4):
-            model_path = f'model_3_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    else:
-        raise ValueError("Invalid iteration specified")
-    return bagging_models
+def load_models(num_iterations, num_models):
+    models = []
+    for iteration in range(1, num_iterations + 1):
+        for i in range(1, num_models + 1):
+            model = keras.models.load_model("model_{}_{}.h5".format(iteration, i))
+            models.append(model)
+    return models
 
-def ernn_bagging(data, bagging_models):
-    iterations = [2, 3]
-
-    # Initialize lists to store accuracies
-    accuracies_per_iteration = []
-    accuracies_all_iterations = []
-
-    # Calculate accuracy for the current model
-    accuracy = bagging.evaluate(x_test, y_test, verbose=0)[1]  # Evaluate accuracy
-    accuracies_per_iteration.append(accuracy)
-            
-    # Calculate average accuracy for the current iteration
-    avg_accuracy = np.mean(accuracies_per_iteration)
-    accuracies_all_iterations.append(avg_accuracy)
-
-    # Apply Threshold
-    y_preds = []
-    for model in models:  # Assuming 'models' is defined somewhere
-        y_pred = model.predict(x_test)
+def ernn_bagging(data, models):
+    if data is None or not models:
+        return None, None, "Data or models are not available"
+    predictions = []
+    for model in models:
+        y_pred = model.predict(data)
         y_pred = (y_pred > 0.5).astype(int)
-        y_preds.append(y_pred)
-    
-    y_pred_avg = np.mean(y_preds, axis=0)  # Average predictions from all models
-    
-    # Plotting the accuracy
-    # Display the plot and accuracies
-    plt.figure(figsize=(8, 6))
-    bars = plt.bar(bagging_iterations, accuracies_all_iterations)
-    plt.title('Average Accuracy vs Bagging Iterations')
-    plt.xlabel('Number of Bagging Iterations')
-    plt.ylabel('Average Accuracy')
-    plt.xticks(bagging_iterations)
-    plt.grid(axis='y')
-    # Add text labels above each bar
-    for bar, acc in zip(bars, accuracies_all_iterations):
-        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
-                 ha='center', va='bottom')
-            
-    return y_test, y_pred_avg, plt.gcf(), bagging_iterations, accuracies_all_iterations  # Return accuracies along with the figure object
+        predictions.append(y_pred)
+    return np.mean(predictions, axis=0)
     
 def main():
     with st.sidebar:
@@ -209,14 +169,49 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        if 'preprocessed_data' in st.session_state:
-            normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
-            bagging_models = model_bagging()  # Retrieve bagging models
-            y_test, y_pred, fig, bagging_iterations, accuracies_all_iterations = ernn_bagging(normalized_data, bagging_models)  # Pass bagging models as argument
-            st.pyplot(fig)
-            st.write("Average accuracies for each bagging iteration:")
-            for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
-                st.write(f"Iteration {iteration}: {accuracy:.2f}%")
+        if upload_file is not None:
+            df = pd.read_csv(upload_file)
+            if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
+                x_test = normalize_data(st.session_state.preprocessed_data.copy())
+                bagging_iterations = [1, 5, 10, 15]  # Define your bagging iterations
+                models = load_models(max(bagging_iterations), num_models_per_iteration)
+                y_pred = ernn_bagging(x_test, models)
+        
+                # Calculate accuracy for each bagging iteration
+                accuracies_all_iterations = []
+                for iteration in bagging_iterations:
+                    accuracies = []
+        
+                    # Retrieve models for the current iteration
+                    iteration_models = models[:iteration]
+        
+                    for model in iteration_models:
+                        y_pred = model.predict(x_test)
+                        y_pred = (y_pred > 0.5).astype(int)
+                        accuracy = np.mean(y_pred == y_test)
+                        accuracies.append(accuracy)
+        
+                    average_accuracy = np.mean(accuracies)
+                    accuracies_all_iterations.append(average_accuracy)
+                    st.write("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
+        
+                # Plotting the accuracy
+                import matplotlib.pyplot as plt
+        
+                plt.figure(figsize=(8, 6))
+                bars = plt.bar(bagging_iterations, accuracies_all_iterations)
+                plt.title('Average Accuracy vs Bagging Iterations')
+                plt.xlabel('Number of Bagging Iterations')
+                plt.ylabel('Average Accuracy')
+                plt.xticks(bagging_iterations)
+                plt.grid(axis='y')
+        
+                # Add text labels above each bar
+                for bar, acc in zip(bars, accuracies_all_iterations):
+                    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
+                             ha='center', va='bottom')
+        
+                st.pyplot(plt.gcf())
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
