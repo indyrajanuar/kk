@@ -184,7 +184,7 @@ def main():
                     y_pred_ensemble = np.zeros_like(y_test, dtype=np.float64)
                     for model in bagging_models:
                         y_pred = model.predict(x_test)
-                        y_pred_ensemble += y_pred
+                        y_pred_ensemble += y_pred.squeeze()  # Remove extra dimensions
                     y_pred_ensemble /= len(bagging_models)
                     
                     # Apply threshold
@@ -193,7 +193,7 @@ def main():
                     # Calculate accuracy
                     accuracy = accuracy_score(y_test, y_pred_ensemble_binary)
                     accuracies_all_iterations.append(accuracy)
-    
+                
                 # Plotting the accuracy
                 plt.figure(figsize=(8, 6))
                 plt.plot(bagging_iterations, accuracies_all_iterations, marker='o')
