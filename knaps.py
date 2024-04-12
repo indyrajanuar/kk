@@ -52,63 +52,12 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def load_bagging_model(iteration):
+def load_bagging_models(uploaded_files):
     bagging_models = []
-
-    if iteration in [3, 5, 7, 9]:
-        for i in range(1, iteration + 1):
-            model_path = f'model_{iteration}_{i}.h5'  
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    else:
-        raise ValueError("Invalid iteration specified. Please choose from [3, 5, 7, 9].")
-
+    for uploaded_file in uploaded_files:
+        model = keras.models.load_model(uploaded_file)
+        bagging_models.append(model)
     return bagging_models
-
-def run_ernn_bagging(data):
-    x = data.drop('Diagnosa', axis=1)
-    y = data['Diagnosa']
-    
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-    
-    y_train = np.array(y_train).reshape(-1,)
-    y_test = np.array(y_test).reshape(-1,)
-    
-    bagging_iterations = load_bagging_model(iteration=3)  
-    
-    models = []
-
-    accuracies_all_iterations = []  
-    for iteration_models in bagging_iterations:
-        accuracies_per_iteration = []  
-
-        for model in iteration_models:  # Fix the iteration here
-            indices = np.random.choice(len(x_train), len(x_train), replace=True)
-            x_bag = x_train.iloc[indices]
-            y_bag = y_train[indices]
-
-            model.compile(loss='mean_squared_error',
-                          optimizer=keras.optimizers.Adam(learning_rate=0.1),
-                          metrics=[keras.metrics.BinaryAccuracy()])
-
-            history = model.fit(x_bag, y_bag, batch_size=32, epochs=200, verbose=0)
-            models.append(model)
-
-            accuracy = model.evaluate(x_test, y_test, verbose=0)[1]  
-            accuracies_per_iteration.append(accuracy)
-            
-        avg_accuracy = np.mean(accuracies_per_iteration)
-        accuracies_all_iterations.append(avg_accuracy)
-
-    y_preds = []
-    for model in models:
-        y_pred = model.predict(x_test)
-        y_pred = (y_pred > 0.5).astype(int)
-        y_preds.append(y_pred)
-    
-    y_pred_avg = np.mean(y_preds, axis=0)  
-
-    return y_test, y_pred_avg
     
 def main():
     with st.sidebar:
@@ -206,15 +155,58 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        if upload_file is not None:
-            df = pd.read_csv(upload_file)
-            normalized_data = normalize_data(st.session_state.preprocessed_data.copy())  
-            y_test, y_pred, bagging_iterations, accuracies_all_iterations = run_ernn_bagging(normalized_data)
-            
-            print("Average accuracies for each bagging iteration:")
-            for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
-                print(f"Iteration {iteration}: {accuracy:.2f}%")
-                
+        uploaded_files = st.file_uploader("Upload Bagging Models (.h5 files)", accept_multiple_files=True)
+
+        if uploaded_files:
+            bagging_models = load_bagging_models(uploaded_files)
+
+            if 'preprocessed_data' in st.session_state:  
+                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
+                normalized_test_data = normalize_data(x_test)
+
+                predictions = []
+                for model in bagging_models:
+                    y_pred = ernn(normalized_test_data, model)
+                    predictions.append(y_pred)
+
+                aggregated_predictions = np.mean(predictions, axis=0) > 0.5
+                aggregated_predictions = aggregated_predictions.astype(int)
+
+                cm = confusion_matrix(y_test, aggregated_predictions)
+
+                plt.figure(figsize=(8, 6))
+                sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+                plt.xlabel('Predicted')
+                plt.ylabel('True')
+                plt.title('Confusion Matrix')
+                st.pyplot(plt.gcf())  
+
+                plt.clf()
+
+                with np.errstate(divide='ignore', invalid='ignore'):  
+                    report = classification_report(y_test, aggregated_predictions, zero_division=0)
+
+                lines = report.split('\n')
+                accuracy = float(lines[5].split()[1]) * 100
+                precision = float(lines[2].split()[1]) * 100
+                recall = float(lines[3].split()[1]) * 100
+
+                html_code = f"""
+                <table style="margin: auto;">
+                    <tr>
+                        <td style="text-align: center;"><h5>Accuracy</h5></td>
+                        <td style="text-align: center;"><h5>Precision</h5></td>
+                        <td style="text-align: center;"><h5>Recall</h5></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">{accuracy:.2f}%</td>
+                        <td style="text-align: center;">{precision:.2f}%</td>
+                        <td style="text-align: center;">{recall:.2f}%</td>
+                    </tr>
+                </table>
+                """
+                st.markdown(html_code, unsafe_allow_html=True)
+        
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
 
