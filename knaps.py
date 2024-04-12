@@ -74,7 +74,7 @@ def model_bagging():
     return bagging_models
 
 def ernn_bagging(data, bagging_models):
-    bagging_iterations = [2, 3]
+    iterations = [2, 3]
 
     # Initialize lists to store accuracies
     accuracies_per_iteration = []
