@@ -182,7 +182,8 @@ def main():
     
         if upload_file is not None:
             df = pd.read_csv(upload_file)
-            if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
+            if 'preprocessed_data' not in st.session_state:
+                st.session_state.preprocessed_data = None
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_test_data = normalize_data(x_test)
                 
