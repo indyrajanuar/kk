@@ -74,7 +74,7 @@ def run_ernn_bagging(data):
     y_train = np.array(y_train).reshape(-1,)
     y_test = np.array(y_test).reshape(-1,)
     
-    bagging_iterations = load_bagging_model(iteration=9)  
+    bagging_iterations = load_bagging_model(iteration=3)  
     
     models = []
 
