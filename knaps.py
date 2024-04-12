@@ -55,32 +55,81 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def load_bagging_model(iteration):
-    # Load Bagging models based on the specified iteration
-    bagging_models = []
-    if iteration == 2:
-        for i in range(1, 3):
-            model_path = f'model_2_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    elif iteration == 3:
-        for i in range(1, 4):
-            model_path = f'model_3_{i}.h5'
-            bagging_model = keras.models.load_model(model_path)
-            bagging_models.append(bagging_model)
-    else:
-        raise ValueError(f"Invalid iteration specified: {iteration}. Please choose from [3, 5, 7, 9].")
+def run_ernn_bagging(data):
+    # split data fitur, target
+    x = data.drop('Diagnosa', axis=1)
+    y = data['Diagnosa']
     
-    if not bagging_models:
-        raise ValueError(f"No models were loaded for iteration {iteration}.")
+    # Split data into training and testing sets
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
     
-    return bagging_models
+    # Convert target data to numpy array and reshape
+    y_train = np.array(y_train).reshape(-1,)
+    y_test = np.array(y_test).reshape(-1,)
+    
+    bagging_iterations = [1, 5, 10, 15]
+    max_error = 0.001
+    models = []
 
-# Define your threshold here
-threshold = 0.5
-# Apply Threshold
-def apply_threshold(predictions, threshold):
-    return (predictions > threshold).astype(int)
+    # Classification Process
+    accuracies_all_iterations = []  # List to store accuracies for each iteration
+    for iteration in bagging_iterations:
+        print("######## ITERATION - {} ########".format(iteration))
+        accuracies_per_iteration = []  # List to store accuracies for the current iteration
+
+        for i in range(iteration):
+            print("Training model {} of {}...".format(i+1, iteration))
+            # Randomly sample with replacement
+            indices = np.random.choice(len(x_train), len(x_train), replace=True)
+            x_bag = x_train.iloc[indices]
+            y_bag = y_train[indices]
+
+            model = keras.models.Sequential()
+            model.add(keras.layers.Dense(6, activation='sigmoid', input_shape=(8,)))  # Hidden layer with 6 neurons
+            model.add(keras.layers.Dense(6, activation='sigmoid'))  # Context layer with 6 neurons
+            model.add(keras.layers.Dense(1, activation='sigmoid'))
+
+            model.compile(loss='mean_squared_error',
+                          optimizer=keras.optimizers.Adam(learning_rate=0.1),  # Learning rate set to 0.1
+                          metrics=[keras.metrics.BinaryAccuracy()])
+
+            history = model.fit(x_bag, y_bag,
+                                batch_size=32, epochs=200, verbose=0)  # Set verbose=0 for less output
+            models.append(model)
+
+            print("Model {} training complete.".format(i+1))
+
+            # Calculate accuracy for the current model
+            accuracy = model.evaluate(x_test, y_test, verbose=0)[1]  # Evaluate accuracy
+            accuracies_per_iteration.append(accuracy)
+            
+        # Calculate average accuracy for the current iteration
+        avg_accuracy = np.mean(accuracies_per_iteration)
+        accuracies_all_iterations.append(avg_accuracy)
+
+    # Apply Threshold
+    y_preds = []
+    for model in models:
+        y_pred = model.predict(x_test)
+        y_pred = (y_pred > 0.5).astype(int)
+        y_preds.append(y_pred)
+    
+    y_pred_avg = np.mean(y_preds, axis=0)  # Average predictions from all models
+
+    # Display the plot and accuracies
+    plt.figure(figsize=(8, 6))
+    bars = plt.bar(bagging_iterations, accuracies_all_iterations)
+    plt.title('Average Accuracy vs Bagging Iterations')
+    plt.xlabel('Number of Bagging Iterations')
+    plt.ylabel('Average Accuracy')
+    plt.xticks(bagging_iterations)
+    plt.grid(axis='y')
+    # Add text labels above each bar
+    for bar, acc in zip(bars, accuracies_all_iterations):
+        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
+                 ha='center', va='bottom')
+            
+    return y_test, y_pred_avg, plt.gcf(), bagging_iterations, accuracies_all_iterations  # Return accuracies along with the figure object
     
 def main():
     with st.sidebar:
@@ -179,45 +228,19 @@ def main():
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
         bagging_iterations = [2, 3]  # Define your bagging iterations
-    
         if upload_file is not None:
             df = pd.read_csv(upload_file)
-            if 'preprocessed_data' not in st.session_state:
-                st.session_state.preprocessed_data = None
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
-                normalized_test_data = normalize_data(x_test)
+            if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
+                normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
+                # Perform ERNN + Bagging classification
+                y_test, y_pred, fig, bagging_iterations, accuracies_all_iterations = run_ernn_bagging(normalized_data)
                 
-                accuracies_all_iterations = []
-                for iteration in bagging_iterations:
-                    bagging_models = load_bagging_model(iteration)
-                    
-                    # Calculate ensemble prediction
-                    y_pred_ensemble = np.zeros_like(y_test, dtype=np.float64)
-                    for model in bagging_models:
-                        y_pred = model.predict(x_test)
-                        y_pred_ensemble += y_pred.squeeze()  # Remove extra dimensions
-                    y_pred_ensemble /= len(bagging_models)
-                    
-                    # Apply threshold
-                    y_pred_ensemble_binary = apply_threshold(y_pred_ensemble, threshold)
-                    
-                    # Calculate accuracy
-                    accuracy = accuracy_score(y_test, y_pred_ensemble_binary)
-                    accuracies_all_iterations.append(accuracy)
+                # Display the plot and accuracies
+                st.pyplot(fig)  # Pass the figure object to st.pyplot()
                 
-                # Plotting the accuracy
-                plt.figure(figsize=(8, 6))
-                bars = plt.bar(bagging_iterations, accuracies_all_iterations)
-                plt.title('Average Accuracy vs Bagging Iterations')
-                plt.xlabel('Number of Bagging Iterations')
-                plt.ylabel('Average Accuracy')
-                plt.xticks(bagging_iterations)
-                plt.grid(axis='y')
-                # Add text labels above each bar
-                for bar, acc in zip(bars, accuracies_all_iterations):
-                    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
-                             ha='center', va='bottom')
-                st.pyplot(fig)
+                st.write("Average accuracies for each bagging iteration:")
+                for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
+                    st.write(f"Iteration {iteration}: {accuracy:.2f}%")
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
