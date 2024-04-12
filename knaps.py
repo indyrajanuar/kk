@@ -175,7 +175,7 @@ def main():
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 x_test = normalize_data(st.session_state.preprocessed_data.copy())
-                bagging_iterations = [1, 5, 10, 15]  # Define your bagging iterations
+                bagging_iterations = [2, 3]  # Define your bagging iterations
                 models = load_models(max(bagging_iterations), num_models_per_iteration)
                 y_pred = ernn_bagging(x_test, models)
         
