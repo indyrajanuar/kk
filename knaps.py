@@ -217,7 +217,7 @@ def main():
                 for bar, acc in zip(bars, accuracies_all_iterations):
                     plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), '{:.2f}%'.format(acc * 100),
                              ha='center', va='bottom')
-                plt.show()
+                st.pyplot(fig)
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
