@@ -74,7 +74,7 @@ def run_ernn_bagging(data):
     y_train = np.array(y_train).reshape(-1,)
     y_test = np.array(y_test).reshape(-1,)
     
-    bagging_iterations = load_bagging_model(iteration=3)  
+    bagging_iterations = load_bagging_model(iteration=9)  
     
     models = []
 
@@ -82,7 +82,7 @@ def run_ernn_bagging(data):
     for iteration_models in bagging_iterations:
         accuracies_per_iteration = []  
 
-        for model in iteration_models:
+        for model in iteration_models:  # Fix the iteration here
             indices = np.random.choice(len(x_train), len(x_train), replace=True)
             x_bag = x_train.iloc[indices]
             y_bag = y_train[indices]
