@@ -211,7 +211,8 @@ def main():
                 accuracies_all_iterations = []
                 for iteration in bagging_iterations:
                     models = load_bagging_model(iteration)
-                    accuracies_all_iterations.append(classification_process(normalized_data, models))
+                    accuracies_all_iterations.append(classification_process(x_train, y_train, normalized_data, models, iteration))
+
 
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
