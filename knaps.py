@@ -100,8 +100,8 @@ def classification_process(x_test, y_test, models, iteration):
 def generate_bag_data(X, Y):
     num_samples = len(X)
     indices = np.random.choice(num_samples, num_samples, replace=True)
-    x_bag = X[indices]
-    y_bag = Y[indices]
+    x_bag = X.iloc[indices]  # Gunakan iloc untuk memilih baris berdasarkan indeks
+    y_bag = Y.iloc[indices]  # Gunakan iloc untuk memilih baris berdasarkan indeks
     return x_bag, y_bag
     
 def main():
