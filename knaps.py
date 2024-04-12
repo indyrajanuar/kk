@@ -158,19 +158,39 @@ def main():
         uploaded_files = st.file_uploader("Upload Bagging Models (.h5 files)", accept_multiple_files=True)
 
         if uploaded_files:
+            for uploaded_file in uploaded_files:
+                print("File Name:", uploaded_file.name)
+                print("File Type:", uploaded_file.type)
+            
             bagging_models = load_bagging_models(uploaded_files)
-
+    
             if 'preprocessed_data' in st.session_state:  
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_test_data = normalize_data(x_test)
-
-                predictions = []
-                for model in bagging_models:
-                    y_pred = ernn(normalized_test_data, model)
-                    predictions.append(y_pred)
-
-                aggregated_predictions = np.mean(predictions, axis=0) > 0.5
-                aggregated_predictions = aggregated_predictions.astype(int)
+    
+                # Define your threshold here
+                threshold = 0.5
+    
+                # Function to apply threshold
+                def apply_threshold(predictions, threshold):
+                    return (predictions > threshold).astype(int)
+    
+                # Accuracy Evaluation Process for Each Bagging Iteration
+                accuracies_all_iterations = []
+                for iteration, models in enumerate(bagging_models, start=1):
+                    accuracies = []
+    
+                    print("######## ITERATION - {} ########".format(iteration))
+    
+                    for model in models:
+                        y_pred_prob = model.predict(normalized_test_data)
+                        y_pred = apply_threshold(y_pred_prob, threshold)
+                        accuracy = np.mean(y_pred == y_test)
+                        accuracies.append(accuracy)
+    
+                    average_accuracy = np.mean(accuracies)
+                    accuracies_all_iterations.append(average_accuracy)
+                    print("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
 
                 cm = confusion_matrix(y_test, aggregated_predictions)
 
