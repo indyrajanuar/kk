@@ -57,7 +57,7 @@ def load_bagging_model(iteration):
 
     if iteration in [3, 5, 7, 9]:
         for i in range(1, iteration + 1):
-            model_path = f'model_{iteration}_{i}.h5'  # Ubah pola penamaan sesuai kebutuhan Anda
+            model_path = f'model_{iteration}_{i}.h5'  
             bagging_model = keras.models.load_model(model_path)
             bagging_models.append(bagging_model)
     else:
@@ -74,7 +74,7 @@ def run_ernn_bagging(data):
     y_train = np.array(y_train).reshape(-1,)
     y_test = np.array(y_test).reshape(-1,)
     
-    bagging_iterations = load_bagging_model(iteration=3)  # Ubah iterasi sesuai kebutuhan
+    bagging_iterations = load_bagging_model(iteration=3)  
     
     models = []
 
@@ -208,15 +208,13 @@ def main():
         st.write("You are at Klasifikasi ERNN + Bagging")
         if upload_file is not None:
             df = pd.read_csv(upload_file)
-            # Misalnya, Anda memiliki fungsi normalize_data untuk normalisasi data
             normalized_data = normalize_data(st.session_state.preprocessed_data.copy())  
-            y_test, y_pred, fig, bagging_iterations, accuracies_all_iterations = run_ernn_bagging(normalized_data)
+            y_test, y_pred, bagging_iterations, accuracies_all_iterations = run_ernn_bagging(normalized_data)
             
-            # Tampilkan plot dan akurasi
             print("Average accuracies for each bagging iteration:")
             for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
                 print(f"Iteration {iteration}: {accuracy:.2f}%")
-
+                
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
 
