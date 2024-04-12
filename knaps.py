@@ -3,13 +3,12 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
 import numpy as np
 import keras
 from sklearn.model_selection import KFold
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score
 
 def preprocess_data(data): 
     # Replace commas with dots and convert numerical columns to floats
@@ -175,7 +174,7 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        bagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
+        bagging_iterations = [2, 3]  # Define your bagging iterations
     
         if upload_file is not None:
             df = pd.read_csv(upload_file)
