@@ -201,7 +201,7 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        bagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
+        bbagging_iterations = [3, 5, 7, 9]  # Define your bagging iterations
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
@@ -211,7 +211,7 @@ def main():
                 accuracies_all_iterations = []
                 for iteration in bagging_iterations:
                     models = load_bagging_model(iteration)
-                    accuracies_all_iterations.append(classification_process(x_train, y_train, models))
+                    accuracies_all_iterations.append(classification_process(x_train, y_train, iteration))
 
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
