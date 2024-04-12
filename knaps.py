@@ -51,13 +51,6 @@ def ernn(data, model):
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
-
-def load_bagging_models(uploaded_files):
-    bagging_models = []
-    for uploaded_file in uploaded_files:
-        model = keras.models.load_model(uploaded_file)
-        bagging_models.append(model)
-    return bagging_models
     
 def main():
     with st.sidebar:
@@ -155,77 +148,6 @@ def main():
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
-        uploaded_files = st.file_uploader("Upload Bagging Models (.h5 files)", accept_multiple_files=True)
-
-        if uploaded_files:
-            for uploaded_file in uploaded_files:
-                print("File Name:", uploaded_file.name)
-                print("File Type:", uploaded_file.type)
-            
-            bagging_models = load_bagging_models(uploaded_files)
-    
-            if 'preprocessed_data' in st.session_state:  
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
-                normalized_test_data = normalize_data(x_test)
-    
-                # Define your threshold here
-                threshold = 0.5
-    
-                # Function to apply threshold
-                def apply_threshold(predictions, threshold):
-                    return (predictions > threshold).astype(int)
-    
-                # Accuracy Evaluation Process for Each Bagging Iteration
-                accuracies_all_iterations = []
-                for iteration, models in enumerate(bagging_models, start=1):
-                    accuracies = []
-    
-                    print("######## ITERATION - {} ########".format(iteration))
-    
-                    for model in models:
-                        y_pred_prob = model.predict(normalized_test_data)
-                        y_pred = apply_threshold(y_pred_prob, threshold)
-                        accuracy = np.mean(y_pred == y_test)
-                        accuracies.append(accuracy)
-    
-                    average_accuracy = np.mean(accuracies)
-                    accuracies_all_iterations.append(average_accuracy)
-                    print("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
-
-                cm = confusion_matrix(y_test, aggregated_predictions)
-
-                plt.figure(figsize=(8, 6))
-                sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-                plt.xlabel('Predicted')
-                plt.ylabel('True')
-                plt.title('Confusion Matrix')
-                st.pyplot(plt.gcf())  
-
-                plt.clf()
-
-                with np.errstate(divide='ignore', invalid='ignore'):  
-                    report = classification_report(y_test, aggregated_predictions, zero_division=0)
-
-                lines = report.split('\n')
-                accuracy = float(lines[5].split()[1]) * 100
-                precision = float(lines[2].split()[1]) * 100
-                recall = float(lines[3].split()[1]) * 100
-
-                html_code = f"""
-                <table style="margin: auto;">
-                    <tr>
-                        <td style="text-align: center;"><h5>Accuracy</h5></td>
-                        <td style="text-align: center;"><h5>Precision</h5></td>
-                        <td style="text-align: center;"><h5>Recall</h5></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">{accuracy:.2f}%</td>
-                        <td style="text-align: center;">{precision:.2f}%</td>
-                        <td style="text-align: center;">{recall:.2f}%</td>
-                    </tr>
-                </table>
-                """
-                st.markdown(html_code, unsafe_allow_html=True)
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
