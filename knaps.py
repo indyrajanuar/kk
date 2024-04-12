@@ -24,10 +24,6 @@ def preprocess_data(data):
     data = data.drop('Jenis Kelamin', axis=1)    
     # Concatenate encoded 'Jenis Kelamin' and transformed 'Diagnosa' with original data
     data = pd.concat([data, encoded_gender], axis=1)
-
-    # Print dimensi data sebelum dan sesudah pra-pemrosesan
-    print("Dimensi data sebelum pra-pemrosesan:", data.shape)
-    
     return data
 
 def normalize_data(data):
@@ -41,10 +37,6 @@ def split_data(data):
     y = data['Diagnosa']
     # Split data into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0) 
-
-    # Print dimensi x_train sebelum pemisahan data
-    print("Dimensi x_train sebelum pemisahan data:", x_train.shape)
-    
     return x_train, x_test, y_train, y_test, None
 
 def load_model():
@@ -207,8 +199,8 @@ def main():
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
+                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 accuracies_all_iterations = []
                 
                 for iteration in bagging_iterations:
