@@ -83,20 +83,29 @@ def load_bagging_model(iteration):
     
     return bagging_models
 
-def classification_process(x_test, y_test, models, iteration):
-    accuracies = []
-    st.write(f"######## ITERATION - {iteration} ########")
+def classification_process(x_train, x_test, y_train, y_test, bagging_iterations):
+    accuracies_all_iterations = []
+    
+    for iteration in bagging_iterations:
+        accuracies = []
+        st.write(f"######## ITERATION - {iteration} ########")
 
-    for model in models:
-        y_pred_prob = model.predict(x_test)
-        y_pred = (y_pred_prob > 0.5).astype(int)  # Apply threshold if needed
-        accuracy = np.mean(y_pred == y_test)
-        accuracies.append(accuracy)
+        for model in models[iteration-2]:
+            # Randomly sample with replacement
+            indices = np.random.choice(len(x_train), len(x_train), replace=True)
+            x_bag = x_train.iloc[indices]
+            y_bag = y_train.iloc[indices]
 
-    average_accuracy = np.mean(accuracies)
-    st.write("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
+            y_pred_prob = model.predict(x_test)
+            y_pred = (y_pred_prob > 0.5).astype(int)  # Apply threshold if needed
+            accuracy = np.mean(y_pred == y_test)
+            accuracies.append(accuracy)
 
-    return average_accuracy
+        average_accuracy = np.mean(accuracies)
+        accuracies_all_iterations.append(average_accuracy)
+        st.write("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
+        
+    return accuracies_all_iterations
     
 def main():
     with st.sidebar:
@@ -200,7 +209,7 @@ def main():
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
+                
                 accuracies_all_iterations = []
                 
                 for iteration in bagging_iterations:
