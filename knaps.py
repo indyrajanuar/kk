@@ -69,7 +69,11 @@ def load_bagging_model(iteration):
             bagging_model = keras.models.load_model(model_path)
             bagging_models.append(bagging_model)
     else:
-        raise ValueError("Invalid iteration specified")
+        raise ValueError(f"Invalid iteration specified: {iteration}. Please choose from [3, 5, 7, 9].")
+    
+    if not bagging_models:
+        raise ValueError(f"No models were loaded for iteration {iteration}.")
+    
     return bagging_models
 
 # Define your threshold here
