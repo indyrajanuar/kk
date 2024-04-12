@@ -55,6 +55,8 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
+# Define the number of models per bagging iteration
+num_models_per_iteration = 2
 def load_models(num_iterations, num_models):
     models = []
     for iteration in range(1, num_iterations + 1):
