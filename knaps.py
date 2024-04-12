@@ -52,35 +52,39 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
     
-def load_bagging_model(iteration):
-    # Load Bagging models based on the specified iteration
+def load_bagging_model(iteration, optimizer):
     bagging_models = []
+
     if iteration == 3:
         for i in range(1, 4):
             model_path = f'model_3_{i}.h5'
             bagging_model = keras.models.load_model(model_path)
+            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
             bagging_models.append(bagging_model)
     elif iteration == 5:
         for i in range(1, 6):
             model_path = f'model_5_{i}.h5'
             bagging_model = keras.models.load_model(model_path)
+            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
             bagging_models.append(bagging_model)
     elif iteration == 7:
         for i in range(1, 8):
             model_path = f'model_7_{i}.h5'
             bagging_model = keras.models.load_model(model_path)
+            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
             bagging_models.append(bagging_model)
     elif iteration == 9:
         for i in range(1, 10):
             model_path = f'model_9_{i}.h5'
             bagging_model = keras.models.load_model(model_path)
+            bagging_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])  # Compile ulang model dengan optimizer baru
             bagging_models.append(bagging_model)
     else:
         raise ValueError(f"Invalid iteration specified: {iteration}. Please choose from [3, 5, 7, 9].")
-    
+
     if not bagging_models:
         raise ValueError(f"No models were loaded for iteration {iteration}.")
-    
+
     return bagging_models
 
 def classification_process(x_test, y_test, models, iteration):
