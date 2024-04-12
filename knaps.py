@@ -83,29 +83,26 @@ def load_bagging_model(iteration):
     
     return bagging_models
 
-def classification_process(x_train, x_test, y_train, y_test, bagging_iterations):
-    accuracies_all_iterations = []
-    
-    for iteration in bagging_iterations:
-        accuracies = []
-        st.write(f"######## ITERATION - {iteration} ########")
+def classification_process(x_test, y_test, models, iteration):
+    accuracies = []
+    st.write(f"######## ITERATION - {iteration} ########")
 
-        for model in models[iteration-2]:
-            # Randomly sample with replacement
-            indices = np.random.choice(len(x_train), len(x_train), replace=True)
-            x_bag = x_train.iloc[indices]
-            y_bag = y_train.iloc[indices]
+    for model in models:
+        y_pred_prob = model.predict(x_test)
+        y_pred = (y_pred_prob > 0.5).astype(int)  # Apply threshold if needed
+        accuracy = np.mean(y_pred == y_test)
+        accuracies.append(accuracy)
 
-            y_pred_prob = model.predict(x_test)
-            y_pred = (y_pred_prob > 0.5).astype(int)  # Apply threshold if needed
-            accuracy = np.mean(y_pred == y_test)
-            accuracies.append(accuracy)
+    average_accuracy = np.mean(accuracies)
+    st.write("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
+    return average_accuracy
 
-        average_accuracy = np.mean(accuracies)
-        accuracies_all_iterations.append(average_accuracy)
-        st.write("Average accuracy for iteration {}: {:.2f}%".format(iteration, average_accuracy * 100))
-        
-    return accuracies_all_iterations
+def generate_bag_data(X, Y):
+    num_samples = len(X)
+    indices = np.random.choice(num_samples, num_samples, replace=True)
+    x_bag = X[indices]
+    y_bag = Y[indices]
+    return x_bag, y_bag
     
 def main():
     with st.sidebar:
@@ -208,15 +205,26 @@ def main():
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
+                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
-                
+    
                 accuracies_all_iterations = []
-                
+    
                 for iteration in bagging_iterations:
                     st.write(f"######## ITERATION - {iteration} ########")
                     bagging_models = load_bagging_model(iteration)
-                    accuracies_all_iterations.append(classification_process(normalized_data, y_test, bagging_models, iteration))
-                
+                    
+                    # Generate bagging data
+                    x_bag, y_bag = generate_bag_data(x_train, y_train)
+                    
+                    # Train each model in the bagging ensemble
+                    for model in bagging_models:
+                        model.fit(x_bag, y_bag)
+                    
+                    # Evaluate the ensemble
+                    accuracy = classification_process(normalized_data, y_test, bagging_models, iteration)
+                    accuracies_all_iterations.append(accuracy)
+    
                 st.write("Average accuracies for each bagging iteration:")
                 for iteration, accuracy in zip(bagging_iterations, accuracies_all_iterations):
                     st.write(f"Iteration {iteration}: {accuracy:.2f}%")
