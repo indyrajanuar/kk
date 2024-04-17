@@ -139,8 +139,8 @@ def main():
                 # Plot confusion matrix
                 plt.figure(figsize=(8, 6))
                 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-                plt.xlabel('Predicted')
-                plt.ylabel('True')
+                plt.xlabel('Kelas Prediksi')
+                plt.ylabel('Kelas Aktual')
                 plt.title('Confusion Matrix')
                 st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()
         
