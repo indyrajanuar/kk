@@ -71,8 +71,12 @@ def preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate, gend
     return input_data
 
 def ernn_classification(input_data, model):
+    # Normalize input data
+    scaler = MinMaxScaler()
+    normalized_input_data = pd.DataFrame(scaler.fit_transform(input_data), columns=input_data.columns)
+    
     # Make prediction
-    y_pred = model.predict(input_data)
+    y_pred = model.predict(normalized_input_data)
     if y_pred[0] >= 0.5:
         y_pred_label = "Hipertensi"
     else:
