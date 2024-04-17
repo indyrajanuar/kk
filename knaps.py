@@ -47,18 +47,9 @@ def load_model():
 def ernn(data, model):
     if data is None:
         return None, None, "Data is not available"
-    # Evaluate model performance on training data
-    train_loss, train_accuracy = model.evaluate(x_train, y_train)
-    print(f"Training Loss: {train_loss}, Training Accuracy: {train_accuracy}")
-                
     # Apply Threshold
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
-
-    # Evaluate model performance on test data
-    test_loss, test_accuracy = model.evaluate(x_test, y_test)
-    print(f"Test Loss: {test_loss}, Test Accuracy: {test_accuracy}")
-
     return y_pred
 
 def preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate, gender):
