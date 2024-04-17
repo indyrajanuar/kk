@@ -41,12 +41,13 @@ def split_data(data):
 
 def load_model():
     # Load pre-trained ERNN model
-    model = keras.models.load_model('model-final (7).h5')
+    model = keras.models.load_model('model_fold_1 (1).h5')
     return model
 
 def ernn(data, model):
     if data is None:
         return None, None, "Data is not available"
+
     # Apply Threshold
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
@@ -175,9 +176,13 @@ def main():
                 
                 st.markdown(html_code, unsafe_allow_html=True)
 
-                # Display classification report
-                st.text("Classification Report:")
-                st.text(report)
+                # Evaluate model performance on training data
+                train_loss, train_accuracy = model.evaluate(x_train, y_train)
+                print(f"Training Loss: {train_loss}, Training Accuracy: {train_accuracy}")
+
+                # Evaluate model performance on test data
+                test_loss, test_accuracy = model.evaluate(x_test, y_test)
+                print(f"Test Loss: {test_loss}, Test Accuracy: {test_accuracy}")
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
