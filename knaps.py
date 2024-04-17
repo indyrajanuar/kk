@@ -174,6 +174,10 @@ def main():
                 """
                 
                 st.markdown(html_code, unsafe_allow_html=True)
+
+                # Display classification report
+                st.text("Classification Report:")
+                st.text(report)
                 
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
