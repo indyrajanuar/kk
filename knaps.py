@@ -24,7 +24,7 @@ def clean_data(data):
     data['Detak Nadi'] = data['Detak Nadi'].apply(lambda x: int(x.split(' ')[0]))
     return data
     
-def transform_data(data):
+def preprocess_data(data):
     # Replace commas with dots and convert numerical columns to floats
     numerical_columns = ['IMT']
     data[numerical_columns] = data[numerical_columns].replace({',': '.'}, regex=True).astype(float)
