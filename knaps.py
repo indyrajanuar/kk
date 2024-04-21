@@ -205,6 +205,7 @@ def main():
             
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
+        url_gambar = 'https://raw.githubusercontent.com/indyrajanuar/kk/bagging plotting.png'
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
