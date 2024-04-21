@@ -160,18 +160,19 @@ def main():
             
             # Load the model
             model = load_model()
+            
+            # Predict using the model
+            y_pred = ernn(x_test, model)
 
             # Generate confusion matrix
             cm = confusion_matrix(y_test, y_pred)
-
             # Plot confusion matrix
             plt.figure(figsize=(8, 6))
             sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
             plt.xlabel('Kelas Prediksi')                
             plt.ylabel('Kelas Aktual')
             plt.title('Confusion Matrix')
-            st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()
-        
+            st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()        
             # Clear the current plot to avoid displaying it multiple times
             plt.clf()  
 
