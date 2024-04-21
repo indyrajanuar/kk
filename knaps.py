@@ -227,11 +227,8 @@ def main():
             # Preprocess input data
             preprocess_data_input = preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
             
-            # Further preprocess the data if needed
-            preprocess_data = preprocess_data(preprocess_data_input)
-            
             # Normalize the preprocessed data
-            normalized_data = normalize_data(preprocess_data)
+            normalized_data = normalize_data(preprocess_data_input)
             
             # Perform classification
             prediction = ernn_classification(normalized_data, model)
