@@ -221,13 +221,13 @@ def main():
         
         # Button for testing
         if st.button("Hasil Uji Coba"):
+            # Load the pre-trained model
+            model = load_model()
+            
             # Preprocess input data
             preprocess_data = preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
             preprocess_data = preprocess_data(preprocess_data)
             normalized_data = normalize_data(preprocess_data)
-            
-            # Load the pre-trained model
-            model = load_model()
         
             # Perform classification
             prediction = ernn_classification(normalized_input_data, model)
