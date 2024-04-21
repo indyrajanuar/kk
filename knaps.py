@@ -67,6 +67,19 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
+def preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate):
+    # Prepare input data for testing
+    input_data = pd.DataFrame({
+        "Jenis Kelamin": [gender],
+        "Umur": [age],
+        "IMT": [bmi],
+        "Sistole": [systole],
+        "Diastole": [diastole],
+        "Nafas": [breaths],
+        "Detak Nadi": [heart_rate]
+    })    
+    return input_data
+
 def ernn_classification(input_data, model):   
     # Make prediction
     y_pred_prob = model.predict(input_data)  
@@ -209,7 +222,7 @@ def main():
             model = load_model()
             
              # Preprocess and normalize input data
-            input_data = preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate, gender)
+            input_data = preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
             normalized_input_data = normalize_data(input_data)
         
             # Perform classification
