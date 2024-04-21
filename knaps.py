@@ -97,7 +97,7 @@ def main():
         st.markdown('<h3 style="text-align: left;"> Hipertensi </h1>', unsafe_allow_html=True)
         st.markdown('<h3 style="text-align: left;"> View Data </h1>', unsafe_allow_html=True)
         if upload_file is not None:
-            df = pd.read_csv(upload_file)
+            df = pd.read_excel(upload_file)
             st.write("Data yang digunakan yaitu data Penyakit Hipertensi dari UPT Puskesmas Modopuro Mojokerto.")
             st.dataframe(df)
     
@@ -106,7 +106,7 @@ def main():
         st.write("Berikut merupakan data asli yang didapat dari UPT Puskesmas Modopuro Mojokerto.")
     
         if upload_file is not None:
-            df = pd.read_csv(upload_file)
+            df = pd.read_excel(upload_file)
             st.dataframe(df)
             st.markdown('<h3 style="text-align: left;"> Melakukan Transformation Data </h1>', unsafe_allow_html=True)
             if st.button("Transformation Data"):  # Check if button is clicked
