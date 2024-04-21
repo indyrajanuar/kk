@@ -220,15 +220,15 @@ def main():
         heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)      
         
         # Button for testing
-        if st.button("Hasil Uji Coba"):
-            # Load the pre-trained model
-            model = load_model()
-                
+        if st.button("Hasil Uji Coba"):                
             # Preprocess input data
             preprocess_data_input = preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
             
             # Normalize the preprocessed data
             normalized_data = normalize_data(preprocess_data_input)
+            
+            # Load the pre-trained model
+            model = load_model()
             
             # Perform classification
             prediction = ernn_classification(normalized_data, model)
