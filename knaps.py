@@ -10,7 +10,18 @@ from sklearn.model_selection import KFold
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def preprocess_data(data): 
+def preprocess_data(data):
+    # Cleaning data
+    data = data[data['Umur Tahun'].notnull()]
+    data = data[data['Sistole'].notnull()]
+    data = data[data['Diastole'].notnull()]
+    data = data[data['Nafas'].notnull()]
+    data = data[data['Detak Nadi'].notnull()]
+    data['Umur Tahun'] = data['Umur Tahun'].apply(lambda x: int(x.split(' ')[0]))
+    data['Sistole'] = data['Sistole'].apply(lambda x: int(x.split(' ')[0]))
+    data['Diastole'] = data['Diastole'].apply(lambda x: int(x.split(' ')[0]))
+    data['Nafas'] = data['Nafas'].apply(lambda x: int(x.split(' ')[0]))
+    data['Detak Nadi'] = data['Detak Nadi'].apply(lambda x: int(x.split(' ')[0]))
     # Replace commas with dots and convert numerical columns to floats
     numerical_columns = ['IMT']
     data[numerical_columns] = data[numerical_columns].replace({',': '.'}, regex=True).astype(float)
@@ -97,7 +108,7 @@ def main():
         st.markdown('<h3 style="text-align: left;"> Hipertensi </h1>', unsafe_allow_html=True)
         st.markdown('<h3 style="text-align: left;"> View Data </h1>', unsafe_allow_html=True)
         if upload_file is not None:
-            df = pd.read_excel(upload_file)
+            df = pd.read_csv(upload_file)
             st.write("Data yang digunakan yaitu data Penyakit Hipertensi dari UPT Puskesmas Modopuro Mojokerto.")
             st.dataframe(df)
     
@@ -106,7 +117,7 @@ def main():
         st.write("Berikut merupakan data asli yang didapat dari UPT Puskesmas Modopuro Mojokerto.")
     
         if upload_file is not None:
-            df = pd.read_excel(upload_file)
+            df = pd.read_csv(upload_file)
             st.dataframe(df)
             st.markdown('<h3 style="text-align: left;"> Melakukan Transformation Data </h1>', unsafe_allow_html=True)
             if st.button("Transformation Data"):  # Check if button is clicked
