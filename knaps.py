@@ -176,6 +176,29 @@ def main():
             # Clear the current plot to avoid displaying it multiple times
             plt.clf()  
 
+            # Generate classification report
+            with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
+                report = classification_report(y_test, y_pred, zero_division=0)
+            # Display the metrics
+            html_code = f"""
+            <table style="margin: auto;">
+                <tr>
+                    <td style="text-align: center;"><h5>Accuracy</h5></td>
+                    <td style="text-align: center;"><h5>Precision</h5></td>
+                    <td style="text-align: center;"><h5>Recall</h5></td>
+                    <td style="text-align: center;"><h5>F1- Score</h5></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">{accuracy * 100:.2f}%</td>
+                    <td style="text-align: center;">{precision * 100:.2f}%</td>
+                    <td style="text-align: center;">{recall * 100:.2f}%</td>
+                    <td style="text-align: center;">{f1 * 100:.2f}%</td>
+                </tr>
+            </table>
+            """
+                
+            st.markdown(html_code, unsafe_allow_html=True)
+            
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
         
