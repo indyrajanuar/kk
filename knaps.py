@@ -149,55 +149,32 @@ def main():
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN)")
         if upload_file is not None:
             df = pd.read_csv(upload_file)
-            #df_cleaned = clean_data(df)
-            if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
-                x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
-                normalized_test_data = normalize_data(x_test)
-                model = load_model()
-                y_pred = ernn(normalized_test_data, model)
-    
-                # Generate confusion matrix
-                cm = confusion_matrix(y_test, y_pred)
+            
+            # Data preprocessing
+            df_cleaned = clean_data(df)
+            preprocessed_data = preprocess_data(df_cleaned)
+            normalized_data = normalize_data(preprocessed_data)
+
+            # Splitting the data
+            x_train, x_test, y_train, y_test, _ = split_data(normalized_data)
+            
+            # Load the model
+            model = load_model()
+
+            # Generate confusion matrix
+            cm = confusion_matrix(y_test, y_pred)
+
+            # Plot confusion matrix
+            plt.figure(figsize=(8, 6))
+            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+            plt.xlabel('Kelas Prediksi')                
+            plt.ylabel('Kelas Aktual')
+            plt.title('Confusion Matrix')
+            st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()
         
-                # Plot confusion matrix
-                plt.figure(figsize=(8, 6))
-                sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-                plt.xlabel('Kelas Prediksi')
-                plt.ylabel('Kelas Aktual')
-                plt.title('Confusion Matrix')
-                st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()
-        
-                # Clear the current plot to avoid displaying it multiple times
-                plt.clf()
-        
-                # Generate classification report
-                with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
-                    report = classification_report(y_test, y_pred, zero_division=0)
-        
-                # Extract metrics from the classification report
-                lines = report.split('\n')
-                accuracy = float(lines[5].split()[1]) * 100
-                precision = float(lines[2].split()[1]) * 100
-                recall = float(lines[3].split()[1]) * 100
-        
-                # Display the metrics
-                html_code = f"""
-                <table style="margin: auto;">
-                    <tr>
-                        <td style="text-align: center;"><h5>Accuracy</h5></td>
-                        <td style="text-align: center;"><h5>Precision</h5></td>
-                        <td style="text-align: center;"><h5>Recall</h5></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">{accuracy:.2f}%</td>
-                        <td style="text-align: center;">{precision:.2f}%</td>
-                        <td style="text-align: center;">{recall:.2f}%</td>
-                    </tr>
-                </table>
-                """
-                
-                st.markdown(html_code, unsafe_allow_html=True)
-                
+            # Clear the current plot to avoid displaying it multiple times
+            plt.clf()  
+
     elif selected == 'ERNN + Bagging':
         st.write("You are at Klasifikasi ERNN + Bagging")
         
