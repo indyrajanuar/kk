@@ -87,7 +87,7 @@ def ernn_classification(input_data, model):
     # Make prediction
     y_pred_prob = model.predict(input_data)  
     # Convert predicted probabilities to labels
-    y_pred_labels = ["Hipertensi" if prob >= 0.5 else "Normal" for prob in y_pred_prob]
+    y_pred_labels = ["Hipertensi" if prob >= 0.5 else "Tidak Hipertensi" for prob in y_pred_prob]
     return y_pred_labels
     
 def main():
@@ -221,12 +221,13 @@ def main():
         
         # Button for testing
         if st.button("Hasil Uji Coba"):
+            # Preprocess input data
+            preprocess_data = preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
+            preprocess_data = preprocess_data(preprocess_data)
+            normalized_data = normalize_data(preprocess_data)
+            
             # Load the pre-trained model
             model = load_model()
-            
-             # Preprocess and normalize input data
-            input_data = preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
-            normalized_input_data = normalize_data(input_data)
         
             # Perform classification
             prediction = ernn_classification(normalized_input_data, model)
