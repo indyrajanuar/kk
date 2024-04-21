@@ -231,10 +231,13 @@ def main():
             model = load_model()
             
             # Preprocess input data
-            input_data = preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate, gender)
+            input_data = preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate, gender_binary)
+            
+            # Normalize input data
+            normalized_input_data = normalize_data(input_data)
             
             # Perform classification
-            prediction = ernn_classification(input_data, model)
+            prediction = ernn_classification(normalized_input_data, model)
             
             # Display the prediction result
             st.write(f"Hasil klasifikasi: {prediction}")
