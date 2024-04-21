@@ -125,7 +125,7 @@ def main():
             
             st.markdown('<h3 style="text-align: left;"> Melakukan Cleaning Data </h1>', unsafe_allow_html=True)
             if st.button("Clean Data"):
-                df_cleaned = clean_data(df)
+                #df_cleaned = clean_data(df)
                 st.write("Data cleaning completed.")
                 st.dataframe(df_cleaned)
                 st.session_state.df_cleaned = df_cleaned
