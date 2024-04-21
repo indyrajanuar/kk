@@ -122,8 +122,8 @@ def main():
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             st.dataframe(df)
-            st.markdown('<h3 style="text-align: left;"> Melakukan Transformation Data </h1>', unsafe_allow_html=True)
-
+            
+            st.markdown('<h3 style="text-align: left;"> Melakukan Cleaning Data </h1>', unsafe_allow_html=True)
             if st.button("Clean Data"):
                 df_cleaned = clean_data(df)
                 st.write("Data cleaning completed.")
@@ -143,7 +143,7 @@ def main():
                 if st.button("Normalize Data"):
                     normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
                     st.write("Normalization completed.")
-                    st.dataframe(normalized_data
+                    st.dataframe(normalized_data)
     
     elif selected == 'Klasifikasi ERNN':
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN)")
