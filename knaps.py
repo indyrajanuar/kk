@@ -68,15 +68,18 @@ def ernn(data, model):
     return y_pred
 
 def preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
+    # Convert gender to binary (0 for 'Laki-laki', 1 for 'Perempuan')
+    gender_binary = 1 if gender == "Perempuan" else 0  
     # Prepare input data for testing
     input_data = pd.DataFrame({
-        "Jenis Kelamin": [gender],
         "Umur": [age],
         "IMT": [bmi],
         "Sistole": [systole],
         "Diastole": [diastole],
         "Nafas": [breaths],
-        "Detak Nadi": [heart_rate]
+        "Detak Nadi": [heart_rate],
+        "Jenis Kelamin_L": [1 if gender == "Laki-laki" else 0],
+        "Jenis Kelamin_P": [1 if gender == "Perempuan" else 0]
     })    
     return input_data
 
