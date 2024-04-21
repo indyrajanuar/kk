@@ -222,9 +222,6 @@ def main():
         breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1)
         heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)      
         
-        # Convert gender to binary
-        gender_binary = 1 if gender == "Perempuan" else 0
-        
         # Button for testing
         if st.button("Hasil Uji Coba"):
             # Load the pre-trained model
