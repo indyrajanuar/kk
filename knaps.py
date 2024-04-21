@@ -125,7 +125,7 @@ def main():
             
             st.markdown('<h3 style="text-align: left;"> Melakukan Cleaning Data </h1>', unsafe_allow_html=True)
             if st.button("Clean Data"):
-                #df_cleaned = clean_data(df)
+                df_cleaned = clean_data(df)
                 st.write("Data cleaning completed.")
                 st.dataframe(df_cleaned)
                 st.session_state.df_cleaned = df_cleaned
@@ -149,8 +149,7 @@ def main():
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN)")
         if upload_file is not None:
             df = pd.read_csv(upload_file)
-            # Clean the data
-            df_cleaned = clean_data(df)
+            #df_cleaned = clean_data(df)
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 x_train, x_test, y_train, y_test, _ = split_data(st.session_state.preprocessed_data.copy())
                 normalized_test_data = normalize_data(x_test)
