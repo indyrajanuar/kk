@@ -3,12 +3,13 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+from sklearn.metrics import confusion_matrix, classification_report
 import numpy as np
 import keras
 from sklearn.model_selection import KFold
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 def clean_data(data):
     # Cleaning data
