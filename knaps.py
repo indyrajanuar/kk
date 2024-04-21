@@ -67,7 +67,7 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def preprocess_input_data(age, bmi, systole, diastole, breaths, heart_rate):
+def preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
     # Prepare input data for testing
     input_data = pd.DataFrame({
         "Jenis Kelamin": [gender],
