@@ -161,6 +161,8 @@ def main():
             
             # Load the model
             model = load_model()
+            # Compile the model with appropriate metrics
+            model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
             
             # Predict using the model
             y_pred = ernn(x_test, model)
