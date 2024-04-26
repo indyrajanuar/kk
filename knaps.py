@@ -193,48 +193,48 @@ def main():
         st.image('bagging plotting.png', caption='')
         
     elif selected == 'Uji Coba':
-        st.title("Uji Coba")
-        st.write("Masukkan nilai untuk pengujian:")
-    
-        # Input fields
-        Umur Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
-        IMT = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
-        Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
-        Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
-        Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
-        Detak Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
-        Jenis Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+            st.title("Uji Coba")
+            st.write("Masukkan nilai untuk pengujian:")
         
-        # Convert gender to binary
-        gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
-        submit = st.button('Uji Coba')      
-         
-        # Button for testing
-        if submit:
-            # Masukkan data input pengguna ke dalam DataFrame
-            data_input = {
-                'Umur Tahun': [Umur Tahun],
-                'IMT': [IMT],
-                'Sistole': [Sistole],
-                'Diastole': [Diastole],
-                'Nafas': [Nafas],
-                'Detak Nadi': [Detak Nadi],
-                'Jenis Kelamin': [gender_binary]
-            }
-            
-            # Input data
-            data_input = data_input(Jenis Kelamin, Umur Tahun, IMT, Sistole, Diastole, Nafas, Detak Nadi)
-            preprocess_input = preprocess_data(data_input)
-            normalized_input = normalize_data(preprocess_input)
-            
-            # Load the pre-trained model
-            model = load_model()
-            
-            # Perform classification
-            prediction = ernn(normalized_input, model)
+            # Input fields
+            Umur Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
+            IMT = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
+            Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
+            Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
+            Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
+            Detak Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
+            Jenis Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+        
+            # Convert gender to binary
+            gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
+            submit = st.button('Uji Coba')      
+             
+            # Button for testing
+            if submit:
+                # Masukkan data input pengguna ke dalam DataFrame
+                data_input = {
+                    'Umur Tahun': [Umur Tahun],
+                    'IMT': [IMT],
+                    'Sistole': [Sistole],
+                    'Diastole': [Diastole],
+                    'Nafas': [Nafas],
+                    'Detak Nadi': [Detak Nadi],
+                    'Jenis Kelamin': [gender_binary]
+                }
                 
-            # Display the prediction result
-            st.write(f"Hasil klasifikasi: {prediction}")
+                # Input data
+                data_input = data_input(Jenis Kelamin, Umur Tahun, IMT, Sistole, Diastole, Nafas, Detak Nadi)
+                preprocess_input = preprocess_data(data_input)
+                normalized_input = normalize_data(preprocess_input)
+                
+                # Load the pre-trained model
+                model = load_model()
+                
+                # Perform classification
+                prediction = ernn(normalized_input, model)
+                    
+                # Display the prediction result
+                st.write(f"Hasil klasifikasi: {prediction}")
 
 if __name__ == "__main__":
     main()
