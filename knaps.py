@@ -75,9 +75,9 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
-    # Convert gender to binary (0 for 'Laki-laki', 1 for 'Perempuan')
-    gender_binary = 1 if gender == "Perempuan" else 0  
+def input_data(gender_binary, age, bmi, systole, diastole, breaths, heart_rate):
+    # Convert gender to binary
+    gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0 
     # Prepare input data for testing
     input_data = pd.DataFrame({
         "Umur Tahun": [age],
@@ -86,7 +86,7 @@ def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
         "Diastole": [diastole],
         "Nafas": [breaths],
         "Detak Nadi": [heart_rate],
-        "Jenis Kelamin": [gender]
+        "Jenis Kelamin": [gender_binary]
     })    
     return input_data
     
@@ -212,7 +212,7 @@ def main():
         st.write("Masukkan nilai untuk pengujian:")
     
         # Input fields
-        gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+        gender_binary = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         age = st.number_input("Umur Tahun", min_value=0, max_value=150, step=1)
         bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
         systole = st.number_input("Sistole (mm)", min_value=0, max_value=300, step=1)
@@ -223,7 +223,7 @@ def main():
         # Button for testing
         if st.button("Hasil Uji Coba"):                
             # Input data
-            data_input = input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
+            data_input = input_data(gender_binary, age, bmi, systole, diastole, breaths, heart_rate)
             print("Data Input:", data_input.columns)  # Check the columns of input data
             preprocess_input = preprocess_data(data_input)
             normalized_input = normalize_data(preprocess_input)
