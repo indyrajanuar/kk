@@ -197,14 +197,14 @@ def main():
             st.write("Masukkan nilai untuk pengujian:")
         
             # Input fields
-            Umur Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
+            Umur_Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
             IMT = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
             Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
             Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
             Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
-            Detak Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
-            Jenis Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-        
+            Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
+            Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+            
             # Convert gender to binary
             gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
             submit = st.button('Uji Coba')      
@@ -213,17 +213,17 @@ def main():
             if submit:
                 # Masukkan data input pengguna ke dalam DataFrame
                 data_input = {
-                    'Umur Tahun': [Umur Tahun],
+                    'Umur Tahun': [Umur_Tahun],
                     'IMT': [IMT],
                     'Sistole': [Sistole],
                     'Diastole': [Diastole],
                     'Nafas': [Nafas],
-                    'Detak Nadi': [Detak Nadi],
+                    'Detak Nadi': [Detak_Nadi],
                     'Jenis Kelamin': [gender_binary]
                 }
                 
                 # Input data
-                data_input = data_input(Jenis Kelamin, Umur Tahun, IMT, Sistole, Diastole, Nafas, Detak Nadi)
+                data_input = pd.DataFrame(data_input)
                 preprocess_input = preprocess_data(data_input)
                 normalized_input = normalize_data(preprocess_input)
                 
@@ -231,10 +231,11 @@ def main():
                 model = load_model()
                 
                 # Perform classification
-                prediction = ernn(normalized_input, model)
+                prediction = rnn(normalized_input, model)
                     
                 # Display the prediction result
                 st.write(f"Hasil klasifikasi: {prediction}")
+
 
 if __name__ == "__main__":
     main()
