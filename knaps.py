@@ -212,7 +212,7 @@ def main():
                 'Nafas': [Nafas],
                 'Detak Nadi': [Detak_Nadi],
                 'Jenis Kelamin': [gender_binary],
-                'Diagnosa': [0]  # Placeholder value
+                'Diagnosa': [1]  # Placeholder value
             }
             
             # Convert input data into DataFrame
