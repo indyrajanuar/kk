@@ -220,7 +220,8 @@ def main():
                 'Diastole': [Diastole],
                 'Nafas': [Nafas],
                 'Detak Nadi': [Detak_Nadi],
-                'Jenis Kelamin': [gender_binary]
+                'Jenis Kelamin': [gender_binary],
+                'Diagnosa': [0]
             }
             
             # Convert input data into DataFrame
