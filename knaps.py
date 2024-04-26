@@ -76,6 +76,7 @@ def ernn(data, model):
     return y_pred
 
 def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
+    gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
     # Prepare input data for testing
     input_data = pd.DataFrame({
         "Umur Tahun": [age],
@@ -84,8 +85,7 @@ def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
         "Diastole": [diastole],
         "Nafas": [breaths],
         "Detak Nadi": [heart_rate],
-        "Jenis Kelamin_L": [1 if gender == "Laki-laki" else 0],
-        "Jenis Kelamin_P": [1 if gender == "Perempuan" else 0]
+        "Jenis Kelamin": [gender_binary]
     })    
     return input_data
     
@@ -222,7 +222,7 @@ def main():
         # Button for testing
         if st.button("Hasil Uji Coba"):                
             # Input data
-            data_input = input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
+            data_input = input_data(gender_binary, age, bmi, systole, diastole, breaths, heart_rate)
             print("Data Input:", data_input.columns)  # Check the columns of input data
             preprocess_input = preprocess_data(data_input)
             normalized_input = normalize_data(preprocess_input)
