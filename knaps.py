@@ -211,8 +211,7 @@ def main():
                 'Diastole': [Diastole],
                 'Nafas': [Nafas],
                 'Detak Nadi': [Detak_Nadi],
-                'Jenis Kelamin': [gender_binary],
-                'Diagnosa': [1]  # Placeholder value
+                'Jenis Kelamin': [gender_binary]
             }
             
             # Convert input data into DataFrame
@@ -226,8 +225,17 @@ def main():
             # Perform classification
             prediction = ernn(normalized_input, model)
                 
-            # Display the prediction result
-            st.write(f"Hasil klasifikasi: {prediction}")
+            # Adjust prediction based on threshold
+            if prediction > 0.5:
+                diagnosis = 1  # Ya Hipertensi
+            else:
+                diagnosis = 0  # Tidak Hipertensi
+                    
+            # Display the diagnosis
+            if diagnosis == 1:
+                st.write("Diagnosa: Ya Hipertensi")
+            else:
+                st.write("Diagnosa: Tidak Hipertensi")
 
 if __name__ == "__main__":
     main()
