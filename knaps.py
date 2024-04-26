@@ -75,7 +75,7 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
+def input_data(gender_binary, age, bmi, systole, diastole, breaths, heart_rate):
     # Convert gender to binary (0 for 'Laki-laki', 1 for 'Perempuan')
     gender_binary = 1 if gender == "Perempuan" else 0  
     # Prepare input data for testing
