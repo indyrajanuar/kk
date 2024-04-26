@@ -202,8 +202,8 @@ def main():
         Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
         Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
         Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
-        Detak_nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
-        Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+        Detak Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
+        Jenis Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         
         # Convert gender to binary
         gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
