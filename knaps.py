@@ -225,14 +225,9 @@ def main():
             }
             
             # Convert input data into DataFrame
-            #data_input_df = pd.DataFrame(data_input)
-            #preprocess_input = preprocess_data(data_input_df)
-            #normalized_input = normalize_data(preprocess_input)
-
-            # Normalize data using MinMaxScaler
-            scaler = MinMaxScaler()
-            scaler.fit_transform(list(data_input.values()))
-            normalized_data_input = {key: scaler.transform([val])[0] for key, val in data_input.items()}
+            data_input_df = pd.DataFrame(data_input)
+            preprocess_input = preprocess_data(data_input_df)
+            normalized_input = normalize_data(preprocess_input)
         
             # Load the pre-trained model
             model = load_model()
