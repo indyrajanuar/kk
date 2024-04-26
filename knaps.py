@@ -215,6 +215,7 @@ def main():
         if st.button("Hasil Uji Coba"):                
             # Input data
             data_input = input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
+            print("Data Input:", data_input.columns)  # Check the columns of input data
             preprocess_input = preprocess_data(data_input)
             normalized_input = normalize_data(preprocess_input)
             
