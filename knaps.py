@@ -238,7 +238,7 @@ def main():
             model = load_model()
         
             # Perform classification
-            prediction = ernn(input_normalized, model)
+            prediction = ernn(normalized_data_input, model)
     
             # Classify prediction
             diagnosis = ernn_classification(prediction)
