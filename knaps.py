@@ -210,7 +210,7 @@ def main():
         diastole = st.number_input("Diastole (Hg)", min_value=0, max_value=200, step=1)
         breaths = st.number_input("Nafas (/menit)", min_value=0, max_value=100, step=1)
         heart_rate = st.number_input("Detak Nadi (/menit)", min_value=0, max_value=300, step=1)      
-        
+         
         # Button for testing
         if st.button("Hasil Uji Coba"):                
             # Input data
