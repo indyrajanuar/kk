@@ -233,7 +233,7 @@ def main():
             model = load_model()
         
             # Make predictions
-            predictions = model.predict(normalized_data_input)
+            predictions = model.predict(normalized_input)
 
             # Classify prediction
             diagnosis = ernn_classification(predictions)
