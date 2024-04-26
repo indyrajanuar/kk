@@ -26,10 +26,6 @@ def clean_data(data):
     return data
     
 def preprocess_data(data):
-
-    print("Before preprocessing:")
-    print(data.columns)
-    
     # Replace commas with dots and convert numerical columns to floats
     numerical_columns = ['IMT']
     data[numerical_columns] = data[numerical_columns].replace({',': '.'}, regex=True).astype(float)
@@ -43,10 +39,6 @@ def preprocess_data(data):
     data = data.drop('Jenis Kelamin', axis=1)    
     # Concatenate encoded 'Jenis Kelamin' and transformed 'Diagnosa' with original data
     data = pd.concat([data, encoded_gender], axis=1)
-
-    print("After preprocessing:")
-    print(data.columns)
-    
     return data
 
 def normalize_data(data):
@@ -231,11 +223,10 @@ def main():
             model = load_model()
             
             # Perform classification
-            prediction = rnn(normalized_input, model)
+            prediction = ernn(normalized_input, model)
                 
-            # Display the prediction result (Diagnose)
-            st.write(f"Diagnosa: {prediction}")
-
+            # Display the prediction result
+            st.write(f"Hasil klasifikasi: {prediction}")
 
 if __name__ == "__main__":
     main()
