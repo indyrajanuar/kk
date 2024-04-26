@@ -68,8 +68,6 @@ def ernn(data, model):
     return y_pred
 
 def preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
-    # Convert gender to binary (0 for 'Laki-laki', 1 for 'Perempuan')
-    gender_binary = 1 if gender == "Perempuan" else 0  
     # Prepare input data for testing
     input_data = pd.DataFrame({
         "Umur": [age],
@@ -82,13 +80,6 @@ def preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_ra
         "Jenis Kelamin_P": [1 if gender == "Perempuan" else 0]
     })    
     return input_data
-
-def ernn_classification(input_data, model):   
-    # Make prediction
-    y_pred_prob = model.predict(input_data)  
-    # Convert predicted probabilities to labels
-    y_pred_labels = ["Hipertensi" if prob >= 0.5 else "Tidak Hipertensi" for prob in y_pred_prob]
-    return y_pred_labels
     
 def main():
     with st.sidebar:
