@@ -212,7 +212,7 @@ def main():
         st.write("Masukkan nilai untuk pengujian:")
     
         # Input fields
-        gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+        gender_binary = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         age = st.number_input("Umur Tahun", min_value=0, max_value=150, step=1)
         bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
         systole = st.number_input("Sistole (mm)", min_value=0, max_value=300, step=1)
