@@ -251,17 +251,11 @@ def main():
             # Convert input data to a single input tensor
             input_data = np.array(list(normalized_data_input.values()))
         
-            # Load the pre-trained model
-            model = load_model()
-        
-            # Perform classification
-            prediction = ernn(normalized_data_input, model)
+            # Make predictions
+            predictions = model.predict(input_data)
     
-            # Classify prediction
-            diagnosis = ernn_classification(prediction)
-    
-            # Display the prediction result
-            st.write(f"Hasil klasifikasi: {diagnosis}")
+            # Display predictions
+            st.write("Predictions:", predictions)
 
 if __name__ == "__main__":
     main()
