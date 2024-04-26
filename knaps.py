@@ -193,48 +193,48 @@ def main():
         st.image('bagging plotting.png', caption='')
         
     elif selected == 'Uji Coba':
-            st.title("Uji Coba")
-            st.write("Masukkan nilai untuk pengujian:")
+        st.title("Uji Coba")
+        st.write("Masukkan nilai untuk pengujian:")
+    
+        # Input fields
+        Umur_Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
+        IMT = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
+        Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
+        Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
+        Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
+        Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
+        Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         
-            # Input fields
-            Umur_Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
-            IMT = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
-            Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
-            Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
-            Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
-            Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
-            Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+        # Convert gender to binary
+        gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
+        submit = st.button('Uji Coba')      
+         
+        # Button for testing
+        if submit:
+            # Input data
+            data_input = {
+                'Umur Tahun': [Umur_Tahun],
+                'IMT': [IMT],
+                'Sistole': [Sistole],
+                'Diastole': [Diastole],
+                'Nafas': [Nafas],
+                'Detak Nadi': [Detak_Nadi],
+                'Jenis Kelamin': [gender_binary]
+            }
             
-            # Convert gender to binary
-            gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
-            submit = st.button('Uji Coba')      
-             
-            # Button for testing
-            if submit:
-                # Masukkan data input pengguna ke dalam DataFrame
-                data_input = {
-                    'Umur Tahun': [Umur_Tahun],
-                    'IMT': [IMT],
-                    'Sistole': [Sistole],
-                    'Diastole': [Diastole],
-                    'Nafas': [Nafas],
-                    'Detak Nadi': [Detak_Nadi],
-                    'Jenis Kelamin': [gender_binary]
-                }
+            # Convert input data into DataFrame
+            data_input_df = pd.DataFrame(data_input)
+            preprocess_input = preprocess_data(data_input_df)
+            normalized_input = normalize_data(preprocess_input)
+            
+            # Load the pre-trained model
+            model = load_model()
+            
+            # Perform classification
+            prediction = rnn(normalized_input, model)
                 
-                # Input data
-                data_input_df = pd.DataFrame(data_input)
-                preprocess_input = preprocess_data(data_input_df)
-                normalized_input = normalize_data(preprocess_input)
-                
-                # Load the pre-trained model
-                model = load_model()
-                
-                # Perform classification
-                prediction = rnn(normalized_input, model)
-                    
-                # Display the prediction result (Diagnose)
-                st.write(f"Diagnosa: {prediction}")
+            # Display the prediction result (Diagnose)
+            st.write(f"Diagnosa: {prediction}")
 
 
 if __name__ == "__main__":
