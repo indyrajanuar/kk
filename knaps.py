@@ -76,7 +76,8 @@ def ernn(data, model):
     return y_pred
 
 def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
-    gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
+    # Convert gender to binary (0 for 'Laki-laki', 1 for 'Perempuan')
+    gender_binary = 1 if gender == "Perempuan" else 0  
     # Prepare input data for testing
     input_data = pd.DataFrame({
         "Umur Tahun": [age],
