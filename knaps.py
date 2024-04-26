@@ -76,9 +76,6 @@ def ernn_classification(prediction):
     
     return diagnosis
 
-# Load the pre-trained model
-model = load_model()
-
 def preprocess_input(Umur_Tahun, IMT, Sistole, Diastole, Nafas, Detak_Nadi, Jenis_Kelamin):
     # Convert gender to binary
     gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
@@ -253,12 +250,18 @@ def main():
             
             # Convert input data to a single input tensor
             input_data = np.array(list(normalized_data_input.values()))
+
+            # Load the pre-trained model
+            model = load_model()
         
             # Make predictions
             predictions = model.predict(input_data)
-    
-            # Display predictions
-            st.write("Predictions:", predictions)
+
+            # Classify prediction
+            diagnosis = ernn_classification(prediction)
+        
+            # Display the prediction result
+            st.write(f"Hasil klasifikasi: {diagnosis}")
 
 if __name__ == "__main__":
     main()
