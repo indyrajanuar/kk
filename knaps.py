@@ -203,7 +203,7 @@ def main():
          
         # Button for testing
         if submit:
-        # Input data
+            # Input data
             data_input = {
                 'Umur Tahun': [Umur_Tahun],
                 'IMT': [IMT],
@@ -223,7 +223,7 @@ def main():
             model = load_model()
         
             # Perform classification
-            prediction = ernn(normalized_input, model)
+            prediction = rnn(normalized_input, model)
             
             # Adjust prediction based on threshold
             if prediction > 0.5:
