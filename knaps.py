@@ -26,6 +26,10 @@ def clean_data(data):
     return data
     
 def preprocess_data(data):
+
+    print("Before preprocessing:")
+    print(data.columns)
+    
     # Replace commas with dots and convert numerical columns to floats
     numerical_columns = ['IMT']
     data[numerical_columns] = data[numerical_columns].replace({',': '.'}, regex=True).astype(float)
@@ -39,6 +43,10 @@ def preprocess_data(data):
     data = data.drop('Jenis Kelamin', axis=1)    
     # Concatenate encoded 'Jenis Kelamin' and transformed 'Diagnosa' with original data
     data = pd.concat([data, encoded_gender], axis=1)
+
+    print("After preprocessing:")
+    print(data.columns)
+    
     return data
 
 def normalize_data(data):
