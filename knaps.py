@@ -211,8 +211,15 @@ def main():
         submit = st.button('Uji Coba')      
          
         # Button for testing
-        # Button for testing
         if submit:
+            # Preprocess input data
+            Umur_Tahun = float(Umur_Tahun)
+            IMT = float(IMT)
+            Sistole = float(Sistole)
+            Diastole = float(Diastole)
+            Nafas = float(Nafas)
+            Detak_Nadi = float(Detak_Nadi)
+            
             # Input data
             data_input = {
                 'Umur Tahun': [Umur_Tahun],
