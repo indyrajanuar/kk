@@ -197,13 +197,13 @@ def main():
             st.write("Masukkan nilai untuk pengujian:")
         
             # Input fields
-            Umur_Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
+            Umur Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
             IMT = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
             Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
             Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
             Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
-            Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
-            Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+            Detak Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
+            Jenis Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
             
             # Convert gender to binary
             gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
@@ -233,8 +233,8 @@ def main():
                 # Perform classification
                 prediction = rnn(normalized_input, model)
                     
-                # Display the prediction result
-                st.write(f"Hasil klasifikasi: {prediction}")
+                # Display the prediction result (Diagnose)
+                st.write(f"Diagnosa: {prediction}")
 
 
 if __name__ == "__main__":
