@@ -258,7 +258,7 @@ def main():
             predictions = model.predict(input_data)
 
             # Classify prediction
-            diagnosis = ernn_classification(prediction)
+            diagnosis = ernn_classification(predictions[0])
         
             # Display the prediction result
             st.write(f"Hasil klasifikasi: {diagnosis}")
