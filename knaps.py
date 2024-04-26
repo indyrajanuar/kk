@@ -223,8 +223,8 @@ def main():
                 }
                 
                 # Input data
-                data_input = pd.DataFrame(data_input)
-                preprocess_input = preprocess_data(data_input)
+                data_input_df = pd.DataFrame(data_input)
+                preprocess_input = preprocess_data(data_input_df)
                 normalized_input = normalize_data(preprocess_input)
                 
                 # Load the pre-trained model
