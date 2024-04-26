@@ -225,18 +225,23 @@ def main():
             }
             
             # Convert input data into DataFrame
-            data_input_df = pd.DataFrame(data_input)
-            preprocess_input = preprocess_data(data_input_df)
-            normalized_input = normalize_data(preprocess_input)
+            #data_input_df = pd.DataFrame(data_input)
+            #preprocess_input = preprocess_data(data_input_df)
+            #normalized_input = normalize_data(preprocess_input)
+
+            # Normalize data using MinMaxScaler
+            scaler = MinMaxScaler()
+            scaler.fit_transform(list(data_input.values()))
+            normalized_data_input = {key: scaler.transform([val])[0] for key, val in data_input.items()}
         
             # Load the pre-trained model
             model = load_model()
         
             # Make predictions
-            predictions = model.predict(normalized_input)
+            predictions = model.predict(normalized_data_input)
 
             # Classify prediction
-            diagnosis = ernn_classification(predictions[0])
+            diagnosis = ernn_classification(predictions)
         
             # Display the prediction result
             st.write(f"Hasil klasifikasi: {diagnosis}")
