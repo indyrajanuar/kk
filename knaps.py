@@ -221,7 +221,7 @@ def main():
                 'Nafas': [Nafas],
                 'Detak Nadi': [Detak_Nadi],
                 'Jenis Kelamin': [gender_binary],
-                'Diagnosa': [1]
+                'Diagnosa': [0]
             }
         
             # Convert input data into DataFrame
