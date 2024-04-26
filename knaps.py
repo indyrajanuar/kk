@@ -66,6 +66,15 @@ def ernn(data, model):
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
+
+def ernn_classification(normalized_input, model):
+    # Atur diagnosis berdasarkan prediksi
+    if prediction > 0.5:
+        diagnosis = "Ya Hipertensi"
+    else:
+        diagnosis = "Tidak Hipertensi"
+    
+    return diagnosis
     
 def main():
     with st.sidebar:
@@ -224,7 +233,7 @@ def main():
             model = load_model()
         
             # Perform classification
-            prediction = ernn(normalized_input, model)
+            prediction = ernn_classification(normalized_input, model)
 
             # Display the prediction result
             st.write(f"Hasil klasifikasi: {prediction}")
