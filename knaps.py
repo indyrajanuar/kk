@@ -222,7 +222,7 @@ def main():
             model = load_model()
             
             # Perform classification
-            prediction = ernn(normalized_data_input, model)
+            prediction = ernn(normalized_input, model)
                 
             # Display the prediction result
             st.write(f"Hasil klasifikasi: {prediction}")
