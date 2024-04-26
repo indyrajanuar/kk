@@ -77,7 +77,7 @@ def ernn(data, model):
 
 def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
     # Prepare input data for testing
-    input_data = pd.DataFrame({
+    input_data = ({
         "Umur Tahun": [age],
         "IMT": [bmi],
         "Sistole": [systole],
