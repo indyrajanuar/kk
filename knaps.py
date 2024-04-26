@@ -225,15 +225,9 @@ def main():
         
             # Perform classification
             prediction = ernn(normalized_input, model)
-            
-            # Adjust prediction based on threshold
-            if prediction > 0.5:
-                diagnosis = 1  # Ya Hipertensi
-            else:
-                diagnosis = 0  # Tidak Hipertensi
-        
-            # Set 'Diagnosa' value based on prediction
-            data_input['Diagnosa'] = [diagnosis]
+
+            # Display the prediction result
+            st.write(f"Hasil klasifikasi: {prediction}")
 
 if __name__ == "__main__":
     main()
