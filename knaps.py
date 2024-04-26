@@ -76,6 +76,9 @@ def ernn_classification(prediction):
     
     return diagnosis
 
+# Load the pre-trained model
+model = load_model()
+
 def preprocess_input(Umur_Tahun, IMT, Sistole, Diastole, Nafas, Detak_Nadi, Jenis_Kelamin):
     # Convert gender to binary
     gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
