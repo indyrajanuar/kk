@@ -224,7 +224,7 @@ def main():
             model = load_model()
         
             # Perform classification
-            prediction = rnn(normalized_input, model)
+            prediction = ernn(normalized_input, model)
             
             # Adjust prediction based on threshold
             if prediction > 0.5:
