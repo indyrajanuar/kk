@@ -203,40 +203,36 @@ def main():
          
         # Button for testing
         if submit:
-            # Input data
-            data_input = {
-                'Umur Tahun': [Umur_Tahun],
-                'IMT': [IMT],
-                'Sistole': [Sistole],
-                'Diastole': [Diastole],
-                'Nafas': [Nafas],
-                'Detak Nadi': [Detak_Nadi],
-                'Jenis Kelamin': [gender_binary],   
-                'Diagnosa': [0]  # Placeholder value
-            }
-            
-            # Convert input data into DataFrame
-            data_input_df = pd.DataFrame(data_input)
-            preprocess_input = preprocess_data(data_input_df)
-            normalized_input = normalize_data(preprocess_input)
-            
-            # Load the pre-trained model
-            model = load_model()
-            
-            # Perform classification
-            prediction = ernn(normalized_input, model)
-                
-            # Adjust prediction based on threshold
-            if prediction > 0.5:
-                diagnosis = 1  # Ya Hipertensi
-            else:
-                diagnosis = 0  # Tidak Hipertensi
-                    
-            # Display the diagnosis
-            if diagnosis == 1:
-                st.write("Diagnosa: Ya Hipertensi")
-            else:
-                st.write("Diagnosa: Tidak Hipertensi")
+        # Input data
+        data_input = {
+            'Umur Tahun': [Umur_Tahun],
+            'IMT': [IMT],
+            'Sistole': [Sistole],
+            'Diastole': [Diastole],
+            'Nafas': [Nafas],
+            'Detak Nadi': [Detak_Nadi],
+            'Jenis Kelamin': [gender_binary]   
+        }
+    
+        # Convert input data into DataFrame
+        data_input_df = pd.DataFrame(data_input)
+        preprocess_input = preprocess_data(data_input_df)
+        normalized_input = normalize_data(preprocess_input)
+    
+        # Load the pre-trained model
+        model = load_model()
+    
+        # Perform classification
+        prediction = ernn(normalized_input, model)
+        
+        # Adjust prediction based on threshold
+        if prediction > 0.5:
+            diagnosis = 1  # Ya Hipertensi
+        else:
+            diagnosis = 0  # Tidak Hipertensi
+    
+        # Set 'Diagnosa' value based on prediction
+        data_input['Diagnosa'] = [diagnosis]
 
 if __name__ == "__main__":
     main()
