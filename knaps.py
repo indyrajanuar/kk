@@ -228,6 +228,10 @@ def main():
             data_input_df = pd.DataFrame(data_input)
             preprocess_input = preprocess_data(data_input_df)
             normalized_input = normalize_data(preprocess_input)
+
+            # Display the input data
+            st.write("Data yang dimasukkan:")
+            st.write(pd.DataFrame(data_input, index=[0]))  # Convert data_input to DataFrame for display
         
             # Load the pre-trained model
             model = load_model()
