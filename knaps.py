@@ -224,10 +224,15 @@ def main():
                 'Jenis Kelamin': [gender_binary]
             }
     
-            # Convert input data to DataFrame
-            input_df = pd.DataFrame(data_input)
+            # Additional preprocessing: Replace commas with dots
+            for key, value in data_input.items():
+                if isinstance(value[0], str):
+                    data_input[key] = [float(val.replace(',', '.')) for val in value]
+    
+            # Normalize data using MinMaxScaler
             scaler = MinMaxScaler()
-            input_normalized = scaler.fit_transform(input_df)
+            scaler.fit_transform(list(data_input.values()))
+            normalized_data_input = {key: scaler.transform([val])[0] for key, val in data_input.items()}
         
             # Load the pre-trained model
             model = load_model()
