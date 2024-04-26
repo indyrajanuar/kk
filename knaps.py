@@ -67,10 +67,10 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
+def input_data(gender, age, bmi, systole, diastole, breaths, heart_rate):
     # Prepare input data for testing
     input_data = pd.DataFrame({
-        "Umur": [age],
+        "Umur Tahun": [age],
         "IMT": [bmi],
         "Sistole": [systole],
         "Diastole": [diastole],
@@ -204,20 +204,19 @@ def main():
     
         # Input fields
         gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-        age = st.number_input("Umur", min_value=0, max_value=150, step=1)
+        age = st.number_input("Umur Tahun", min_value=0, max_value=150, step=1)
         bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
-        systole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
-        diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
-        breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1)
-        heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)      
+        systole = st.number_input("Sistole (mm)", min_value=0, max_value=300, step=1)
+        diastole = st.number_input("Diastole (Hg)", min_value=0, max_value=200, step=1)
+        breaths = st.number_input("Nafas (/menit)", min_value=0, max_value=100, step=1)
+        heart_rate = st.number_input("Detak Nadi (/menit)", min_value=0, max_value=300, step=1)      
         
         # Button for testing
         if st.button("Hasil Uji Coba"):                
-            # Preprocess input data
-            preprocess_data_input = preprocess_input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
-            
-            # Normalize input data
-            normalized_data_input = normalize_data(preprocess_data_input)
+            # Input data
+            data_input = input_data(gender, age, bmi, systole, diastole, breaths, heart_rate)
+            preprocess_input = preprocess_data(data_input)
+            normalized_input = normalize_data(preprocess_input)
             
             # Load the pre-trained model
             model = load_model()
