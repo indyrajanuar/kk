@@ -233,10 +233,13 @@ def main():
             model = load_model()
         
             # Perform classification
-            prediction = ernn_classification(normalized_input, model)
-
+            prediction = ernn(normalized_input, model)
+    
+            # Classify prediction
+            diagnosis = ernn_classification(prediction)
+    
             # Display the prediction result
-            st.write(f"Hasil klasifikasi: {prediction}")
+            st.write(f"Hasil klasifikasi: {diagnosis}")
 
 if __name__ == "__main__":
     main()
