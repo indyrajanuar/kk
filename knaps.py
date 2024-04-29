@@ -190,8 +190,12 @@ def main():
             st.markdown(html_code, unsafe_allow_html=True)
             
     elif selected == 'ERNN + Bagging':
-        st.write("You are at Klasifikasi ERNN + Bagging")
+        st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
         st.image('bagging plotting.png', caption='')
+        st.write("Accuracy for 5 bagging iterations: 0.9492537313432836")
+        st.write("Accuracy for 10 bagging iterations: 0.9462686567164179")
+        st.write("Accuracy for 15 bagging iterations: 0.9462686567164179")
+        st.write("Accuracy for 20 bagging iterations: 0.9462686567164179")
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
