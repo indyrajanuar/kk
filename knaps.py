@@ -91,6 +91,8 @@ def main():
     if selected == 'Home':
         st.markdown('<h1 style="text-align: center;"> Website Klasifikasi Hipertensi </h1>', unsafe_allow_html=True)
         st.markdown('<h3 style="text-align: left;"> Hipertensi </h1>', unsafe_allow_html=True)
+        st.write('Selamat Datang di Website Data Penyakit Hipertensi menggunakan Metode Elman Recurrent Neural Network')
+        st.write('Hipertensi (Tekanan Darah Tinggi) merupakan kondisi dimana terjadinya peningkatan tekanan darah sistolik ≥ 140 mmHg atau diastolik ≥ 90 mmHg. Hipertensi biasa disebut dengan “the silent killer”, dikarenakan kebanyakan penderitanya tidak sadar dirinya mengidap hipertensi, dan baru menyadari ketika telah terjadinya komplikasi. Dan diketahui bahwa dari penderita hipertensi, hanya sepertiga atau 36.8% dari penderita hipertensi yang terdiagnosa oleh tenaga medis dan sekitar hanya 0.7% yang meminum obat.')
         st.markdown('<h3 style="text-align: left;"> View Data </h1>', unsafe_allow_html=True)
         if upload_file is not None:
             df = pd.read_csv(upload_file)
