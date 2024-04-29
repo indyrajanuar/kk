@@ -117,8 +117,8 @@ def main():
                 st.session_state.df_cleaned = df_cleaned
                 
             st.markdown('<h3 style="text-align: left;"> Melakukan Transformation Data </h1>', unsafe_allow_html=True)
+            st.write('Dibagian ini terjadi proses perubahan pada data ke dalam bentuk atau format yang akan diproses oleh sistem, dengan maksud memudahkan dalam pengelolaan data tersebut.')
             if st.button("Transformation Data"):  # Check if button is clicked
-                st.write('Dibagian ini terjadi proses perubahan pada data ke dalam bentuk atau format yang akan diproses oleh sistem, dengan maksud memudahkan dalam pengelolaan data tersebut.')
                 if 'df_cleaned' in st.session_state:  # Check if cleaned data exists in session state
                     preprocessed_data = preprocess_data(st.session_state.df_cleaned.copy())
                     st.write("Transformation completed.")
@@ -126,9 +126,9 @@ def main():
                     st.session_state.preprocessed_data = preprocessed_data  # Store preprocessed data in session state
     
             st.markdown('<h3 style="text-align: left;"> Melakukan Normalisasi Data </h1>', unsafe_allow_html=True)
+            st.write('Dalam penelitian ini digunakan metode normalisasi min-max normalization, metode ini mengubah data numerik menjadi range nol sampai satu [0-1].')
             if 'preprocessed_data' in st.session_state:  # Check if preprocessed_data exists in session state
                 if st.button("Normalize Data"):
-                    st.write('Dalam penelitian ini digunakan metode normalisasi min-max normalization, metode ini mengubah data numerik menjadi range nol sampai satu [0-1].')
                     normalized_data = normalize_data(st.session_state.preprocessed_data.copy())
                     st.write("Normalization completed.")
                     st.dataframe(normalized_data)
