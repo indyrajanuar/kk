@@ -67,14 +67,25 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def ernn_classification(prediction):
-    # Atur diagnosis berdasarkan prediksi
-    if prediction > 0.5:
-        diagnosis = "Ya Hipertensi"
+def diagnose_hipertensi(umur, imt, sistole, diastole, nafas, detak_nadi, jenis_kelamin):
+    # Mengonversi Jenis Kelamin menjadi angka (1 untuk Laki-laki, 0 untuk Perempuan)
+    jenis_kelamin_L = 1 if jenis_kelamin == "Laki-laki" else 0
+
+    # Menyesuaikan diagnosis berdasarkan kelompok usia
+    if umur >= 25 and umur <= 34:
+        faktor_risiko_usia = 1.56  # Faktor risiko untuk usia 25-34 tahun
+    elif umur >= 40 and umur <= 60:
+        faktor_risiko_usia = 1.56  # Faktor risiko untuk usia 40-60 tahun
     else:
-        diagnosis = "Tidak Hipertensi"
-    
-    return diagnosis
+        faktor_risiko_usia = 1  # Faktor risiko untuk usia lainnya
+
+    # Mendiagnosis hipertensi berdasarkan tekanan darah sistolik dan diastolik
+    if sistole * faktor_risiko_usia >= 140 or diastole * faktor_risiko_usia >= 90:
+        diagnosis_hipertensi = "Pasien memiliki Hipertensi"
+    else:
+        diagnosis_hipertensi = "Pasien tidak memiliki Hipertensi"
+
+    return diagnosis_hipertensi
     
 def main():
     with st.sidebar:
@@ -216,40 +227,9 @@ def main():
         Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
         Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         
-        # Convert gender to binary
-        gender_binary = 1 if Jenis_Kelamin == "Laki-laki" else 0
-        submit = st.button('Uji Coba')      
-         
-        # Button for testing
-        if submit:
-            # Input data
-            data_input = {
-                'Umur Tahun': [Umur_Tahun],
-                'IMT': [IMT],
-                'Sistole': [Sistole],
-                'Diastole': [Diastole],
-                'Nafas': [Nafas],
-                'Detak Nadi': [Detak_Nadi],
-                'Jenis Kelamin': [gender_binary],
-                'Diagnosa': [0]
-            }
-            
-            # Convert input data into DataFrame
-            data_input_df = pd.DataFrame(data_input)
-            preprocess_input = preprocess_data(data_input_df)
-            normalized_input = normalize_data(preprocess_input)
-        
-            # Load the pre-trained model
-            model = load_model()
-        
-            # Make predictions
-            predictions = ernn(normalized_input, model)
-
-            # Classify prediction
-            diagnosis = ernn_classification(predictions)
-        
-            # Display the prediction result
-            st.write(f"Hasil klasifikasi: {diagnosis}")
+        if st.button('Diagnosa'):
+            hasil_diagnosis = diagnose_hipertensi(Umur_Tahun, IMT, Sistole, Diastole, Nafas, Detak_Nadi, Jenis_Kelamin)
+            st.write(hasil_diagnosis)
 
 if __name__ == "__main__":
     main()
