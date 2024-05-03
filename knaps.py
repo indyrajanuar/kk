@@ -75,6 +75,11 @@ def ernn_classification(prediction):
         diagnosis = "Tidak Hipertensi"
     
     return diagnosis
+
+def load_model():
+    # Load pre-trained ERNN model
+    model2 = keras.models.load_model('model-final.h5')
+    return model2
     
 def main():
     with st.sidebar:
@@ -240,7 +245,7 @@ def main():
             normalized_input = normalize_data(preprocess_input)
         
             # Load the pre-trained model
-            model = load_model()
+            model2 = load_model()
         
             # Make predictions
             predictions = ernn(normalized_input, model)
