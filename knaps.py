@@ -208,11 +208,7 @@ def main():
             
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
-        st.image('bagging plotting.png', caption='')
-        st.write("Accuracy for 5 bagging iterations: 0.9492537313432836")
-        st.write("Accuracy for 10 bagging iterations: 0.9462686567164179")
-        st.write("Accuracy for 15 bagging iterations: 0.9462686567164179")
-        st.write("Accuracy for 20 bagging iterations: 0.9462686567164179")
+        st.image('bagging.png', caption='')
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
@@ -229,6 +225,7 @@ def main():
         
         if st.button('Diagnosa'):
             hasil_diagnosis = diagnose_hipertensi(Umur_Tahun, IMT, Sistole, Diastole, Nafas, Detak_Nadi, Jenis_Kelamin)
+            model = load_model()
             st.write(hasil_diagnosis)
 
 if __name__ == "__main__":
