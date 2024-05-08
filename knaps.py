@@ -11,18 +11,23 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-def clean_data(data):
-    # Cleaning data
-    data = data[data['Umur Tahun'].notnull()]
-    data = data[data['Sistole'].notnull()]
-    data = data[data['Diastole'].notnull()]
-    data = data[data['Nafas'].notnull()]
-    data = data[data['Detak Nadi'].notnull()]
-    data['Umur Tahun'] = data['Umur Tahun'].apply(lambda x: int(x.split(' ')[0]))
-    data['Sistole'] = data['Sistole'].apply(lambda x: int(x.split(' ')[0]))
-    data['Diastole'] = data['Diastole'].apply(lambda x: int(x.split(' ')[0]))
-    data['Nafas'] = data['Nafas'].apply(lambda x: int(x.split(' ')[0]))
-    data['Detak Nadi'] = data['Detak Nadi'].apply(lambda x: int(x.split(' ')[0]))
+def clean_data(data): 
+    def clean_text(text):
+        # Menghilangkan karakter yang tidak diinginkan, seperti huruf dan tanda baca
+        text = re.sub(r'[^A-Za-z0-9\s]', '', text)
+        # Menghilangkan semua huruf (A-Z, a-z)
+        text = re.sub(r'[A-Za-z]', '', text)
+        # Mengganti spasi ganda dengan spasi tunggal
+        text = re.sub(r'\s+', ' ', text)
+        # Menghapus spasi di awal dan akhir teks
+        text = text.strip()
+        return text
+    # Replace commas with dots and convert numerical columns to floats
+    numerical_columns = ['IMT']
+    data[numerical_columns] = data[numerical_columns].replace({',': '.'}, regex=True).astype(float)
+    columns_to_clean = ['Usia', 'Sistole', 'Diastole', 'Nafas', 'Detak Nadi']
+    for col in columns_to_clean:
+        data[col] = data[col].apply(preprocess_text)
     return data
     
 def preprocess_data(data):
