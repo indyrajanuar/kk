@@ -67,25 +67,13 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def diagnose_hipertensi(umur, imt, sistole, diastole, nafas, detak_nadi, jenis_kelamin):
-    # Mengonversi Jenis Kelamin menjadi angka (1 untuk Laki-laki, 0 untuk Perempuan)
-    jenis_kelamin_L = 1 if jenis_kelamin == "Laki-laki" else 0
-
-    # Menyesuaikan diagnosis berdasarkan kelompok usia
-    if umur >= 25 and umur <= 34:
-        faktor_risiko_usia = 1.56  # Faktor risiko untuk usia 25-34 tahun
-    elif umur >= 40 and umur <= 60:
-        faktor_risiko_usia = 1.56  # Faktor risiko untuk usia 40-60 tahun
-    else:
-        faktor_risiko_usia = 1  # Faktor risiko untuk usia lainnya
-
-    # Mendiagnosis hipertensi berdasarkan tekanan darah sistolik dan diastolik
-    if sistole * faktor_risiko_usia >= 140 or diastole * faktor_risiko_usia >= 90:
-        diagnosis_hipertensi = "Pasien memiliki Hipertensi"
-    else:
-        diagnosis_hipertensi = "Pasien tidak memiliki Hipertensi"
-
-    return diagnosis_hipertensi
+def ernn_prediction(model, data):
+    if data is None:
+        return None, "Data is not available"
+    # Apply Threshold
+    y_pred = model.predict(data)
+    y_pred = (y_pred > 0.5).astype(int)
+    return y_pred, None
     
 def main():
     with st.sidebar:
@@ -223,10 +211,30 @@ def main():
         Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
         Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         
-        if st.button('Diagnosa'):
-            hasil_diagnosis = diagnose_hipertensi(Umur_Tahun, IMT, Sistole, Diastole, Nafas, Detak_Nadi, Jenis_Kelamin)
-            model = load_model()
-            st.write(hasil_diagnosis)
+        # Process the input data for prediction
+        data = {
+            'Umur Tahun': [Umur_Tahun],
+            'IMT': [IMT],
+            'Sistole': [Sistole],
+            'Diastole': [Diastole],
+            'Nafas': [Nafas],
+            'Detak Nadi': [Detak_Nadi],
+            'Jenis Kelamin': [Jenis_Kelamin]
+        }
+        input_df = pd.DataFrame(data)
+        input_df = preprocess_data(clean_data(input_df))
+        input_df = normalize_data(input_df)
+        
+        # Make prediction
+        prediction, error = ernn_prediction(model, input_df)
+        
+        if prediction is not None:
+            if prediction[0] == 1:
+                st.write("Hasil prediksi: Pasien mengidap hipertensi")
+            else:
+                st.write("Hasil prediksi: Pasien tidak mengidap hipertensi")
+        else:
+            st.write(error)
 
 if __name__ == "__main__":
     main()
