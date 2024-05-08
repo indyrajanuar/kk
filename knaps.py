@@ -222,6 +222,7 @@ def main():
             'Jenis Kelamin': [Jenis_Kelamin]
         }
         input_df = pd.DataFrame(data)
+        input_df = preprocess_data(input_df)
         input_df = normalize_data(input_df)
         
         # Make prediction
