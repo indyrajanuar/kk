@@ -223,7 +223,10 @@ def main():
             new_data = pd.DataFrame(data)
             datatest = pd.read_csv('x_test2.csv')  
             datatest = pd.concat([datatest, new_data], ignore_index=True)
-            datanorm = joblib.load('normalized.pkl').fit.transform(datatest)
+            # Muat objek normalisasi
+            normalizer = joblib.load('normalized_data.pkl')
+            # Terapkan transformasi pada data pengujian
+            datanorm = normalizer.transform(datatest)
             datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
 
             # Perform classification
