@@ -18,10 +18,6 @@ def clean_data(data):
     data = data[data['Diastole'].notnull()]
     data = data[data['Nafas'].notnull()]
     data = data[data['Detak Nadi'].notnull()]
-    
-    # Print unique values in 'Umur Tahun' column for debugging
-    print("Unique values in 'Umur Tahun' column:", data['Umur Tahun'].unique())
-    
     data['Umur Tahun'] = data['Umur Tahun'].apply(lambda x: int(x.split(' ')[0]))
     data['Sistole'] = data['Sistole'].apply(lambda x: int(x.split(' ')[0]))
     data['Diastole'] = data['Diastole'].apply(lambda x: int(x.split(' ')[0]))
@@ -221,17 +217,24 @@ def main():
         clean = clean_data(input)
         transform = preprocess_data(clean)
         normalize = normalize_data(transform)
+
+        model = load_model()
         
         # Make prediction
-        prediction, error = ernn(model, normalize)
-        
-        if prediction is not None:
-            if prediction[0] == 1:
-                st.write("Hasil prediksi: Pasien mengidap hipertensi")
-            else:
-                st.write("Hasil prediksi: Pasien tidak mengidap hipertensi")
+        prediction = ernn(model, normalize)
+    
+        # Display result
+        if result is None:
+            st.write("Insufficient data for classification")
         else:
-            st.write(error)
+            y_true, y_pred, loss = result
+            if y_true is not None and len(y_true) > 0:
+            if y_true[0] == 1:
+                true_label = "YA"
+                else:
+                    true_label = "TIDAK"
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa':", true_label)
 
 if __name__ == "__main__":
     main()
