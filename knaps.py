@@ -225,6 +225,7 @@ def main():
             datatest = pd.concat([datatest, new_data], ignore_index=True)
             datanorm = joblib.load('normalized_data.pkl')
             st.write(datanorm)
+            st.write(datatest)
             datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
 
             # Perform classification
