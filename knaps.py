@@ -223,6 +223,7 @@ def main():
             new_data = pd.DataFrame(data)
             datatest = pd.read_csv('x_test2.csv')  
             datatest = pd.concat([datatest, new_data], ignore_index=True)
+            st.write(dataset)
             # Muat objek normalisasi
             normalizer = joblib.load('normalized_data.pkl')
             # Terapkan transformasi pada data pengujian
