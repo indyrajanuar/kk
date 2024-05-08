@@ -18,11 +18,12 @@ def clean_data(data):
     data = data[data['Diastole'].notnull()]
     data = data[data['Nafas'].notnull()]
     data = data[data['Detak Nadi'].notnull()]
-    data['Umur Tahun'] = data['Umur Tahun'].apply(lambda x: int(x.split(' ')[0]))
-    data['Sistole'] = data['Sistole'].apply(lambda x: int(x.split(' ')[0]))
-    data['Diastole'] = data['Diastole'].apply(lambda x: int(x.split(' ')[0]))
-    data['Nafas'] = data['Nafas'].apply(lambda x: int(x.split(' ')[0]))
-    data['Detak Nadi'] = data['Detak Nadi'].apply(lambda x: int(x.split(' ')[0]))
+    # Convert numerical columns to appropriate types
+    data['Umur Tahun'] = data['Umur Tahun'].astype(int)
+    data['Sistole'] = data['Sistole'].astype(int)
+    data['Diastole'] = data['Diastole'].astype(int)
+    data['Nafas'] = data['Nafas'].astype(int)
+    data['Detak Nadi'] = data['Detak Nadi'].astype(int)
     return data
     
 def preprocess_data(data):
