@@ -224,8 +224,7 @@ def main():
             datatest = pd.read_csv('x_test.csv')  
             datatest = pd.concat([datatest, data], ignore_index=True)
             datanorm = joblib.load('normalized_data.pkl')
-            datatest_transformed = datatest.apply(lambda x: datanorm.transform(x))
-            datapredict = keras.models.load_model('model-final (10).h5').predict(datatest_transformed)
+            datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
             
             # Display result
             if datapredict is None:
