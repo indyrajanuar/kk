@@ -221,16 +221,16 @@ def main():
             <br><br>
             <table style="margin: auto;">
                 <tr>
-                    <td style="text-align: center;"><h5>Accuracy</h5></td>
-                    <td style="text-align: center;"><h5>Precision</h5></td>
-                    <td style="text-align: center;"><h5>Recall</h5></td>
-                    <td style="text-align: center;"><h5>F1- Score</h5></td>
+                    <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
+                    <td style="text-align: center; border: none;"><h5>Precision</h5></td>
+                    <td style="text-align: center; border: none;"><h5>Recall</h5></td>
+                    <td style="text-align: center; border: none;"><h5>F1- Score</h5></td>
                 </tr>
                 <tr>
-                    <td style="text-align: center;">{accuracy * 100:.2f}%</td>
-                    <td style="text-align: center;">{precision * 100:.2f}%</td>
-                    <td style="text-align: center;">{recall * 100:.2f}%</td>
-                    <td style="text-align: center;">{f1 * 100:.2f}%</td>
+                    <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
+                    <td style="text-align: center; border: none;">{precision * 100:.2f}%</td>
+                    <td style="text-align: center; border: none;">{recall * 100:.2f}%</td>
+                    <td style="text-align: center; border: none;">{f1 * 100:.2f}%</td>
                 </tr>
             </table>
             """
