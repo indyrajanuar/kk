@@ -18,12 +18,11 @@ def clean_data(data):
     data = data[data['Diastole'].notnull()]
     data = data[data['Nafas'].notnull()]
     data = data[data['Detak Nadi'].notnull()]
-    # Convert numerical columns to appropriate types
-    data['Umur Tahun'] = data['Umur Tahun'].astype(int)
-    data['Sistole'] = data['Sistole'].astype(int)
-    data['Diastole'] = data['Diastole'].astype(int)
-    data['Nafas'] = data['Nafas'].astype(int)
-    data['Detak Nadi'] = data['Detak Nadi'].astype(int)
+    data['Umur Tahun'] = data['Umur Tahun'].apply(lambda x: int(x.split(' ')[0]))
+    data['Sistole'] = data['Sistole'].apply(lambda x: int(x.split(' ')[0]))
+    data['Diastole'] = data['Diastole'].apply(lambda x: int(x.split(' ')[0]))
+    data['Nafas'] = data['Nafas'].apply(lambda x: int(x.split(' ')[0]))
+    data['Detak Nadi'] = data['Detak Nadi'].apply(lambda x: int(x.split(' ')[0]))
     return data
     
 def preprocess_data(data):
@@ -223,7 +222,6 @@ def main():
             'Jenis Kelamin': [Jenis_Kelamin]
         }
         input_df = pd.DataFrame(data)
-        input_df = preprocess_data(clean_data(input_df))
         input_df = normalize_data(input_df)
         
         # Make prediction
