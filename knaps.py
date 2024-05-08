@@ -195,45 +195,51 @@ def main():
         st.write("Masukkan nilai untuk pengujian:")
     
         # Input fields
-        Umur_Tahun = st.number_input("Umur", min_value=0, max_value=150, step=1)
-        IMT = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1)
-        Sistole = st.number_input("Sistole", min_value=0, max_value=300, step=1)
-        Diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1)
-        Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
-        Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
-        Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-        
-        # Process the input data for prediction
-        # Process the input data for prediction
-        data = {
-            'Umur Tahun': [Umur_Tahun],
-            'IMT': [IMT],
-            'Sistole': [Sistole],
-            'Diastole': [Diastole],
-            'Nafas': [Nafas],
-            'Detak Nadi': [Detak_Nadi],
-            'Jenis Kelamin': [Jenis_Kelamin],
-            'Diagnosa': [0]  # Placeholder value
-        }
-        input_df = pd.DataFrame(data)
-        transform = preprocess_data(input_df)
-        normalize = normalize_data(transform)
+        age = st.number_input("Umur", min_value=0, max_value=150, step=1, value=30)
+        bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1, value=25.0)
+        systole = st.number_input("Sistole", min_value=0, max_value=300, step=1, value=120)
+        diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1, value=80)
+        breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
+        heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
+        gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
     
-        model = load_model()
+        # Convert gender to binary
+        gender_binary = 1 if gender == "Perempuan" else 0
         
-        # Make prediction
-        prediction = ernn(model, normalize)
+        # Button for testing
+        if st.button("Hasil Uji Coba"):
+            # Prepare input data for testing
+            input_data = pd.DataFrame({
+                "Umur": [age],
+                "IMT": [bmi],
+                "Sistole": [systole],
+                "Diastole": [diastole],
+                "Nafas": [breaths],
+                "Detak Nadi": [heart_rate],
+                "Jenis Kelamin": [gender_binary],
+                "Diagnosa": [0]  # Placeholder value
+            })
     
-        # Display result
-        if prediction is None:
-            st.write("Insufficient data for classification")
-        else:
-            if prediction[0] == 1:
-                true_label = "YA"
+            # Preprocess and normalize input data
+            processed_data = preprocess_data(input_data)
+            normalized_data = normalize_data(processed_data)
+            model = load_model()
+            
+            # Perform classification
+            result = ernn(normalized_data, model)
+    
+            # Display result
+            if result is None:
+                st.write("Insufficient data for classification")
             else:
-                true_label = "TIDAK"
-            st.write("Hasil klasifikasi:")
-            st.write("Data termasuk dalam kategori 'Diagnosa':", true_label)
+                y_true, y_pred, loss = result
+                if y_true is not None and len(y_true) > 0:
+                    if y_true[0] == 1:
+                        true_label = "YA"
+                    else:
+                        true_label = "TIDAK"
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa':", true_label)
 
 if __name__ == "__main__":
     main()
