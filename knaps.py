@@ -211,7 +211,7 @@ def main():
         if st.button("Hasil Uji Coba"):
             # Prepare input data for testing
             data = pd.DataFrame({
-                "Umur": [age],
+                "Umur Tahun": [age],
                 "IMT": [bmi],
                 "Sistole": [systole],
                 "Diastole": [diastole],
@@ -228,6 +228,7 @@ def main():
             st.write(datatest)
             # Muat objek normalisasi
             normalizer = joblib.load('normalized_data.pkl')
+            st.write(normalizer)
             # Terapkan transformasi pada data pengujian
             datanorm = normalizer.transform(datatest)
             st.write(datanorm)
