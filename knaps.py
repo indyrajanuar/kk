@@ -202,6 +202,32 @@ def main():
         Nafas = st.number_input("Nafas", min_value=0, max_value=100, step=1)
         Detak_Nadi = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1)
         Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+        
+        # Process the input data for prediction
+        data = {
+            'Umur Tahun': [Umur_Tahun],
+            'IMT': [IMT],
+            'Sistole': [Sistole],
+            'Diastole': [Diastole],
+            'Nafas': [Nafas],
+            'Detak Nadi': [Detak_Nadi],
+            'Jenis Kelamin': [Jenis_Kelamin]
+        }
+        input = pd.DataFrame(data)
+        clean = clean_data(input)
+        transform = preprocess_data(clean)
+        normalize = normalize_data(transform)
+        
+        # Make prediction
+        prediction, error = ernn(model, normalize)
+        
+        if prediction is not None:
+            if prediction[0] == 1:
+                st.write("Hasil prediksi: Pasien mengidap hipertensi")
+            else:
+                st.write("Hasil prediksi: Pasien tidak mengidap hipertensi")
+        else:
+            st.write(error)
 
 if __name__ == "__main__":
     main()
