@@ -215,8 +215,7 @@ def main():
             'Jenis Kelamin': [Jenis_Kelamin]
         }
         input_df = pd.DataFrame(data)
-        clean = clean_data(input_df)
-        transform = preprocess_data(clean)
+        transform = preprocess_data(input_df)
         normalize = normalize_data(transform)
     
         model = load_model()
