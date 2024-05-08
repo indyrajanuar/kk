@@ -227,7 +227,7 @@ def main():
             datatest = pd.concat([datatest, new_data], ignore_index=True)
             st.write(datatest)
             # Muat objek normalisasi
-            normalizer = joblib.load('normalized_data.pkl')
+            normalizer = joblib.load('normalized_data1 (1).pkl')
             st.write(normalizer)
             # # Terapkan transformasi pada data pengujian
             # datanorm = normalizer.transform(datatest)
