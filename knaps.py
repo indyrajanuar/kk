@@ -219,10 +219,11 @@ def main():
                 "Detak Nadi": [heart_rate],
                 "Jenis Kelamin": [gender_binary]
             })
-    
+
             datatest = pd.read_csv('transformed_data.csv')  
-            datatest = pd.concat([datatest, data], ignore_index=True)
-            datanorm = joblib.load('normalized_data.pkl').transform(datatest)
+            datanew = pd.concat([datatest, data], ignore_index=True)  # Corrected line
+            
+            datanorm = joblib.load('normalized_data.pkl').transform(datanew)  # Corrected line
             datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
             
             # Perform classification
@@ -238,7 +239,6 @@ def main():
                 else:
                     st.write("Hasil klasifikasi:")
                     st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
-            
 
 if __name__ == "__main__":
     main()
