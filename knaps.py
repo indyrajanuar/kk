@@ -65,14 +65,6 @@ def ernn(data, model):
     # Apply Threshold
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
-    return y_pred
-
-def ernn_prediction(model, data):
-    if data is None:
-        return None, "Data is not available"
-    # Apply Threshold
-    y_pred = model.predict(data)
-    y_pred = (y_pred > 0.5).astype(int)
     return y_pred, None
     
 def main():
@@ -221,12 +213,13 @@ def main():
             'Detak Nadi': [Detak_Nadi],
             'Jenis Kelamin': [Jenis_Kelamin]
         }
-        input_df = pd.DataFrame(data)
-        input_df = preprocess_data(input_df)
-        input_df = normalize_data(input_df)
+        input = pd.DataFrame(data)
+        clean = preprocess_data(input)
+        transform = transform_data(clean)
+        normalize = normalize_data(transform)
         
         # Make prediction
-        prediction, error = ernn_prediction(model, input_df)
+        prediction, error = ernn_prediction(model, normalize)
         
         if prediction is not None:
             if prediction[0] == 1:
