@@ -214,8 +214,8 @@ def main():
             'Jenis Kelamin': [Jenis_Kelamin]
         }
         input = pd.DataFrame(data)
-        clean = preprocess_data(input)
-        transform = transform_data(clean)
+        clean = clean_data(input)
+        transform = preprocess_data(clean)
         normalize = normalize_data(transform)
         
         # Make prediction
