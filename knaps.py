@@ -218,6 +218,7 @@ def main():
                 report = classification_report(y_test, y_pred, zero_division=0)
             # Display the metrics
             html_code = f"""
+            <br><br>
             <table style="margin: auto;">
                 <tr>
                     <td style="text-align: center;"><h5>Accuracy</h5></td>
