@@ -206,7 +206,7 @@ def main():
     
         # Convert gender to binary
         gender_binary = 1 if gender == "Perempuan" else 0
-        
+            
         # Button for testing
         if st.button("Hasil Uji Coba"):
             # Prepare input data for testing
@@ -219,19 +219,18 @@ def main():
                 "Detak Nadi": [heart_rate],
                 "Jenis Kelamin": [gender_binary]
             })
-
-            new_data = pd.DataFrame(data)
+    
             datatest = pd.read_csv('transformed_data.csv')  
-            datatest = pd.concat([datatest, new_data], ignore_index=True)
-            datanorm = joblib.load('normalized_data.pkl').fit_transform(datatest)
+            datatest = pd.concat([datatest, data], ignore_index=True)
+            datanorm = joblib.load('normalized_data.pkl').transform(datatest)
             datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
-        
+            
             # Perform classification
-            y_pred = ernn(datapredict)
+            y_pred = (datapredict > 0.5).astype("int32")
             
             # Display result
             if y_pred is None:
-                st.write("Insufficient data for classification")
+                st.write("Data tidak mencukupi untuk diklasifikasikan")
             else:
                 if y_pred[0] == 1:
                     st.write("Hasil klasifikasi:")
