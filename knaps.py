@@ -135,8 +135,36 @@ def main():
                     <td style="text-align: center;"><b>Nilai</b></td>
                 </tr>
                 <tr>
-                    <td style="text-align: center;">Jumlah node input layer</td>
-                    <td style="text-align: center;">9</td>
+                    <td style="text-align: center;">Neuron Input</td>
+                    <td style="text-align: center;">7</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Neuron Hidden</td>
+                    <td style="text-align: center;">6</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Neuron Context</td>
+                    <td style="text-align: center;">6</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Neuron Output</td>
+                    <td style="text-align: center;">1</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Fungsi Aktivasi</td>
+                    <td style="text-align: center;">Sigmoid</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Max Error</td>
+                    <td style="text-align: center;">0.01</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Pembagian Data Latih dan Data Uji</td>
+                    <td style="text-align: center;">70%:30%</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Epoch</td>
+                    <td style="text-align: center;">2000</td>
                 </tr>
             </table>
             """, unsafe_allow_html=True)
