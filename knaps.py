@@ -223,7 +223,7 @@ def main():
             new_data = pd.DataFrame(data)
             datatest = pd.read_csv('x_test2.csv')  
             datatest = pd.concat([datatest, new_data], ignore_index=True)
-            datanorm = joblib.load('normalized.pkl').fit.transform(datatest)
+            datanorm = joblib.load('normalized.pkl').transform(datatest)
             st.write(datanorm)
                 
 if __name__ == "__main__":
