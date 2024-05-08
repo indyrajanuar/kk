@@ -228,6 +228,8 @@ def main():
 
             # Perform classification
             y_pred = (datapredict > 0.5).astype("int32")
+
+            st.write(datatest)
             
             # Display result
             if y_pred [0] == 1:
