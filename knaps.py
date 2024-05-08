@@ -127,17 +127,20 @@ def main():
     
     elif selected == 'Klasifikasi ERNN':
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN)")
-        st.write("<h5 style="text-align: center;"> Melakukan Normalisasi Data </h5>")
-        <table style="margin: auto;">
-            <tr>
-                <td style="text-align: center;"><b>Parameter</b></td>
-                <td style="text-align: center;"><b>Nilai</b></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">Jumlah node input layer</td>
-                <td style="text-align: center;">9</td>
-            </tr>
-        </table>
+        st.write("<h5 style='text-align: center;'>Melakukan Normalisasi Data</h5>", unsafe_allow_html=True)
+        st.write("""
+            <table style="margin: auto;">
+                <tr>
+                    <td style="text-align: center;"><b>Parameter</b></td>
+                    <td style="text-align: center;"><b>Nilai</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Jumlah node input layer</td>
+                    <td style="text-align: center;">9</td>
+                </tr>
+            </table>
+            """, unsafe_allow_html=True)
+        
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             
