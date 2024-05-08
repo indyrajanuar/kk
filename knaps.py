@@ -217,7 +217,9 @@ def main():
                 "Diastole": [diastole],
                 "Nafas": [breaths],
                 "Detak Nadi": [heart_rate],
-                "Jenis Kelamin": [gender_binary]
+                "Jenis Kelamin_L" : [0 if Jenis_Kelamin.lower() == 'perempuan' else 1],
+                "Jenis Kelamin_P" : [1 if Jenis_Kelamin.lower() == 'perempuan' else 0]
+                # "Jenis Kelamin": [gender_binary]
             })
             
             new_data = pd.DataFrame(data)
