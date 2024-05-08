@@ -216,17 +216,17 @@ def main():
                 "Diastole": [diastole],
                 "Nafas": [breaths],
                 "Detak Nadi": [heart_rate],
-                "Jenis Kelamin": [gender_binary],
-                "Diagnosa": [0]  # Placeholder value
+                "Jenis Kelamin": [gender_binary]
             })
-    
-            # Preprocess and normalize input data
-            processed_data = preprocess_data(input_data)
-            normalized_data = normalize_data(processed_data)
-            model = load_model()
 
+            new_data = pd.DataFrame(datafix)
+            datatest = pd.read_csv('transformed_data.csv')  
+            datatest = pd.concat([datatest, new_data], ignore_index=True)
+            datanorm = joblib.load('normalized_data.pkl').fit_transform(datatest)
+            datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
+        
             # Perform classification
-            y_pred = ernn(normalized_data, model)
+            y_pred = ernn(datapredict)
             
             # Display result
             if y_pred is None:
