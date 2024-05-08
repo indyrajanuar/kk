@@ -194,7 +194,7 @@ def main():
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
         st.write("Masukkan nilai untuk pengujian:")
-    
+        
         # Input fields
         age = st.number_input("Umur", min_value=0, max_value=150, step=1, value=30)
         bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1, value=25.0)
@@ -203,7 +203,7 @@ def main():
         breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
         heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
         gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-    
+        
         # Convert gender to binary
         gender_binary = 1 if gender == "Perempuan" else 0
             
@@ -219,15 +219,11 @@ def main():
                 "Detak Nadi": [heart_rate],
                 "Jenis Kelamin": [gender_binary]
             })
-            
-            # Load transformer and apply transformation
-            transformer = joblib.load('normalized_data.pkl')
-            input_features = data[['Umur', 'IMT', 'Sistole', 'Diastole', 'Nafas', 'Detak Nadi', 'Jenis Kelamin']]
-            datanorm = transformer.transform(input_features)
-            
-            # Load model and make prediction
-            model = keras.models.load_model('model-final (10).h5')
-            datapredict = model.predict(datanorm)
+    
+            datatest = pd.read_csv('x_test.csv')  
+            datatest = pd.concat([datatest, data], ignore_index=True)
+            datanorm = joblib.load('normalized_data.pkl').transform(datatest)
+            datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
             
             # Perform classification
             y_pred = (datapredict > 0.5).astype("int32")
