@@ -155,11 +155,15 @@ def main():
                     <td style="text-align: center;">Sigmoid</td>
                 </tr>
                 <tr>
+                    <td style="text-align: center;">Optimizer</td>
+                    <td style="text-align: center;">Adam</td>
+                </tr>
+                <tr>
                     <td style="text-align: center;">Max Error</td>
                     <td style="text-align: center;">0.01</td>
                 </tr>
                 <tr>
-                    <td style="text-align: center;">Pembagian Data Latih dan Data Uji</td>
+                    <td style="text-align: center;">Pembagian Data</td>
                     <td style="text-align: center;">70%:30%</td>
                 </tr>
                 <tr>
