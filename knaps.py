@@ -219,7 +219,7 @@ def main():
             # Display the metrics
             html_code = f"""
             <br><br>
-            <table style="margin: auto;">
+            <table style="margin: auto; border-collapse: collapse;">
                 <tr>
                     <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
                     <td style="text-align: center; border: none;"><h5>Precision</h5></td>
