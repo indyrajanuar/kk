@@ -219,7 +219,8 @@ def main():
                 "Detak Nadi": [heart_rate],
                 "Jenis Kelamin": [gender_binary]
             })
-    
+
+            new_data = pd.DataFrame(data)
             datatest = pd.read_csv('x_test.csv')  
             datatest = pd.concat([datatest, data], ignore_index=True)
             datanorm = joblib.load('normalized_data.pkl').transform(datatest)
