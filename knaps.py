@@ -168,6 +168,8 @@ def main():
                 </tr>
             </table>
             """, unsafe_allow_html=True)
+
+        st.write("")
         
         if upload_file is not None:
             df = pd.read_csv(upload_file)
