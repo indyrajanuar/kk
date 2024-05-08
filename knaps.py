@@ -138,9 +138,9 @@ def main():
             df = pd.read_csv(upload_file)
             
             # Data preprocessing
-            df_cleaned = clean_data(df)
-            preprocessed_data = preprocess_data(df_cleaned)
-            normalized_data = normalize_data(preprocessed_data)
+            input_df = pd.DataFrame(data)
+            input_df = preprocess_data(clean_data(input_df))
+            input_df = normalize_data(input_df)
 
             # Splitting the data
             x_train, x_test, y_train, y_test, _ = split_data(normalized_data)
