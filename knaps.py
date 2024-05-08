@@ -126,7 +126,6 @@ def main():
                     st.dataframe(normalized_data)
     
     elif selected == 'Klasifikasi ERNN':
-        st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN)")
         st.write("<h5 style='text-align: center;'>Konfigurasi Elman Recurrent Neural Network</h5>", unsafe_allow_html=True)
         st.write("""
             <table style="margin: auto;">
