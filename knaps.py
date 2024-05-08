@@ -18,6 +18,10 @@ def clean_data(data):
     data = data[data['Diastole'].notnull()]
     data = data[data['Nafas'].notnull()]
     data = data[data['Detak Nadi'].notnull()]
+    
+    # Print unique values in 'Umur Tahun' column for debugging
+    print("Unique values in 'Umur Tahun' column:", data['Umur Tahun'].unique())
+    
     data['Umur Tahun'] = data['Umur Tahun'].apply(lambda x: int(x.split(' ')[0]))
     data['Sistole'] = data['Sistole'].apply(lambda x: int(x.split(' ')[0]))
     data['Diastole'] = data['Diastole'].apply(lambda x: int(x.split(' ')[0]))
