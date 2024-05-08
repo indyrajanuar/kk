@@ -205,7 +205,7 @@ def main():
         gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         
         # Convert gender to binary
-        gender_binary = 1 if gender == "Perempuan" else 0
+        # gender_binary = 1 if gender == "Perempuan" else 0
             
         # Button for testing
         if st.button("Hasil Uji Coba"):
@@ -217,8 +217,8 @@ def main():
                 "Diastole": [diastole],
                 "Nafas": [breaths],
                 "Detak Nadi": [heart_rate],
-                "Jenis Kelamin_L" : [0 if Jenis_Kelamin.lower() == 'perempuan' else 1],
-                "Jenis Kelamin_P" : [1 if Jenis_Kelamin.lower() == 'perempuan' else 0]
+                "Jenis Kelamin_L" : [0 if gender.lower() == 'perempuan' else 1],
+                "Jenis Kelamin_P" : [1 if gender.lower() == 'perempuan' else 0]
                 # "Jenis Kelamin": [gender_binary]
             })
             
