@@ -57,7 +57,7 @@ def split_data(data):
 
 def load_model():
     # Load pre-trained ERNN model
-    model = keras.models.load_model('model-final (10).h5')
+    model = keras.models.load_model('model-final.h5')
     return model
 
 def ernn(data, model):
