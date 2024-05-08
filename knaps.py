@@ -225,14 +225,11 @@ def main():
             datanorm = joblib.load('normalized_data.pkl').transform(datatest)
             datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
             
-            # Perform classification
-            y_pred = (datapredict > 0.5).astype("int32")
-            
             # Display result
-            if y_pred is None:
+            if datapredict is None:
                 st.write("Data tidak mencukupi untuk diklasifikasikan")
             else:
-                if y_pred[0] == 1:
+                if datapredict [0] == 1:
                     st.write("Hasil klasifikasi:")
                     st.write("Data termasuk dalam kategori 'Diagnosa': YA")
                 else:
