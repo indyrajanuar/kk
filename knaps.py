@@ -224,22 +224,21 @@ def main():
             processed_data = preprocess_data(input_data)
             normalized_data = normalize_data(processed_data)
             model = load_model()
-            
+
             # Perform classification
             y_pred = ernn(normalized_data, model)
-    
+            
             # Display result
-            if result is None:
+            if y_pred is None:
                 st.write("Insufficient data for classification")
             else:
-                y_true, y_pred, loss = result
-                if y_true is not None and len(y_true) > 0:
-                    if y_true[0] == 1:
-                        true_label = "YA"
-                    else:
-                        true_label = "TIDAK"
+                if y_pred[0] == 1:
                     st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa':", true_label)
+                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+                else:
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+            
 
 if __name__ == "__main__":
     main()
