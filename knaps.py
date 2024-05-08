@@ -219,12 +219,15 @@ def main():
                 "Detak Nadi": [heart_rate],
                 "Jenis Kelamin": [gender_binary]
             })
-
-            datatest = pd.read_csv('transformed_data.csv')  
-            datanew = pd.concat([datatest, data], ignore_index=True)  # Corrected line
             
-            datanorm = joblib.load('normalized_data.pkl').transform(datanew)  # Corrected line
-            datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
+            # Load transformer and apply transformation
+            transformer = joblib.load('normalized_data.pkl')
+            input_features = data[['Umur', 'IMT', 'Sistole', 'Diastole', 'Nafas', 'Detak Nadi', 'Jenis Kelamin']]
+            datanorm = transformer.transform(input_features)
+            
+            # Load model and make prediction
+            model = keras.models.load_model('model-final (10).h5')
+            datapredict = model.predict(datanorm)
             
             # Perform classification
             y_pred = (datapredict > 0.5).astype("int32")
