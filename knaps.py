@@ -219,7 +219,7 @@ def main():
                 "Jenis Kelamin": [gender_binary]
             })
 
-            new_data = pd.DataFrame(datafix)
+            new_data = pd.DataFrame(data)
             datatest = pd.read_csv('transformed_data.csv')  
             datatest = pd.concat([datatest, new_data], ignore_index=True)
             datanorm = joblib.load('normalized_data.pkl').fit_transform(datatest)
