@@ -228,22 +228,21 @@ def main():
             st.write(datatest)
             # Muat objek normalisasi
             normalizer = joblib.load('normalized_data1 (1).pkl')
-            st.write(normalizer)
-            # # Terapkan transformasi pada data pengujian
-            # datanorm = normalizer.transform(datatest)
-            # st.write(datanorm)
-            # datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
+            # Terapkan transformasi pada data pengujian
+            datanorm = normalizer.fit_transform(datatest)
+            st.write(datanorm)
+            datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
 
-            # # Perform classification
-            # y_pred = (datapredict > 0.5).astype("int32")
+            # Perform classification
+            y_pred = (datapredict > 0.5).astype("int32")
             
-            # # Display result
-            # if y_pred [0] == 1:
-            #     st.write("Hasil klasifikasi:")
-            #     st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-            # else:
-            #     st.write("Hasil klasifikasi:")
-            #     st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+            # Display result
+            if y_pred [0] == 1:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+            else:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 
 if __name__ == "__main__":
     main()
