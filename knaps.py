@@ -219,29 +219,20 @@ def main():
                 "Detak Nadi": [heart_rate],
                 "Jenis Kelamin": [gender_binary]
             })
-
-            # Load model and perform prediction
-            def predict(data):
-                try:
-                    datanorm = joblib.load('normalized_data.pkl')
-                    model = keras.models.load_model('model-final (10).h5')
-                    normalized_data = datanorm.transform(data)
-                    prediction = model.predict(normalized_data)
-                    return prediction
-                except Exception as e:
-                    print("Error:", e)
-                    return None
             
-            # Button for testing
-            if st.button("Hasil Uji Coba"):
-                prediction = predict(data)
-                if prediction is None:
-                    st.write("Data tidak mencukupi untuk diklasifikasikan")
-                else:
-                    predicted_class = 1 if prediction[0] > 0.5 else 0
-                    class_label = "YA" if predicted_class == 1 else "TIDAK"
-                    st.write("Hasil klasifikasi:")
-                    st.write(f"Data termasuk dalam kategori 'Diagnosa': {class_label}")
-
+            new_data = pd.DataFrame(data)
+            datatest = pd.read_csv('x_test.csv')  
+            datatest = pd.concat([datatest, new_data], ignore_index=True)
+            datanorm = joblib.load('normalized_data.pkl').fit_transform(datatest)
+            datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
+            
+            # Display result
+            if datapredict [0] == 1:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+            else:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+                
 if __name__ == "__main__":
     main()
