@@ -61,7 +61,7 @@ def load_model():
 
 def ernn(data, model):
     if data is None:
-        return None, None, "Data is not available"
+        return None, "Data is not available"
     # Apply Threshold
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
@@ -226,7 +226,7 @@ def main():
             model = load_model()
             
             # Perform classification
-            result = ernn(normalized_data, model)
+            y_pred = ernn(normalized_data, model)
     
             # Display result
             if result is None:
