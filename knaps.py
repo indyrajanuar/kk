@@ -218,8 +218,8 @@ def main():
                 report = classification_report(y_test, y_pred, zero_division=0)
             # Display the metrics
             html_code = f"""
-            <br><br>
-            <table style="margin: auto; border: none;">
+            <br>
+            <table style="margin: auto;">
                 <tr>
                     <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
                     <td style="text-align: center; border: none;"><h5>Precision</h5></td>
