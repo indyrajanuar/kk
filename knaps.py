@@ -227,6 +227,7 @@ def main():
             normalizer = joblib.load('normalized_data.pkl')
             # Terapkan transformasi pada data pengujian
             datanorm = normalizer.transform(datatest)
+            st.write(datanorm)
             datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
 
             # Perform classification
