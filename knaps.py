@@ -204,6 +204,7 @@ def main():
         Jenis_Kelamin = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         
         # Process the input data for prediction
+        # Process the input data for prediction
         data = {
             'Umur Tahun': [Umur_Tahun],
             'IMT': [IMT],
@@ -213,28 +214,26 @@ def main():
             'Detak Nadi': [Detak_Nadi],
             'Jenis Kelamin': [Jenis_Kelamin]
         }
-        input = pd.DataFrame(data)
-        clean = clean_data(input)
+        input_df = pd.DataFrame(data)
+        clean = clean_data(input_df)
         transform = preprocess_data(clean)
         normalize = normalize_data(transform)
-
+    
         model = load_model()
         
         # Make prediction
         prediction = ernn(model, normalize)
     
         # Display result
-        if result is None:
+        if prediction is None:
             st.write("Insufficient data for classification")
         else:
-            y_true, y_pred, loss = result
-            if y_true is not None and len(y_true) > 0:
-            if y_true[0] == 1:
+            if prediction[0] == 1:
                 true_label = "YA"
-                else:
-                    true_label = "TIDAK"
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa':", true_label)
+            else:
+                true_label = "TIDAK"
+            st.write("Hasil klasifikasi:")
+            st.write("Data termasuk dalam kategori 'Diagnosa':", true_label)
 
 if __name__ == "__main__":
     main()
