@@ -225,6 +225,18 @@ def main():
             datatest = pd.concat([datatest, new_data], ignore_index=True)
             datanorm = joblib.load('normalized.pkl').transform(datatest)
             st.write(datanorm)
+            datapredict = keras.models.load_model('model-final (10).h5').predict(datanorm)
+
+            # Perform classification
+            y_pred = (datapredict > 0.5).astype("int32")
+            
+            # Display result
+            if y_pred [0] == 1:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+            else:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 
 if __name__ == "__main__":
     main()
