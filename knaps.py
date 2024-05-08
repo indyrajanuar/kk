@@ -212,7 +212,8 @@ def main():
             'Diastole': [Diastole],
             'Nafas': [Nafas],
             'Detak Nadi': [Detak_Nadi],
-            'Jenis Kelamin': [Jenis_Kelamin]
+            'Jenis Kelamin': [Jenis_Kelamin],
+            'Diagnosa': [0]  # Placeholder value
         }
         input_df = pd.DataFrame(data)
         transform = preprocess_data(input_df)
