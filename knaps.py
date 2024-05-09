@@ -174,7 +174,7 @@ def main():
         
         st.write("<br><br>", unsafe_allow_html=True)
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN)")
-        st.write("<br><br>", unsafe_allow_html=True)
+        st.write("<br>", unsafe_allow_html=True)
 
         if upload_file is not None:
             df = pd.read_csv(upload_file)
