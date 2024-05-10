@@ -268,12 +268,12 @@ def main():
         with st.form("my_form"):
             with st.container():
                 col1, col2 = st.columns(2)  # Split the layout into two columns
-                with st.column():
+                with col1:
                     age = st.number_input("Umur", min_value=0, max_value=150, step=1, value=30)
                     bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1, value=25.0)
                     systole = st.number_input("Sistole", min_value=0, max_value=300, step=1, value=120)
                     gender = st.radio("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-                with st.column():
+                with col2:
                     diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1, value=80)
                     breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
                     heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
