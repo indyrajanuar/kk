@@ -265,19 +265,25 @@ def main():
         st.write("Masukkan nilai untuk pengujian:")
         
         # Input fields
-        age = st.number_input("Umur", min_value=0, max_value=150, step=1, value=30)
-        bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1, value=25.0)
-        systole = st.number_input("Sistole", min_value=0, max_value=300, step=1, value=120)
-        diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1, value=80)
-        breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
-        heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
-        gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+        with st.form("my_form"):
+            with st.container():
+                with st.column():
+                    age = st.number_input("Umur", min_value=0, max_value=150, step=1, value=30)
+                    bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1, value=25.0)
+                    systole = st.number_input("Sistole", min_value=0, max_value=300, step=1, value=120)
+                    gender = st.radio("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+                with st.column():
+                    diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1, value=80)
+                    breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
+                    heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
+        
+            submit_button = st.form_submit_button(label='Submit')
         
         # Convert gender to binary
         # gender_binary = 1 if gender == "Perempuan" else 0
             
-        # Button for testing
-        if st.button("Hasil Uji Coba"):
+        # Proses data setelah form disubmit
+        if submit_button:
             # Prepare input data for testing
             data = pd.DataFrame({
                 "Umur Tahun": [age],
@@ -288,7 +294,6 @@ def main():
                 "Detak Nadi": [heart_rate],
                 "Jenis Kelamin_L" : [0 if gender.lower() == 'perempuan' else 1],
                 "Jenis Kelamin_P" : [1 if gender.lower() == 'perempuan' else 0]
-                # "Jenis Kelamin": [gender_binary]
             })
             
             new_data = pd.DataFrame(data)
