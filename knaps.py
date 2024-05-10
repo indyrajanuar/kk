@@ -240,6 +240,25 @@ def main():
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
         st.image('bagging.png', caption='')
+        # Display the metrics
+        html_code = f"""
+        <br>
+        <table style="margin: auto;">
+            <tr>
+                <td style="text-align: center; border: none;"><h5>5 Iterations</h5></td>
+                <td style="text-align: center; border: none;"><h5>10 Iterations</h5></td>
+                <td style="text-align: center; border: none;"><h5>15 Iterations</h5></td>
+                <td style="text-align: center; border: none;"><h5>20 Iterations</h5></td>        
+            </tr>
+            <tr>
+                <td style="text-align: center; border: none;">94.63%</td>
+                <td style="text-align: center; border: none;">94.43%</td>
+                <td style="text-align: center; border: none;">94.04%</td>
+                <td style="text-align: center; border: none;">94.63%</td>
+            </tr>
+        </table>
+        """                
+        st.markdown(html_code, unsafe_allow_html=True)
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
