@@ -306,10 +306,17 @@ def main():
             # Terapkan transformasi pada data pengujian
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
-            datapredict = keras.models.load_model('model-final.h5').predict(datanorm)
-
-            # Perform classification
-            y_pred = (datapredict > 0.5).astype("int32")
+            # Memuat model dan melakukan prediksi
+            model = keras.models.load_model('model-final.h5')
+            predictions = model.predict(datanorm)
+            
+            # Ambil hasil prediksi untuk data terbaru
+            latest_prediction = (predictions[-1] > 0.5).astype("int32")
+            
+            # Menyimpan hasil ke dalam DataFrame untuk seluruh data pengujian
+            results = pd.DataFrame({'Actual': [None] * (len(predictions) - 1) + [latest_prediction.flatten()[0]], 'Predicted': predictions.flatten()})
+            
+            st.write(results)
             
             # Display result
             if y_pred [-1] == 1:
