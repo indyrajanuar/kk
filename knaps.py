@@ -310,11 +310,17 @@ def main():
             model = keras.models.load_model('model-final.h5')
             predictions = model.predict(datanorm)
             
-            # Ambil hasil prediksi untuk data terbaru
+            # Extract the prediction for the new data
             latest_prediction = (predictions[-1] > 0.5).astype("int32")
             
-            # Menyimpan hasil ke dalam DataFrame untuk seluruh data pengujian
-            results = pd.DataFrame({'Actual': [None] * (len(predictions) - 1) + [latest_prediction.flatten()[0]], 'Predicted': predictions.flatten()})
+            # Append the actual label for the new data (assuming it's not available, we use NaN or similar)
+            actual_labels = actual_labels.append(pd.Series([None]), ignore_index=True)
+            
+            # Create a results DataFrame
+            results = pd.DataFrame({
+                'Actual': actual_labels,
+                'Predicted': predictions.flatten()
+            })
             
             st.write(results)
             
