@@ -309,20 +309,10 @@ def main():
             # Memuat model dan melakukan prediksi
             model = keras.models.load_model('model-final.h5')
             predictions = model.predict(datanorm)
-            
-            # Extract the prediction for the new data
-            latest_prediction = (predictions[-1] > 0.5).astype("int32")
-            
-            # Append the actual label for the new data (assuming it's not available, we use NaN or similar)
-            actual_labels = actual_labels.append(pd.Series([None]), ignore_index=True)
-            
-            # Create a results DataFrame
-            results = pd.DataFrame({
-                'Actual': actual_labels,
-                'Predicted': predictions.flatten()
-            })
-            
-            st.write(results)
+            datapredict = keras.models.load_model('model-final.h5').predict(datanorm)
+
+            # Perform classification
+            y_pred = (datapredict > 0.5).astype("int32")
             
             # Display result
             if y_pred [-1] == 1:
