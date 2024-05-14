@@ -310,10 +310,6 @@ def main():
 
             # Perform classification
             y_pred = (datapredict > 0.5).astype("int32")
-
-            # Menyimpan hasil ke dalam DataFrame
-            results = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred.flatten()})
-            st.write(results)
             
             # Display result
             if y_pred [-1] == 1:
