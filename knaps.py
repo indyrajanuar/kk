@@ -100,9 +100,9 @@ def main():
             df = pd.read_csv(upload_file)
             st.dataframe(df)
             
-            st.markdown('<h3 style="text-align: left;"> Melakukan Cleaning Data </h1>', unsafe_allow_html=True)
+            st.markdown('<h3 style="text-align: left;"> Menghapus atribut yang tidak diinginkan </h1>', unsafe_allow_html=True)
             st.write('Pada bagian ini melakukan pembersihan dataset yang tidak memiliki relevansi terhadap faktor risiko pada penyakit hipertensi, seperti menghapus satuan yang tidak diperlukan.')
-            if st.button("Clean Data"):
+            if st.button("Submit"):
                 df_cleaned = clean_data(df)
                 st.write("Data cleaning completed.")
                 st.dataframe(df_cleaned)
