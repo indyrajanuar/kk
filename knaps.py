@@ -104,7 +104,7 @@ def main():
             st.write('Pada bagian ini melakukan pembersihan dataset yang tidak memiliki relevansi terhadap faktor risiko pada penyakit hipertensi, seperti menghapus satuan yang tidak diperlukan.')
             if st.button("Submit"):
                 df_cleaned = clean_data(df)
-                st.write("Data cleaning completed.")
+                st.write("Data completed.")
                 st.dataframe(df_cleaned)
                 st.session_state.df_cleaned = df_cleaned
                 
@@ -222,15 +222,9 @@ def main():
             <table style="margin: auto;">
                 <tr>
                     <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
-                    <td style="text-align: center; border: none;"><h5>Precision</h5></td>
-                    <td style="text-align: center; border: none;"><h5>Recall</h5></td>
-                    <td style="text-align: center; border: none;"><h5>F1- Score</h5></td>
                 </tr>
                 <tr>
                     <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
-                    <td style="text-align: center; border: none;">{precision * 100:.2f}%</td>
-                    <td style="text-align: center; border: none;">{recall * 100:.2f}%</td>
-                    <td style="text-align: center; border: none;">{f1 * 100:.2f}%</td>
                 </tr>
             </table>
             """
