@@ -310,12 +310,13 @@ def main():
             
             if model_choice == "Elman Recurrent Neural Network":
                 # Load Keras model and make predictions
-                model = load_keras_model('model-final.h5')
+                model = load_keras_model('model_fold_4 (1).h5')
                 predictions = model.predict(datanorm)
                 y_pred = (predictions > 0.5).astype("int32")
             elif model_choice == "ERNN + Bagging":
                 # Load Bagging model and make predictions
-                bagging_model = load_keras_model('bagging.h5')
+                # Load Bagging model and make predictions
+                bagging_model = joblib.load('bagging.joblib')  # Assuming it's a scikit-learn model saved with joblib
                 predictions = bagging_model.predict(datanorm)
                 y_pred = (predictions > 0.5).astype("int32")
             
