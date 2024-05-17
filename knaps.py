@@ -55,9 +55,9 @@ def split_data(data):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0) 
     return x_train, x_test, y_train, y_test, None
 
-def load_model(model_path):
+def load_model():
     # Load pre-trained ERNN model
-    model = keras.models.load_model('model_path')
+    model = keras.models.load_model('model_fold_4 (1)')
     return model
 
 def ernn(data, model):
@@ -67,6 +67,11 @@ def ernn(data, model):
     y_pred = model.predict(data)
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
+
+def load_keras_model(model_path):
+    # Load a pre-trained Keras model
+    model = keras.models.load_model(model_path)
+    return model
     
 def main():
     with st.sidebar:
