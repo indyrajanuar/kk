@@ -55,9 +55,9 @@ def split_data(data):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0) 
     return x_train, x_test, y_train, y_test, None
 
-def load_model():
+def load_model(model_path):
     # Load pre-trained ERNN model
-    model = keras.models.load_model('model_fold_4 (1).h5')
+    model = keras.models.load_model('model_path')
     return model
 
 def ernn(data, model):
@@ -271,6 +271,8 @@ def main():
                     diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1, value=80)
                     breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
                     heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
+
+            model_choice = st.selectbox("Pilih Model", ["Elman Recurrent Neural Network", "ERNN+Bagging"])
         
             submit_button = st.form_submit_button(label='Submit')
         
@@ -300,13 +302,17 @@ def main():
             # Terapkan transformasi pada data pengujian
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
-            # Memuat model dan melakukan prediksi
-            model = keras.models.load_model('model-final.h5')
-            predictions = model.predict(datanorm)
-            datapredict = keras.models.load_model('model-final.h5').predict(datanorm)
-
-            # Perform classification
-            y_pred = (datapredict > 0.5).astype("int32")
+            
+            if model_choice == "Elman Recurrent Neural Network":
+                # Load Keras model and make predictions
+                model = load_keras_model('model-final.h5')
+                predictions = model.predict(datanorm)
+                y_pred = (predictions > 0.5).astype("int32")
+            elif model_choice == "ERNN + Bagging":
+                # Load Bagging model and make predictions
+                bagging_model = load_keras_model('bagging.h5')
+                predictions = bagging_model.predict(datanorm)
+                y_pred = (predictions > 0.5).astype("int32")
             
             # Display result
             if y_pred [-1] == 1:
