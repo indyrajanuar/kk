@@ -308,7 +308,7 @@ def main():
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
             
-            if model_choice == "ERNN + Bagging":"Elman Recurrent Neural Network":
+            if model_choice == "ERNN + Bagging":
                 # Load Keras model and make predictions
                 model = load_keras_model('model_1.h5')
                 predictions = model.predict(datanorm)
