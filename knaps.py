@@ -277,7 +277,7 @@ def main():
                     breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
                     heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
 
-            model_choice = st.selectbox("Pilih Model", ["Elman Recurrent Neural Network", "ERNN+Bagging"])
+            model_choice = st.selectbox("Pilih Model", ["ERNN+Bagging", "Elman Recurrent Neural Network"])
         
             submit_button = st.form_submit_button(label='Submit')
         
