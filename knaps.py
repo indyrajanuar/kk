@@ -308,14 +308,14 @@ def main():
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
             
-            if model_choice == "Elman Recurrent Neural Network":
-                # Load Keras model and make predictions
-                model = load_keras_model('model_fold_4 (1).h5')
-                predictions = model.predict(datanorm)
-                y_pred = (predictions > 0.5).astype("int32")
-            elif model_choice == "ERNN + Bagging":
+            if model_choice == "ERNN + Bagging":"Elman Recurrent Neural Network":
                 # Load Keras model and make predictions
                 model = load_keras_model('model_1.h5')
+                predictions = model.predict(datanorm)
+                y_pred = (predictions > 0.5).astype("int32")
+            elif model_choice == "Elman Recurrent Neural Network":
+                # Load Keras model and make predictions
+                model = load_keras_model('model_fold_4 (1).h5')
                 predictions = model.predict(datanorm)
                 y_pred = (predictions > 0.5).astype("int32")
             
