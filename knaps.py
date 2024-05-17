@@ -159,7 +159,7 @@ def main():
                 </tr>
                 <tr>
                     <td style="text-align: center;">Max Error</td>
-                    <td style="text-align: center;">0.01</td>
+                    <td style="text-align: center;">0.0001</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">Pembagian Data</td>
@@ -167,7 +167,7 @@ def main():
                 </tr>
                 <tr>
                     <td style="text-align: center;">Epoch</td>
-                    <td style="text-align: center;">2000</td>
+                    <td style="text-align: center;">500</td>
                 </tr>
             </table>
             """, unsafe_allow_html=True)
