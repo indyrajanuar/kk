@@ -314,10 +314,9 @@ def main():
                 predictions = model.predict(datanorm)
                 y_pred = (predictions > 0.5).astype("int32")
             elif model_choice == "ERNN + Bagging":
-                # Load Bagging model and make predictions
-                # Load Bagging model and make predictions
-                bagging_model = joblib.load('bagging.joblib')  # Assuming it's a scikit-learn model saved with joblib
-                predictions = bagging_model.predict(datanorm)
+                # Load Keras model and make predictions
+                model = load_keras_model('bagging.h5')
+                predictions = model.predict(datanorm)
                 y_pred = (predictions > 0.5).astype("int32")
             
             # Display result
