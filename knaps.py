@@ -328,15 +328,12 @@ def main():
                 predictions = model.predict(datanorm)
                 y_pred = (predictions > 0.5).astype("int32")
                 # Display result
-                if len(y_pred) > 0:
-                    if y_pred[-1] == 1:
-                        st.write("Hasil klasifikasi:")
-                        st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-                    else:
-                        st.write("Hasil klasifikasi:")
-                        st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+                if y_pred [-1] == 1:
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
                 else:
-                    st.write("Tidak ada prediksi yang dihasilkan.")
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 
                 
 if __name__ == "__main__":
