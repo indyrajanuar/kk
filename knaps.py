@@ -69,7 +69,8 @@ def ernn(data, model):
     return y_pred
 
 def load_keras_model(model_path):
-    model = keras.models.load_model('model_path')
+    # Load a pre-trained Keras model
+    model = keras.models.load_model(model_path)
     return model
     
     
