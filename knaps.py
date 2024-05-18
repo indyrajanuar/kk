@@ -68,28 +68,32 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-def load_keras_model(model_path):
-    # Load a pre-trained Keras model
-    model = keras.models.load_model(model_path)
-    return model
+# Fungsi untuk memuat model Keras
+def load_keras_model(path):
+    return load_model(path)
+
+# Fungsi untuk memuat skaler
+def load_scaler(path):
+    return joblib.load(path)
 
 # Fungsi untuk melakukan prediksi dengan Model1 (ERNN)
 def predict_with_model1(data):
-    # Memuat model
     model1 = load_keras_model('model_fold_4 (1).h5')
-    # Melakukan prediksi
-    predictions1 = model1.predict(datanorm1)
+    scaler1 = load_scaler('scaler.pkl')
+    datanorm1 = scaler1.transform(data)
+    predictions1 = model1.predict(datanorm)
     y_pred1 = (predictions1 > 0.5).astype("int32")
     return y_pred1
 
 # Fungsi untuk melakukan prediksi dengan Model2 (ERNN + Bagging)
 def predict_with_model2(data):
-    # Memuat model
     model2 = load_keras_model('model-final.h5')
-    # Melakukan prediksi
-    predictions2 = model2.predict(datanorm2)
+    scaler2 = load_scaler('scaler.pkl')
+    datanorm2 = scaler2.transform(data)
+    predictions2 = model2.predict(datanorm)
     y_pred2 = (predictions2 > 0.5).astype("int32")
-    return y_pred2    
+    return y_pred2
+   
     
 def main():
     with st.sidebar:
@@ -326,21 +330,27 @@ def main():
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
             
-            if model_choice == "Elman Recurrent Neural Network":
-                y_pred = predict_with_model1(data)
-            elif model_choice == "ERNN + Bagging":
-                y_pred = predict_with_model2(data)
-
-            predictions = model.predict(datanorm)
-            y_pred = (predictions > 0.5).astype("int32")
+            # Input data
+            input_data = st.text_area("Masukkan data untuk prediksi (pisahkan dengan spasi):", "")
             
-            if y_pred[-1] == 1:
-                st.write("Hasil klasifikasi:")
-                st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-            else:
-                st.write("Hasil klasifikasi:")
-                st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
-                
+            if st.button("Prediksi"):
+                if input_data:
+                    try:
+                        # Mengonversi input data menjadi array
+                        data = np.array([float(i) for i in input_data.split()]).reshape(1, -1)
+                        
+                        if model_choice == "Elman Recurrent Neural Network":
+                            y_pred = predict_with_model1(data)
+                        elif model_choice == "ERNN + Bagging":
+                            y_pred = predict_with_model2(data)
+        
+                        # Menampilkan hasil
+                        if y_pred[-1] == 1:
+                            st.write("Hasil klasifikasi:")
+                            st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+                        else:
+                            st.write("Hasil klasifikasi:")
+                            st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 
 if __name__ == "__main__":
     main()
