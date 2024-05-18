@@ -57,7 +57,7 @@ def split_data(data):
 
 def load_model():
     # Load pre-trained ERNN model
-    model = keras.models.load_model('model_fold_4 (1).h5')
+    model = keras.models.load_model('model_fold_1.h5')
     return model
 
 def ernn(data, model):
@@ -238,7 +238,36 @@ def main():
             
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
-        st.image('bagging.png', caption='')
+        if upload_file is not None:
+            df = pd.read_csv(upload_file)
+            
+            # Data preprocessing
+            df_cleaned = clean_data(df)
+            preprocessed_data = preprocess_data(df_cleaned)
+            normalized_data = normalize_data(preprocessed_data)
+
+            # Splitting the data
+            x_train, x_test, y_train, y_test, _ = split_data(normalized_data)
+            
+            # Load the model
+            model = keras.models.load_model('model_1.h5')
+
+            #histogram
+            plt.figure(figsize=(10, 6))
+            bars = plt.bar(range(1, 6), accuracies, color='skyblue', width=0.4)
+            plt.xlabel('Fold Number')
+            plt.ylabel('Accuracy')
+            plt.title('Accuracy of Each Fold')
+            plt.xticks(range(1, 6))
+            plt.ylim(0, 1)
+            plt.grid(axis='y', linestyle='--', alpha=0.7)
+            
+            # Annotate bars with accuracy values
+            for i in range(len(accuracies)):
+                plt.text(i + 1, accuracies[i] + 0.02, f'{accuracies[i]*100:.2f}%', ha='center', color='black')
+            
+            plt.show()
+
         # Display the metrics
         html_code = f"""
         <br>
@@ -310,7 +339,7 @@ def main():
             
             # Load the selected model and make predictions
             if model_choice == "Elman Recurrent Neural Network":
-                model = keras.models.load_model('model_fold_4 (1).h5')
+                model = keras.models.load_model('model_fold_1.h5')
             else:
                 model = keras.models.load_model('model_1.h5')
 
