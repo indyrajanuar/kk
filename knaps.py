@@ -72,7 +72,24 @@ def load_keras_model(model_path):
     # Load a pre-trained Keras model
     model = keras.models.load_model(model_path)
     return model
-    
+
+# Fungsi untuk melakukan prediksi dengan Model1 (ERNN)
+def predict_with_model1(data):
+    # Memuat model
+    model1 = load_keras_model('model_fold_4 (1).h5')
+    # Melakukan prediksi
+    predictions1 = model1.predict(datanorm1)
+    y_pred1 = (predictions1 > 0.5).astype("int32")
+    return y_pred1
+
+# Fungsi untuk melakukan prediksi dengan Model2 (ERNN + Bagging)
+def predict_with_model2(data):
+    # Memuat model
+    model2 = load_keras_model('model-final.h5')
+    # Melakukan prediksi
+    predictions2 = model2.predict(datanorm2)
+    y_pred2 = (predictions2 > 0.5).astype("int32")
+    return y_pred2    
     
 def main():
     with st.sidebar:
@@ -310,9 +327,9 @@ def main():
             #st.write(datanorm)
             
             if model_choice == "Elman Recurrent Neural Network":
-                model = load_keras_model('model_fold_4 (1).h5')
+                y_pred = predict_with_model1(data)
             elif model_choice == "ERNN + Bagging":
-                model = load_keras_model('model-final.h5')
+                y_pred = predict_with_model2(data)
 
             predictions = model.predict(datanorm)
             y_pred = (predictions > 0.5).astype("int32")
