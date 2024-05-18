@@ -306,7 +306,9 @@ def main():
             normalizer = joblib.load('normalized_data1 (1).pkl')
             # Terapkan transformasi pada data pengujian
             datanorm = normalizer.fit_transform(datatest)
-            #st.write(datanorm)
+            st.write(datanorm)
+            st.write("Prediksi: ", predictions)
+            st.write("Prediksi Biner: ", y_pred2)
             
             if model_choice == "Elman Recurrent Neural Network":
                 # Load Keras model and make predictions
@@ -325,9 +327,14 @@ def main():
                 # Load Keras model and make predictions
                 model = load_keras_model('model-final.h5')
                 predictions = model.predict(datanorm)
-                st.write("Prediksi: ", predictions)
                 y_pred2 = (predictions > 0.5).astype("int32")
-                st.write("Prediksi Biner: ", y_pred2)
+                # Display result
+                if y_pred2 [-1] == 1:
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+                else:
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 
 if __name__ == "__main__":
     main()
