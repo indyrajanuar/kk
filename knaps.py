@@ -321,7 +321,7 @@ def main():
             if model_choice == "Elman Recurrent Neural Network":
                 model = keras.models.load_model('model-final.h5')
             else:
-                model = keras.models.load_model('model_bagging.h5')
+                model = keras.models.load_model('model_1.h5')
 
             predictions = model.predict(datanorm)
             datapredict = predictions[-1]  # Ambil prediksi untuk data input terbaru
