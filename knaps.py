@@ -68,9 +68,10 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-# Fungsi untuk memuat model Keras
-def load_keras_model(path):
-    return load_model(path)
+def load_keras_model(model_path):
+    # Load a pre-trained Keras model
+    model = keras.models.load_model(model_path)
+    return model
    
 def main():
     with st.sidebar:
