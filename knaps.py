@@ -301,7 +301,7 @@ def main():
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
             # Memuat model dan melakukan prediksi
-            model = keras.models.load_model('model-final.h5')
+            model = keras.models.load_model('model_1.h5')
             predictions = model.predict(datanorm)
             datapredict = keras.models.load_model('model-final.h5').predict(datanorm)
 
