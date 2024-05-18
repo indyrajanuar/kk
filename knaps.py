@@ -327,17 +327,15 @@ def main():
                 # Load Keras model and make predictions
                 model = load_keras_model('model-final.h5')
                 predictions = model.predict(datanorm)
-                y_pred2 = (predictions > 0.5).astype("int32")
+                y_pred = (predictions > 0.5).astype("int32")
                 # Display result
-                if len(y_pred2) > 0:
-                    if y_pred2[-1] == 1:
-                        st.write("Hasil klasifikasi:")
-                        st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-                    else:
-                        st.write("Hasil klasifikasi:")
-                        st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+                if y_pred [-1] == 1:
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
                 else:
-                    st.write("Tidak ada prediksi yang dihasilkan.")
+                    st.write("Hasil klasifikasi:")
+                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+                
                 
 if __name__ == "__main__":
     main()
