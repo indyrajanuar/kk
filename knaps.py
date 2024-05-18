@@ -365,31 +365,24 @@ def main():
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
             
+            # Load the selected model and make predictions
             if model_choice == "Elman Recurrent Neural Network":
-                # Load Keras model and make predictions
-                model = load_keras_model('model_fold_4 (1).h5')
-                predictions = model.predict(datanorm)
-                y_pred = (predictions > 0.5).astype("int32")
-                # Display result
-                if y_pred [-1] == 1:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-                else:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
-                
-            elif model_choice == "ERNN + Bagging":
-                # Load Keras model and make predictions
-                model = load_keras_model('model-final.h5')
-                predictions = model.predict(datanorm)
-                y_pred = (predictions > 0.5).astype("int32")
-                # Display result
-                if y_pred [-1] == 1:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-                else:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+                model = keras.models.load_model('model_fold_4 (1).h5')
+            else:
+                model = keras.models.load_model('model_1.h5')
+
+            predictions = model.predict(datanorm)
+            datapredict = predictions[-1]  # Ambil prediksi untuk data input terbaru
+        
+            # Perform classification
+            y_pred = (datapredict > 0.5).astype("int32")
+        
+            # Display result
+            st.write("Hasil klasifikasi:")
+            if y_pred == 1:
+                st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+            else:
+                st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 
 if __name__ == "__main__":
     main()
