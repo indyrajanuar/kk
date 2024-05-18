@@ -68,15 +68,10 @@ def ernn(data, model):
     y_pred = (y_pred > 0.5).astype(int)
     return y_pred
 
-# Pastikan model dimuat dengan benar
 def load_keras_model(model_path):
-    try:
-        model = load_model(model_path)
-        st.write("Model dimuat dengan sukses dari path:", model_path)
-        return model
-    except Exception as e:
-        st.write("Error saat memuat model:", str(e))
-        return None
+    model = keras.models.load_model('model_path')
+    return model
+    
     
 def main():
     with st.sidebar:
