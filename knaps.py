@@ -307,8 +307,6 @@ def main():
             # Terapkan transformasi pada data pengujian
             datanorm = normalizer.fit_transform(datatest)
             #st.write(datanorm)
-            st.write("Prediksi: ", predictions)
-            st.write("Prediksi Biner: ", y_pred2)
             
             if model_choice == "Elman Recurrent Neural Network":
                 # Load Keras model and make predictions
@@ -327,14 +325,17 @@ def main():
                 # Load Keras model and make predictions
                 model = load_keras_model('model-final.h5')
                 predictions = model.predict(datanorm)
-                y_pred = (predictions > 0.5).astype("int32")
+                y_pred2 = (predictions > 0.5).astype("int32")
                 # Display result
-                if y_pred [-1] == 1:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+                if len(y_pred2) > 0:
+                    if y_pred2[-1] == 1:
+                        st.write("Hasil klasifikasi:")
+                        st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+                    else:
+                        st.write("Hasil klasifikasi:")
+                        st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 else:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+                    st.write("Tidak ada prediksi yang dihasilkan.")
                 
                 
 if __name__ == "__main__":
