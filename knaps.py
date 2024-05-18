@@ -329,7 +329,7 @@ def main():
                 y_pred = (predictions > 0.5).astype("int32")
                 # Display result
                 if len(y_pred) > 0:
-                    if y_pred2[-1] == 1:
+                    if y_pred[-1] == 1:
                         st.write("Hasil klasifikasi:")
                         st.write("Data termasuk dalam kategori 'Diagnosa': YA")
                     else:
