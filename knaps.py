@@ -52,7 +52,7 @@ def split_data(data):
     x = data.drop('Diagnosa', axis=1)
     y = data['Diagnosa']
     # Split data into training and testing sets
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0) 
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, shuffle=False) 
     return x_train, x_test, y_train, y_test, None
 
 def load_model():
