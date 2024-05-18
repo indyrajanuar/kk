@@ -238,7 +238,7 @@ def main():
             
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
-        st.image('Bagging.png')
+        st.image('bagging.png')
 
         # Display the metrics
         html_code = f"""
