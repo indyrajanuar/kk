@@ -251,10 +251,10 @@ def main():
                 <td style="text-align: center; border: none;"><h5>20 Iterations</h5></td>        
             </tr>
             <tr>
+                <td style="text-align: center; border: none;">94.83%</td>
+                <td style="text-align: center; border: none;">95.63%</td>
                 <td style="text-align: center; border: none;">94.63%</td>
-                <td style="text-align: center; border: none;">94.43%</td>
-                <td style="text-align: center; border: none;">94.04%</td>
-                <td style="text-align: center; border: none;">94.63%</td>
+                <td style="text-align: center; border: none;">94.83%</td>
             </tr>
         </table>
         """                
