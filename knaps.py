@@ -325,6 +325,7 @@ def main():
                 # Load Keras model and make predictions
                 model = load_keras_model('model-final.h5')
                 predictions = model.predict(datanorm)
+                st.write("Prediksi: ", predictions)
                 y_pred2 = (predictions > 0.5).astype("int32")
                 # Display result
                 if y_pred2 [-1] == 1:
