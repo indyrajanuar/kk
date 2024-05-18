@@ -310,30 +310,19 @@ def main():
             #st.write(datanorm)
             
             if model_choice == "Elman Recurrent Neural Network":
-                # Load Keras model and make predictions
                 model = load_keras_model('model_fold_4 (1).h5')
-                predictions = model.predict(datanorm)
-                y_pred = (predictions > 0.5).astype("int32")
-                # Display result
-                if y_pred [-1] == 1:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-                else:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
-                
             elif model_choice == "ERNN + Bagging":
-                # Load Keras model and make predictions
                 model = load_keras_model('model-final.h5')
-                predictions = model.predict(datanorm)
-                y_pred = (predictions > 0.5).astype("int32")
-                # Display result
-                if y_pred [-1] == 1:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': YA")
-                else:
-                    st.write("Hasil klasifikasi:")
-                    st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
+
+            predictions = model.predict(datanorm)
+            y_pred = (predictions > 0.5).astype("int32")
+            
+            if y_pred[-1] == 1:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+            else:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
                 
                 
 if __name__ == "__main__":
