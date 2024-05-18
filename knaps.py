@@ -258,6 +258,63 @@ def main():
         </table>
         """                
         st.markdown(html_code, unsafe_allow_html=True)
+        # Input fields
+        with st.form("my_form"):
+            with st.container():
+                col1, col2 = st.columns(2)  # Split the layout into two columns
+                with col1:
+                    age = st.number_input("Umur", min_value=0, max_value=150, step=1, value=30)
+                    bmi = st.number_input("IMT", min_value=0.0, max_value=100.0, step=0.1, value=25.0)
+                    systole = st.number_input("Sistole", min_value=0, max_value=300, step=1, value=120)
+                    gender = st.radio("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+                with col2:
+                    diastole = st.number_input("Diastole", min_value=0, max_value=200, step=1, value=80)
+                    breaths = st.number_input("Nafas", min_value=0, max_value=100, step=1, value=16)
+                    heart_rate = st.number_input("Detak Nadi", min_value=0, max_value=300, step=1, value=70)
+        
+            submit_button = st.form_submit_button(label='Submit')
+        
+        # Convert gender to binary
+        # gender_binary = 1 if gender == "Perempuan" else 0
+            
+        # Proses data setelah form disubmit
+        if submit_button:
+            # Prepare input data for testing
+            data = pd.DataFrame({
+                "Umur Tahun": [age],
+                "IMT": [bmi],
+                "Sistole": [systole],
+                "Diastole": [diastole],
+                "Nafas": [breaths],
+                "Detak Nadi": [heart_rate],
+                "Jenis Kelamin_L" : [0 if gender.lower() == 'perempuan' else 1],
+                "Jenis Kelamin_P" : [1 if gender.lower() == 'perempuan' else 0]
+            })
+            
+            new_data = pd.DataFrame(data)
+            datatest = pd.read_csv('x_test2.csv')  
+            datatest = pd.concat([datatest, new_data], ignore_index=True)
+            #st.write(datatest)
+            # Muat objek normalisasi
+            normalizer = joblib.load('normalized_data1 (1).pkl')
+            # Terapkan transformasi pada data pengujian
+            datanorm = normalizer.fit_transform(datatest)
+            #st.write(datanorm)
+            # Memuat model dan melakukan prediksi
+            model = keras.models.load_model('model-final.h5')
+            predictions = model.predict(datanorm)
+            datapredict = keras.models.load_model('model-final.h5').predict(datanorm)
+
+            # Perform classification
+            y_pred = (datapredict > 0.5).astype("int32")
+            
+            # Display result
+            if y_pred [-1] == 1:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': YA")
+            else:
+                st.write("Hasil klasifikasi:")
+                st.write("Data termasuk dalam kategori 'Diagnosa': TIDAK")
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
