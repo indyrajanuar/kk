@@ -235,30 +235,55 @@ def main():
             """
                 
             st.markdown(html_code, unsafe_allow_html=True)
-            
     elif selected == 'ERNN + Bagging':
-        st.write("Berikut merupakan hasil klasifikasi yang di dapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
-        st.image('bagging.png')
-
-        # Display the metrics
-        html_code = f"""
-        <br>
-        <table style="margin: auto;">
-            <tr>
-                <td style="text-align: center; border: none;"><h5>5 Iterations</h5></td>
-                <td style="text-align: center; border: none;"><h5>10 Iterations</h5></td>
-                <td style="text-align: center; border: none;"><h5>15 Iterations</h5></td>
-                <td style="text-align: center; border: none;"><h5>20 Iterations</h5></td>        
-            </tr>
-            <tr>
-                <td style="text-align: center; border: none;">94.83%</td>
-                <td style="text-align: center; border: none;">95.63%</td>
-                <td style="text-align: center; border: none;">94.63%</td>
-                <td style="text-align: center; border: none;">94.83%</td>
-            </tr>
-        </table>
-        """                
-        st.markdown(html_code, unsafe_allow_html=True)
+        st.write("Berikut merupakan hasil klasifikasi yang didapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
+        if upload_file is not None:
+            df = pd.read_csv(upload_file)
+            
+            # Data preprocessing
+            df_cleaned = clean_data(df)
+            preprocessed_data = preprocess_data(df_cleaned)
+            normalized_data = normalize_data(preprocessed_data)
+    
+            # Splitting the data
+            x_train, x_test, y_train, y_test, _ = split_data(normalized_data)
+            
+            # Initialize list to hold predictions from each model
+            predictions = []
+    
+            # Load the models and make predictions
+            for i in range(num_models):
+                model = keras.models.load_model(f'model_iteration_5_model_{i + 1}.h5')
+                y_pred = model.predict(x_test)
+                predictions.append(y_pred)
+            
+            # Aggregate predictions through voting
+            voted_predictions = np.mean(predictions, axis=0) >= 0.5  # Voting threshold of 0.5 for binary classification
+            
+            # Convert boolean array to integers for comparison with ground truth
+            voted_predictions_int = voted_predictions.astype(int)
+    
+            # Calculate accuracy
+            accuracy = accuracy_score(y_test, voted_predictions_int)
+            precision = precision_score(y_test, voted_predictions_int)
+            recall = recall_score(y_test, voted_predictions_int)
+            f1 = f1_score(y_test, voted_predictions_int)
+    
+            # Generate confusion matrix
+            cm = confusion_matrix(y_test, voted_predictions_int)
+            # Plot confusion matrix
+            plt.figure(figsize=(8, 6))
+            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+            plt.xlabel('Kelas Prediksi')                
+            plt.ylabel('Kelas Aktual')
+            plt.title('Confusion Matrix')
+            st.pyplot(plt.gcf())  # Pass the current figure to st.pyplot()        
+            # Clear the current plot to avoid displaying it multiple times
+            plt.clf()  
+    
+            # Generate classification report
+            with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
+                report = classification_report(y_test, voted_predictions_int, zero_division=0)
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
