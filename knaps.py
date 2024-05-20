@@ -237,9 +237,9 @@ def main():
             st.markdown(html_code, unsafe_allow_html=True)
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang didapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
-        st.image("download (5).png")
         if upload_file is not None:
             df = pd.read_csv(upload_file)
+            st.image("download (5).png")
             
             # Data preprocessing
             df_cleaned = clean_data(df)
