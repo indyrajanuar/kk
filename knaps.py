@@ -285,6 +285,17 @@ def main():
             # Generate classification report
             with np.errstate(divide='ignore', invalid='ignore'):  # Suppress division by zero warning
                 report = classification_report(y_test, voted_predictions_int, zero_division=0)
+            # Display the metrics
+            html_code = f"""
+            <br>
+            <table style="margin: auto;">
+                <tr>
+                    <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
+                </tr>
+            </table>
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
