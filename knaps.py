@@ -296,6 +296,9 @@ def main():
                     <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
                 </tr>
             </table>
+            """
+                
+            st.markdown(html_code, unsafe_allow_html=True)
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
