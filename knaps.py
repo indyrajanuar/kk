@@ -249,6 +249,7 @@ def main():
             x_train, x_test, y_train, y_test, _ = split_data(normalized_data)
             
             # Initialize list to hold predictions from each model
+            num_models = 5  # Define the number of models
             predictions = []
     
             # Load the models and make predictions
