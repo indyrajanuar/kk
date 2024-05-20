@@ -320,14 +320,24 @@ def main():
             # Load the selected model and make predictions
             if model_choice == "Elman Recurrent Neural Network":
                 model = keras.models.load_model('model-final.h5')
+                predictions = model.predict(datanorm)
+                final_prediction = predictions[-1]
             else:
-                model = keras.models.load_model('model_1.h5')
+                num_models = 5  # Adjust this to the number of bagging models you have
+                predictions = []
+        
+                for i in range(num_models):
+                    model = keras.models.load_model(f'model_iteration_5_model_{i + 1}.h5')
+                    y_pred = model.predict(datanorm)
+                    predictions.append(y_pred)
+        
+                # Aggregate predictions through voting
+                voted_predictions = np.mean(predictions, axis=0) >= 0.5  # Voting threshold of 0.5 for binary classification
+                final_prediction = voted_predictions[-1]  # Take the prediction for the latest input data
 
-            predictions = model.predict(datanorm)
-            datapredict = predictions[-1]  # Ambil prediksi untuk data input terbaru
         
             # Perform classification
-            y_pred = (datapredict > 0.5).astype("int32")
+            y_pred = (final_prediction > 0.5).astype("int32")
         
             # Display result
             st.write("Hasil klasifikasi:")
