@@ -240,6 +240,8 @@ def main():
         if upload_file is not None:
             df = pd.read_csv(upload_file)
             st.image("download (5).png")
+            st.write("<br><br>", unsafe_allow_html=True)
+            st.write("Di bawah ini adalah matriks kebingungan dari iterasi bagging dengan tingkat akurasi tertinggi.")
             
             # Data preprocessing
             df_cleaned = clean_data(df)
