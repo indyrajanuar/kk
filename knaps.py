@@ -235,6 +235,23 @@ def main():
             """
                 
             st.markdown(html_code, unsafe_allow_html=True)
+
+            # Membuat DataFrame untuk menampilkan prediksi vs aktual
+            comparison_df = pd.DataFrame({
+                'Actual': y_test.flatten(),
+                'Predicted': y_pred.flatten()
+            })
+        
+            # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
+            st.write("Perbandingan Hasil Prediksi dan Label Aktual")
+            st.dataframe(comparison_df.head())
+        
+            # Menampilkan DataFrame training dan testing setelah preprocessing
+            st.write("DataFrame Training Setelah Preprocessing dan Normalisasi")
+            st.dataframe(x_train.head())
+            st.write("DataFrame Testing Setelah Preprocessing dan Normalisasi")
+            st.dataframe(x_test.head())
+            
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang didapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
         if upload_file is not None:
