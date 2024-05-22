@@ -326,9 +326,10 @@ def main():
             comparison_df['Actual'] = y_test
             comparison_df['Predicted'] = voted_predictions_int
         
+            st.write("<br><br>", unsafe_allow_html=True)
             # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
             st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
-            st.dataframe(comparison_df.head())
+            st.dataframe(comparison_df)
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
