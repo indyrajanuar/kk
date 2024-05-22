@@ -244,7 +244,7 @@ def main():
             comparison_df = x_test.copy()
             comparison_df['Actual'] = y_test
             comparison_df['Predicted'] = y_pred
-        
+            st.write("<br><br>", unsafe_allow_html=True)
             # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
             st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
             st.dataframe(comparison_df)
