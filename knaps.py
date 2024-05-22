@@ -200,6 +200,10 @@ def main():
             # Predict using the model
             y_pred = ernn(x_test, model)
 
+            # Convert y_test and y_pred to numpy arrays
+            y_test = y_test.to_numpy()
+            y_pred = y_pred.flatten()
+
             # Calculate accuracy
             accuracy = accuracy_score(y_test, y_pred)
             precision = precision_score(y_test, y_pred)
@@ -238,8 +242,8 @@ def main():
 
             # Membuat DataFrame untuk menampilkan prediksi vs aktual
             comparison_df = pd.DataFrame({
-                'Actual': y_test.flatten(),
-                'Predicted': y_pred.flatten()
+                'Actual': y_test,
+                'Predicted': y_pred
             })
         
             # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
