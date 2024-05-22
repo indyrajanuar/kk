@@ -316,6 +316,19 @@ def main():
             """
                 
             st.markdown(html_code, unsafe_allow_html=True)
+
+            # Mengonversi y_test menjadi numpy array jika perlu
+            if isinstance(y_test, pd.Series):
+                y_test = y_test.to_numpy()
+        
+            # Membuat DataFrame untuk menampilkan x_test, prediksi vs aktual
+            comparison_df = x_test.copy()
+            comparison_df['Actual'] = y_test
+            comparison_df['Predicted'] = voted_predictions_int
+        
+            # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
+            st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
+            st.dataframe(comparison_df.head())
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
