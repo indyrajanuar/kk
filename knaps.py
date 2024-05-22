@@ -247,7 +247,7 @@ def main():
         
             # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
             st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
-            st.dataframe(comparison_df.head())
+            st.dataframe(comparison_df)
             
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang didapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
