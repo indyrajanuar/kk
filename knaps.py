@@ -253,7 +253,7 @@ def main():
         st.write("Berikut merupakan hasil klasifikasi yang didapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
         if upload_file is not None:
             df = pd.read_csv(upload_file)
-            st.image("download (5).png")
+            st.image("bagging.png")
             st.write("<br><br>", unsafe_allow_html=True)
             st.write("Di bawah ini adalah matriks kebingungan dari iterasi bagging dengan tingkat akurasi tertinggi.")
             
