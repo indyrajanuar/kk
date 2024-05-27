@@ -349,6 +349,25 @@ def main():
             # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
             st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
             st.dataframe(comparison_df)
+
+            # Menentukan TP, TN, FP, FN
+            tp_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 1)].index
+            tn_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 0)].index
+            fp_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 1)].index
+            fn_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 0)].index
+            
+            # Menampilkan hasil TP, TN, FP, FN
+            st.write("True Positives (TP):")
+            st.dataframe(comparison_df.loc[tp_index])
+            
+            st.write("True Negatives (TN):")
+            st.dataframe(comparison_df.loc[tn_index])
+            
+            st.write("False Positives (FP):")
+            st.dataframe(comparison_df.loc[fp_index])
+            
+            st.write("False Negatives (FN):")
+            st.dataframe(comparison_df.loc[fn_index])
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
