@@ -191,6 +191,14 @@ def main():
 
             # Splitting the data
             x_train, x_test, y_train, y_test, _ = split_data(normalized_data)
+
+            # Display the train and test sets
+            st.write("Train Set:")
+            train_set = pd.concat([x_train, y_train], axis=1)
+            st.dataframe(train_set)
+            st.write("Test Set:")
+            test_set = pd.concat([x_test, y_test], axis=1)
+            st.dataframe(test_set)
             
             # Load the model
             model = load_model()
