@@ -191,14 +191,6 @@ def main():
 
             # Splitting the data
             x_train, x_test, y_train, y_test, _ = split_data(normalized_data)
-
-            # Display the train and test sets
-            # st.write("Train Set:")
-            # train_set = pd.concat([x_train, y_train], axis=1)
-            # st.dataframe(train_set)
-            # st.write("Test Set:")
-            # test_set = pd.concat([x_test, y_test], axis=1)
-            # st.dataframe(test_set)
             
             # Load the model
             model = load_model()
@@ -239,15 +231,9 @@ def main():
             <table style="margin: auto;">
                 <tr>
                     <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
-                    # <td style="text-align: center; border: none;"><h5>Precision</h5></td>
-                    # <td style="text-align: center; border: none;"><h5>Recall</h5></td>
-                    # <td style="text-align: center; border: none;"><h5>F1- Score</h5></td>
                 </tr>
                 <tr>
                     <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
-                    # <td style="text-align: center; border: none;">{precision * 100:.2f}%</td>
-                    # <td style="text-align: center; border: none;">{recall * 100:.2f}%</td>
-                    # <td style="text-align: center; border: none;">{f1 * 100:.2f}%</td>
                 </tr>
             </table>
             """
@@ -341,15 +327,9 @@ def main():
             <table style="margin: auto;">
                 <tr>
                     <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
-                    # <td style="text-align: center; border: none;"><h5>Precision</h5></td>
-                    # <td style="text-align: center; border: none;"><h5>Recall</h5></td>
-                    # <td style="text-align: center; border: none;"><h5>F1- Score</h5></td>
                 </tr>
                 <tr>
                     <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
-                    # <td style="text-align: center; border: none;">{precision * 100:.2f}%</td>
-                    # <td style="text-align: center; border: none;">{recall * 100:.2f}%</td>
-                    # <td style="text-align: center; border: none;">{f1 * 100:.2f}%</td>
                 </tr>
             </table>
             """
