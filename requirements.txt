@@ -3,6 +3,6 @@ pandas
 scikit_learn
 streamlit
 streamlit-option-menu
-tensorflow
+tensorflow==2.12
 seaborn
 matplotlib
