@@ -229,31 +229,20 @@ def main():
             html_code = f"""
             <br>
             <table style="margin: auto;">
-                <tr>
-                    <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
-                </tr>
-            </table>
-            """
-            # html_code = f"""
-            # <br>
-            # <table style="margin: auto;">
-            #     <tr>
-            #         <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
-            #         <td style="text-align: center; border: none;"><h5>Precision</h5></td>
-            #         <td style="text-align: center; border: none;"><h5>Recall</h5></td>
-            #         <td style="text-align: center; border: none;"><h5>F1- Score</h5></td>
-            #     </tr>
-            #     <tr>
-            #         <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
-            #         <td style="text-align: center; border: none;">{precision * 100:.2f}%</td>
-            #         <td style="text-align: center; border: none;">{recall * 100:.2f}%</td>
-            #         <td style="text-align: center; border: none;">{f1 * 100:.2f}%</td>
-            #     </tr>
-            # </table>
-            # """
+                 <tr>
+                     <td style="text-align: center; border: none;"><h5>Accuracy</h5></td>
+                     <td style="text-align: center; border: none;"><h5>Precision</h5></td>
+                     <td style="text-align: center; border: none;"><h5>Recall</h5></td>
+                     <td style="text-align: center; border: none;"><h5>F1- Score</h5></td>
+                 </tr>
+                 <tr>
+                     <td style="text-align: center; border: none;">{accuracy * 100:.2f}%</td>
+                     <td style="text-align: center; border: none;">{precision * 100:.2f}%</td>
+                     <td style="text-align: center; border: none;">{recall * 100:.2f}%</td>
+                     <td style="text-align: center; border: none;">{f1 * 100:.2f}%</td>
+                 </tr>
+             </table>
+             """
                 
             st.markdown(html_code, unsafe_allow_html=True)
 
