@@ -257,33 +257,33 @@ def main():
                 
             st.markdown(html_code, unsafe_allow_html=True)
 
-            # Membuat DataFrame untuk menampilkan x_test, prediksi vs aktual
-            comparison_df = x_test.copy()
-            comparison_df['Actual'] = y_test
-            comparison_df['Predicted'] = y_pred
-            st.write("<br><br>", unsafe_allow_html=True)
-            # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
-            st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
-            st.dataframe(comparison_df)
+            # # Membuat DataFrame untuk menampilkan x_test, prediksi vs aktual
+            # comparison_df = x_test.copy()
+            # comparison_df['Actual'] = y_test
+            # comparison_df['Predicted'] = y_pred
+            # st.write("<br><br>", unsafe_allow_html=True)
+            # # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
+            # st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
+            # st.dataframe(comparison_df)
 
-            # Menentukan TP, TN, FP, FN
-            tp_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 1)].index
-            tn_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 0)].index
-            fp_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 1)].index
-            fn_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 0)].index
+            # # Menentukan TP, TN, FP, FN
+            # tp_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 1)].index
+            # tn_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 0)].index
+            # fp_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 1)].index
+            # fn_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 0)].index
             
-            # Menampilkan hasil TP, TN, FP, FN
-            st.write("True Positives (TP):")
-            st.dataframe(comparison_df.loc[tp_index])
+            # # Menampilkan hasil TP, TN, FP, FN
+            # st.write("True Positives (TP):")
+            # st.dataframe(comparison_df.loc[tp_index])
             
-            st.write("True Negatives (TN):")
-            st.dataframe(comparison_df.loc[tn_index])
+            # st.write("True Negatives (TN):")
+            # st.dataframe(comparison_df.loc[tn_index])
             
-            st.write("False Positives (FP):")
-            st.dataframe(comparison_df.loc[fp_index])
+            # st.write("False Positives (FP):")
+            # st.dataframe(comparison_df.loc[fp_index])
             
-            st.write("False Negatives (FN):")
-            st.dataframe(comparison_df.loc[fn_index])
+            # st.write("False Negatives (FN):")
+            # st.dataframe(comparison_df.loc[fn_index])
             
     elif selected == 'ERNN + Bagging':
         st.write("Berikut merupakan hasil klasifikasi yang didapat dari pemodelan Elman Recurrent Neural Network (ERNN) dengan teknik Bagging")
@@ -357,34 +357,34 @@ def main():
             if isinstance(y_test, pd.Series):
                 y_test = y_test.to_numpy()
         
-            # Membuat DataFrame untuk menampilkan x_test, prediksi vs aktual
-            comparison_df = x_test.copy()
-            comparison_df['Actual'] = y_test
-            comparison_df['Predicted'] = voted_predictions_int
+            # # Membuat DataFrame untuk menampilkan x_test, prediksi vs aktual
+            # comparison_df = x_test.copy()
+            # comparison_df['Actual'] = y_test
+            # comparison_df['Predicted'] = voted_predictions_int
         
-            st.write("<br><br>", unsafe_allow_html=True)
-            # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
-            st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
-            st.dataframe(comparison_df)
+            # st.write("<br><br>", unsafe_allow_html=True)
+            # # Menampilkan DataFrame perbandingan hasil prediksi dan label aktual
+            # st.write("DataFrame Perbandingan Hasil Prediksi dan Label Aktual")
+            # st.dataframe(comparison_df)
 
-            # Menentukan TP, TN, FP, FN
-            tp_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 1)].index
-            tn_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 0)].index
-            fp_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 1)].index
-            fn_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 0)].index
+            # # Menentukan TP, TN, FP, FN
+            # tp_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 1)].index
+            # tn_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 0)].index
+            # fp_index = comparison_df[(comparison_df['Actual'] == 0) & (comparison_df['Predicted'] == 1)].index
+            # fn_index = comparison_df[(comparison_df['Actual'] == 1) & (comparison_df['Predicted'] == 0)].index
             
-            # Menampilkan hasil TP, TN, FP, FN
-            st.write("True Positives (TP):")
-            st.dataframe(comparison_df.loc[tp_index])
+            # # Menampilkan hasil TP, TN, FP, FN
+            # st.write("True Positives (TP):")
+            # st.dataframe(comparison_df.loc[tp_index])
             
-            st.write("True Negatives (TN):")
-            st.dataframe(comparison_df.loc[tn_index])
+            # st.write("True Negatives (TN):")
+            # st.dataframe(comparison_df.loc[tn_index])
             
-            st.write("False Positives (FP):")
-            st.dataframe(comparison_df.loc[fp_index])
+            # st.write("False Positives (FP):")
+            # st.dataframe(comparison_df.loc[fp_index])
             
-            st.write("False Negatives (FN):")
-            st.dataframe(comparison_df.loc[fn_index])
+            # st.write("False Negatives (FN):")
+            # st.dataframe(comparison_df.loc[fn_index])
         
     elif selected == 'Uji Coba':
         st.title("Uji Coba")
