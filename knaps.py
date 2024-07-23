@@ -197,7 +197,7 @@ def main():
             # Compile the model with appropriate metrics
             model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
             # Train the model and save the training history
-            history = model.fit(x_train, y_train, epochs=500, validation_data=(x_test, y_test))
+            # history = model.fit(x_train, y_train, epochs=500, validation_data=(x_test, y_test))
 
             # Predict using the model
             y_pred = ernn(x_test, model)
